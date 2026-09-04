@@ -97,6 +97,11 @@ export type Project = {
   /** intent line printed under the architecture diagram */
   architectureIntent: string;
   troubleshooting: Troubleshooting[];
+  /** Optional closing line printed under the troubleshooting list. */
+  troubleshootingNote?: string;
+  /** Documented design/implementation decisions. Used for projects that don't
+   *  (yet) have a measured troubleshooting write-up, so nothing is invented. */
+  designNotes?: Troubleshooting[];
   performance: PerfCase[];
   demo: DemoScreen[];
   /** headline numbers surfaced on the home card */
