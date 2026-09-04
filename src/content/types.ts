@@ -1,0 +1,104 @@
+/** Shared content model for the portfolio. Every project page is rendered
+ *  from one `Project` object — no per-project layout code. */
+
+export type Metric = {
+  label: string;
+  before: string;
+  after: string;
+  /** e.g. "-97.5%" — pre-computed so the copy matches the deck exactly */
+  delta?: string;
+  /** whether a lower number is the win (latency) or a higher one (throughput) */
+  better?: "lower" | "higher";
+};
+
+export type CodeBlock = {
+  filename?: string;
+  language: "java" | "sql" | "javascript" | "json" | "bash" | "yaml" | "text";
+  code: string;
+};
+
+export type Step = {
+  label: string;
+  title: string;
+  body: string;
+};
+
+export type Troubleshooting = {
+  id: string;
+  title: string;
+  /** the one-line problem statement */
+  problem: string;
+  steps: Step[];
+  code?: CodeBlock[];
+  takeaway: string;
+};
+
+export type PerfCase = {
+  id: string;
+  title: string;
+  summary: string;
+  before: { label: string; code: CodeBlock; notes?: string[] };
+  after: { label: string; code: CodeBlock; notes?: string[] };
+  metrics: Metric[];
+  /** measurement setup — JMeter thread counts, data volume */
+  condition?: string;
+};
+
+export type ArchLayer = {
+  id: string;
+  label: string;
+  role: string;
+  /** which visual band the node sits in */
+  band: "client" | "server" | "realtime" | "data" | "external" | "infra";
+};
+
+export type Feature = {
+  title: string;
+  desc: string;
+};
+
+export type StackGroup = {
+  group: string;
+  items: string[];
+};
+
+export type LinkRef = {
+  label: string;
+  href: string;
+  kind: "github" | "video" | "site";
+};
+
+/** One tab inside a project's interactive mock demo. */
+export type DemoScreen = {
+  id: string;
+  label: string;
+  /** what this screen is demonstrating, shown under the tab bar */
+  caption: string;
+};
+
+export type Project = {
+  slug: string;
+  /** ordinal shown in the project map, e.g. "01" */
+  no: string;
+  name: string;
+  tagline: string;
+  summary: string;
+  period: string;
+  team: string;
+  role: string;
+  /** short label for the card grid, e.g. "1인 개발 · FE/BE" */
+  teamShort: string;
+  stack: StackGroup[];
+  /** flat list for compact chips on the home card */
+  stackFlat: string[];
+  links: LinkRef[];
+  features: Feature[];
+  architecture: ArchLayer[];
+  /** intent line printed under the architecture diagram */
+  architectureIntent: string;
+  troubleshooting: Troubleshooting[];
+  performance: PerfCase[];
+  demo: DemoScreen[];
+  /** headline numbers surfaced on the home card */
+  highlights: string[];
+};
