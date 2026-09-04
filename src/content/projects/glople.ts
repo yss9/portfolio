@@ -30,6 +30,12 @@ export const glople: Project = {
     { label: "시연 영상", href: "https://www.youtube.com/watch?v=5vuvjGWdCII", kind: "video" },
   ],
 
+  preview: {
+    src: "/shots/glople-keyword.png",
+    alt:
+      "Glople 키워드 필터 데모 — 선택한 키워드가 비트마스크로 변환되고 여행지별 AND 연산 점수가 계산된 목록",
+  },
+
   highlights: ["MBTI 추천 27.9ms → 7.21ms", "Bitmask + Top-K 도입", "5인 팀 리딩"],
 
   features: [

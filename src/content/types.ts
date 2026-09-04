@@ -104,6 +104,10 @@ export type Project = {
   designNotes?: Troubleshooting[];
   performance: PerfCase[];
   demo: DemoScreen[];
+  /** Screenshot of this project's mock demo actually running, captured from
+   *  the live page — used as the home-card thumbnail. Project pages don't
+   *  repeat it: the interactive demo sits there instead. */
+  preview: { src: string; alt: string };
   /** headline numbers surfaced on the home card */
   highlights: string[];
 };

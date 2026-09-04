@@ -24,6 +24,14 @@ export const awsDeploy: Project = {
     { label: "todo-list-client", href: "https://github.com/yss9/todo-list-client", kind: "github" },
   ],
 
+  preview: {
+    // No UI to screenshot — this project is infrastructure, so the card shows
+    // the troubleshooting write-up instead of a fabricated app screen.
+    src: "/shots/aws-deploy-troubleshooting.png",
+    alt:
+      "AWS Deploy 문제 해결 — Mixed Content 차단의 원인(프로토콜 불일치)과 해결(ALB + ACM 인증서 연결)을 단계별로 정리한 화면",
+  },
+
   highlights: ["Mixed Content 해결", "RDS 연결 오류 추적", "CI/CD SSH Timeout 분석"],
 
   features: [

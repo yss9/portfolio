@@ -23,6 +23,12 @@ export const bluememories: Project = {
 
   links: [{ label: "GitHub", href: "https://github.com/yss9/BlueMemories", kind: "github" }],
 
+  preview: {
+    src: "/shots/bluememories-write.png",
+    alt:
+      "BlueMemories 일기 작성 데모 — 저장 후 Clova Sentiment 감정 수치가 긍정·중립·부정 막대로 표시된 상태",
+  },
+
   highlights: ["응답 147.85ms → 3.63ms", "Payload 748KB → 4KB", "GPT 응답 JSON 계약화"],
 
   features: [

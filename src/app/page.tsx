@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { profile, techStack } from "@/content/profile";
 import { projects } from "@/content/projects";
 import { Section, Eyebrow, Chip } from "@/components/ui/primitives";
@@ -151,8 +152,20 @@ export default function Home() {
             <li key={p.slug} data-accent={p.slug}>
               <Link
                 href={`/projects/${p.slug}`}
-                className="group flex h-full flex-col rounded-xl border border-line bg-surface p-6 transition-colors hover:border-[color-mix(in_srgb,var(--accent)_45%,transparent)]"
+                className="group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface transition-colors hover:border-[color-mix(in_srgb,var(--accent)_45%,transparent)]"
               >
+                {/* Screenshot of the project's mock demo mid-run. */}
+                <div className="relative aspect-[16/9] overflow-hidden border-b border-line bg-bg-soft">
+                  <Image
+                    src={p.preview.src}
+                    alt={p.preview.alt}
+                    fill
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
+                </div>
+
+                <div className="flex flex-1 flex-col p-6">
                 <div className="flex items-baseline gap-2.5">
                   <span className="font-mono text-[12px] text-[var(--accent)]">
                     {p.no}
@@ -186,6 +199,7 @@ export default function Home() {
                   <span className="font-mono text-[12px] text-[var(--accent)] transition-transform group-hover:translate-x-0.5">
                     자세히 →
                   </span>
+                </div>
                 </div>
               </Link>
             </li>

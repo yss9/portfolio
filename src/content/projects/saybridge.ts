@@ -22,6 +22,12 @@ export const saybridge: Project = {
 
   links: [{ label: "GitHub", href: "https://github.com/yss9/SayBridge", kind: "github" }],
 
+  preview: {
+    src: "/shots/saybridge-video.png",
+    alt:
+      "SayBridge 화상 수업 데모 — 수정 전 시그널링 순서로 실행해 상대 화면이 검은 화면으로 남고, 시그널링 단계가 붉게 표시된 상태",
+  },
+
   highlights: ["WebRTC 검은 화면 해결", "N+1 · 100 → 1 쿼리", "응답 16.75ms → 3.99ms"],
 
   features: [

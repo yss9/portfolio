@@ -24,6 +24,12 @@ export const neoulteo: Project = {
 
   links: [{ label: "GitHub", href: "https://github.com/yss9/neoulteo", kind: "github" }],
 
+  preview: {
+    src: "/shots/neoulteo-attractions.png",
+    alt:
+      "Neoulteo 관광지 검색 데모 — 지도 마커에서 경복궁을 선택해 상세 정보가 열린 상태",
+  },
+
   highlights: ["Spring AI Tool Calling", "TourAPI 배치 동기화", "RAG 기반 검색 보강"],
 
   features: [

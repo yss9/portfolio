@@ -8,6 +8,48 @@
 
 ---
 
+## 데모 화면
+
+아래 이미지는 모두 **실행 중인 페이지에서 데모를 직접 조작한 뒤 헤드리스 Chrome으로 캡처한 것**입니다. 목업이나 손으로 그린 그림이 아닙니다.
+
+### SayBridge — WebRTC 검은 화면 재현
+
+`addTrack` 이전에 `createOffer`를 실행하는 "수정 전" 순서를 고르면, SDP에 m-line이 빠져 상대 화면이 검은 화면으로 남는 상황이 그대로 재현됩니다.
+
+![SayBridge 화상 수업 데모](public/shots/saybridge-video.png)
+
+### SayBridge — N+1 제거 전후
+
+조회 방식을 전환하면 발생하는 쿼리가 로그에 그대로 쌓입니다. 게시글 6건 기준 7건 → 1건.
+
+![SayBridge 과제 제출 현황 데모](public/shots/saybridge-homework.png)
+
+### Glople — 키워드 비트마스크
+
+선택한 키워드가 비트마스크로 바뀌고, 여행지 마스크와의 AND 연산 결과와 `bitCount` 점수가 함께 표시됩니다.
+
+![Glople 키워드 필터 데모](public/shots/glople-keyword.png)
+
+### BlueMemories — GPT 응답 파싱
+
+정규식 파싱과 JSON 계약을 전환해볼 수 있습니다. 형식이 흔들린 응답에서 정규식이 실패하고 fallback으로 넘어가는 과정이 보입니다.
+
+![BlueMemories 콘텐츠 추천 데모](public/shots/bluememories-recommend.png)
+
+### Neoulteo — Spring AI Tool Calling
+
+질문을 넣으면 의도 분석 → Tool 호출 → RAG 검색 → 프롬프트 보강 → 응답 생성 순서가 단계별로 재생됩니다.
+
+![Neoulteo AI 여행 도우미 데모](public/shots/neoulteo-ai.png)
+
+### MOFY — 퍼스널 컬러 추출
+
+배경 제거(rembg) → 색상 추출(extcolors) 파이프라인이 진행되고 비율 순 팔레트가 만들어집니다.
+
+![MOFY 퍼스널 컬러 분석 데모](public/shots/mofy-palette.png)
+
+---
+
 ## 실행
 
 ```bash

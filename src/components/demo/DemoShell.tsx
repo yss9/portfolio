@@ -25,7 +25,10 @@ export function DemoShell({
   const path = paths?.[active] ?? "/";
 
   return (
-    <div className="overflow-hidden rounded-xl border border-line bg-surface">
+    <div
+      data-demo-shell={appName}
+      className="overflow-hidden rounded-xl border border-line bg-surface"
+    >
       {/* window chrome */}
       <div className="flex items-center gap-3 border-b border-line bg-surface-2 px-3 py-2.5">
         <div className="flex shrink-0 gap-1.5" aria-hidden="true">

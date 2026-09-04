@@ -23,6 +23,12 @@ export const mofy: Project = {
 
   links: [{ label: "GitHub", href: "https://github.com/yss9/Mofy", kind: "github" }],
 
+  preview: {
+    src: "/shots/mofy-palette.png",
+    alt:
+      "MOFY 퍼스널 컬러 분석 데모 — 배경 제거와 색상 추출 파이프라인이 끝나고 비율 순 팔레트가 만들어진 상태",
+  },
+
   highlights: ["Rembg → Extcolors 파이프라인", "TF-IDF 검색어 추천", "boardType 기반 게시판 분리"],
 
   features: [
