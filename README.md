@@ -114,10 +114,22 @@ src/
 - **프로필·기술 스택** → `src/content/profile.ts`
 - **데모 데이터** → `src/mocks/<slug>.ts`
 - **색상·타이포** → `src/app/globals.css`의 `@theme` 블록
-
+- **데모 스크린샷** → 아래 `스크린샷 다시 만들기` 참고
 프로젝트 상세 페이지는 `Project` 객체 하나로 렌더링됩니다.
 프로젝트를 추가하려면 `src/content/projects/`에 파일을 만들고 `index.ts` 배열에 넣으면 됩니다.
 데모까지 붙이려면 `src/components/demos/`에 컴포넌트를 만들고 `demos/registry.tsx`에 등록합니다.
+
+### 스크린샷 다시 만들기
+
+데모를 수정하면 `public/shots`의 이미지가 실제 화면과 어긋나므로 다시 캡처합니다.
+
+```bash
+npm run dev                      # 다른 터미널에서 실행해둔 상태로
+node scripts/capture-shots.mjs   # public/shots 갱신
+```
+
+설치된 Chrome을 그대로 사용하므로 브라우저를 따로 내려받지 않습니다(경로는 `CHROME_PATH`, 주소는 `BASE_URL`로 지정).
+스크립트는 데모 28화면을 모두 만들지만, 저장소에 커밋된 것은 홈 카드(`src/content/projects/*.ts`의 `preview`)와 위 갤러리가 참조하는 9장입니다.
 
 ---
 
