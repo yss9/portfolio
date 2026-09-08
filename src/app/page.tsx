@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Chip, Eyebrow, Section } from "@/components/ui/primitives";
 import { profile, techStack } from "@/content/profile";
@@ -192,17 +191,25 @@ export default function Home() {
                 href={`/projects/${project.slug}`}
                 className="precision-card group flex h-full flex-col overflow-hidden rounded-xl transition-all hover:-translate-y-0.5"
               >
-                <div className="relative aspect-[16/9] overflow-hidden border-b border-line bg-slate-950">
-                  <Image
-                    src={project.preview.src}
-                    alt={project.preview.alt}
-                    fill
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    className="object-cover object-top transition duration-500 group-hover:scale-[1.025]"
-                  />
-                  <div className="absolute left-3 top-3 rounded-md border border-white/15 bg-slate-950/80 px-2.5 py-1 font-mono text-[9px] font-semibold uppercase tracking-wider text-white backdrop-blur">
-                    Project {project.no}
+                <div className="metric-grid relative overflow-hidden border-b border-line bg-slate-50 p-6 sm:p-7">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="rounded-md border border-[color-mix(in_srgb,var(--accent)_25%,transparent)] bg-white px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--accent)]">
+                      Project {project.no}
+                    </span>
+                    <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-muted">
+                      Architecture Case Study
+                    </span>
                   </div>
+                  <p className="mt-10 max-w-lg text-2xl font-bold tracking-[-0.025em] text-ink sm:text-3xl">
+                    {project.highlights[0]}
+                  </p>
+                  <ul className="mt-6 flex flex-wrap gap-1.5">
+                    {project.stackFlat.slice(0, 5).map((item) => (
+                      <li key={item}>
+                        <Chip>{item}</Chip>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
                 <div className="flex flex-1 flex-col p-6">
                   <div className="flex items-start justify-between gap-4">

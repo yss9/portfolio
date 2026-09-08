@@ -5,7 +5,6 @@ import { getProject, projectSlugs, projectNeighbours } from "@/content/projects"
 import type { ArchLayer, Troubleshooting } from "@/content/types";
 import { Section, Chip, MetaRow, CodeCard, cx } from "@/components/ui/primitives";
 import { MetricPanel } from "@/components/ui/Metrics";
-import { ProjectDemo, hasDemo } from "@/components/demos/registry";
 
 export function generateStaticParams() {
   return projectSlugs().map((slug) => ({ slug }));
@@ -44,8 +43,6 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   const { prev, next } = projectNeighbours(slug);
-  const showDemo = hasDemo(project.slug, project.demo);
-
   return (
     <div data-accent={project.slug}>
       {/* ---------------- hero ---------------- */}
@@ -105,18 +102,6 @@ export default async function ProjectPage({
           </div>
         </div>
       </header>
-
-      {/* ---------------- demo ---------------- */}
-      {showDemo && (
-        <Section
-          id="demo"
-          eyebrow="Interactive Demo"
-          title="화면으로 보기"
-          lead="아래 데모는 mock data로 동작하는 재현 화면입니다. 실제 서비스의 백엔드는 연결되어 있지 않지만, 각 화면이 어떤 데이터와 로직을 다뤘는지 직접 조작하며 확인할 수 있습니다."
-        >
-          <ProjectDemo slug={project.slug} screens={project.demo} />
-        </Section>
-      )}
 
       {/* ---------------- features ---------------- */}
       <Section id="features" eyebrow="Features" title="구현 기능">
