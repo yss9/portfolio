@@ -1,10 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
-  images: {
-    unoptimized: true,
-  },
+  /* Vercel에서 Next.js 서버 기능과 이미지 최적화를 기본 방식으로 사용합니다. */
 };
 
 export default nextConfig;
