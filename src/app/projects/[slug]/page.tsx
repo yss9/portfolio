@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProject, projectSlugs, projectNeighbours } from "@/content/projects";
@@ -102,6 +103,44 @@ export default async function ProjectPage({
           </div>
         </div>
       </header>
+
+      {project.screenshots && project.screenshots.length > 0 && (
+        <Section
+          id="screens"
+          eyebrow="Real Service Screens"
+          title="실제 서비스 화면"
+          lead="프로젝트의 실제 프론트엔드 소스코드를 로컬에서 실행하고, API 계약에 맞춘 테스트 데이터로 렌더링한 화면입니다."
+        >
+          <div className="grid gap-5 lg:grid-cols-2">
+            {project.screenshots.map((screen, index) => (
+              <figure
+                key={screen.src}
+                className={cx(
+                  "precision-card overflow-hidden rounded-xl",
+                  index === 0 && "lg:col-span-2"
+                )}
+              >
+                <div className="relative aspect-[16/10] overflow-hidden border-b border-line bg-slate-100">
+                  <Image
+                    src={screen.src}
+                    alt={screen.alt}
+                    fill
+                    sizes={index === 0 ? "(min-width: 1280px) 1200px, 100vw" : "(min-width: 1024px) 50vw, 100vw"}
+                    className="object-contain"
+                    priority={index === 0}
+                  />
+                </div>
+                <figcaption className="px-5 py-4 text-[13px] leading-relaxed text-ink-dim">
+                  <span className="mr-2 font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--accent)]">
+                    Screen {String(index + 1).padStart(2, "0")}
+                  </span>
+                  {screen.caption}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </Section>
+      )}
 
       {/* ---------------- features ---------------- */}
       <Section id="features" eyebrow="Features" title="구현 기능">

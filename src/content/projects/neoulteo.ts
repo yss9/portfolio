@@ -25,10 +25,33 @@ export const neoulteo: Project = {
   links: [{ label: "GitHub", href: "https://github.com/yss9/neoulteo", kind: "github" }],
 
   preview: {
-    src: "/shots/neoulteo-attractions.png",
+    src: "/projects/neoulteo/overview.png",
     alt:
-      "Neoulteo 관광지 검색 데모 — 지도 마커에서 경복궁을 선택해 상세 정보가 열린 상태",
+      "Neoulteo 대한민국 SVG 지도에서 부산광역시를 선택해 인기 장소와 등록 수가 열린 홈 화면",
   },
+
+  screenshots: [
+    {
+      src: "/projects/neoulteo/overview.png",
+      alt: "Neoulteo 한지 질감의 대한민국 지도에서 부산광역시를 선택해 해운대와 감천문화마을 인기 정보를 확인하는 홈 화면",
+      caption: "지역 지도 홈 — 시도별 핫플레이스 수를 보고 부산 인기 장소를 지도에서 바로 탐색",
+    },
+    {
+      src: "/projects/neoulteo/hotplaces.png",
+      alt: "Neoulteo 인기 핫플레이스 TOP 5에 해운대, 감천문화마을, 광안리 사진과 등록 수, 사용자 후기가 표시된 화면",
+      caption: "핫플레이스 — 사용자 등록 수 기반 인기 순위와 장소별 후기·저장·공유 기능",
+    },
+    {
+      src: "/projects/neoulteo/community.png",
+      alt: "Neoulteo 커뮤니티에서 공지, 자유, 후기, Q&A, 여행 계획 공유 카테고리와 여덟 개 게시글 카드가 보이는 목록 화면",
+      caption: "여행 커뮤니티 — 여섯 카테고리, 검색·정렬과 코스 공유 전용 카드 표현",
+    },
+    {
+      src: "/projects/neoulteo/detail.png",
+      alt: "Neoulteo 해운대해수욕장 후기 상세에서 작성자, 조회와 좋아요 수, 해운대 사진을 확인하는 화면",
+      caption: "후기 상세 — 여행지 이미지, 작성자·조회·좋아요와 댓글 소통 흐름",
+    },
+  ],
 
   highlights: ["Spring AI Tool Calling", "TourAPI 배치 동기화", "RAG 기반 검색 보강"],
 

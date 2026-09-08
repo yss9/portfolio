@@ -31,10 +31,28 @@ export const glople: Project = {
   ],
 
   preview: {
-    src: "/shots/glople-keyword.png",
+    src: "/projects/glople/overview.png",
     alt:
-      "Glople 키워드 필터 데모 — 선택한 키워드가 비트마스크로 변환되고 여행지별 AND 연산 점수가 계산된 목록",
+      "Glople 메인 화면에서 세계 지도를 중심으로 여행지 추천과 예약 메뉴를 탐색하는 모습",
   },
+
+  screenshots: [
+    {
+      src: "/projects/glople/overview.png",
+      alt: "Glople 세계 지도 홈 화면과 여행지 예약·추천·루트 탐색·커뮤니티 메뉴",
+      caption: "지도 홈 — 세계 지도에서 국가를 선택해 여행 정보 탐색을 시작",
+    },
+    {
+      src: "/projects/glople/keyword-selection.png",
+      alt: "Glople 키워드 추천 화면에서 자연과 박물관을 선택하고 해안·등산·온천 등 여행 취향을 고르는 모습",
+      caption: "키워드 추천 — 여행 취향 키워드를 조합해 개인화 추천 입력을 구성",
+    },
+    {
+      src: "/projects/glople/mbti-recommendation.png",
+      alt: "Glople ENFP 유사 사용자 추천 결과에 나이·성별·MBTI와 바르셀로나·리스본·제주 여행지가 표시된 화면",
+      caption: "사용자 기반 추천 — 인구통계와 MBTI가 유사한 사용자의 여행 기록을 추천",
+    },
+  ],
 
   highlights: ["MBTI 추천 27.9ms → 7.21ms", "Bitmask + Top-K 도입", "5인 팀 리딩"],
 

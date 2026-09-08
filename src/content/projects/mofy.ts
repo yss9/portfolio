@@ -24,10 +24,38 @@ export const mofy: Project = {
   links: [{ label: "GitHub", href: "https://github.com/yss9/Mofy", kind: "github" }],
 
   preview: {
-    src: "/shots/mofy-palette.png",
+    src: "/projects/mofy/overview.png",
     alt:
-      "MOFY 퍼스널 컬러 분석 데모 — 배경 제거와 색상 추출 파이프라인이 끝나고 비율 순 팔레트가 만들어진 상태",
+      "MOFY 홈 화면에 오늘의 스타일 랭킹, 사용자 프로필, 날씨, 커뮤니티와 중고 마켓 목록이 표시된 모습",
   },
+
+  screenshots: [
+    {
+      src: "/projects/mofy/login.png",
+      alt: "MOFY 그라데이션 로고와 아이디·비밀번호 입력란, 계정 찾기와 회원가입 링크가 있는 로그인 화면",
+      caption: "로그인 — 아이디·비밀번호 인증과 계정 찾기·회원가입 진입점",
+    },
+    {
+      src: "/projects/mofy/overview.png",
+      alt: "MOFY 홈 화면에 패션 스타일 랭킹 4개, 김민서 프로필, 서울 날씨, 커뮤니티와 중고 마켓 최신 글이 채워진 모습",
+      caption: "서비스 홈 — 스타일 랭킹, 프로필, 날씨 추천과 최신 게시글을 한 화면에 구성",
+    },
+    {
+      src: "/projects/mofy/style-board.png",
+      alt: "MOFY 스타일 보드에서 라벤더 셔츠와 간절기 재킷 등 일곱 개 데일리룩 게시글을 검색하는 목록 화면",
+      caption: "스타일 보드 — OOTD 게시글 검색, 목록 탐색과 컬러 팔레트 기능 진입",
+    },
+    {
+      src: "/projects/mofy/market.png",
+      alt: "MOFY 중고 마켓에 의류와 신발 여섯 개의 제목, 가격, 판매 상태, 등록일이 표시된 거래 목록 화면",
+      caption: "중고 마켓 — 상품별 가격과 판매 상태를 비교하고 1:1 채팅으로 연결",
+    },
+    {
+      src: "/projects/mofy/style-detail.png",
+      alt: "MOFY 라벤더 셔츠 데일리룩 상세에서 작성자, 태그, 코디 설명과 패션 사진을 확인하는 화면",
+      caption: "스타일 상세 — 작성자·태그·코디 설명·이미지를 확인하고 좋아요로 반응",
+    },
+  ],
 
   highlights: ["Rembg → Extcolors 파이프라인", "TF-IDF 검색어 추천", "boardType 기반 게시판 분리"],
 

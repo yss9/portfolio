@@ -23,10 +23,33 @@ export const saybridge: Project = {
   links: [{ label: "GitHub", href: "https://github.com/yss9/SayBridge", kind: "github" }],
 
   preview: {
-    src: "/shots/saybridge-video.png",
+    src: "/projects/saybridge/course-detail.png",
     alt:
-      "SayBridge 화상 수업 데모 — 수정 전 시그널링 순서로 실행해 상대 화면이 검은 화면으로 남고, 시그널링 단계가 붉게 표시된 상태",
+      "SayBridge 영어 회화 강의 상세 화면에서 공지와 과제 제출 상태를 확인하는 모습",
   },
+
+  screenshots: [
+    {
+      src: "/projects/saybridge/overview.png",
+      alt: "SayBridge 메인 화면의 영어 말하기 학습 소개와 강사 안내 섹션",
+      caption: "서비스 소개 — 영어 회화 학습 흐름과 강사·추천 강의를 안내하는 메인 화면",
+    },
+    {
+      src: "/projects/saybridge/courses.png",
+      alt: "SayBridge 언어와 난이도 필터 아래 영어·일본어·스페인어 강의 카드가 표시된 강의 목록",
+      caption: "강의 탐색 — 언어·난이도 복합 필터와 추천 강의 목록",
+    },
+    {
+      src: "/projects/saybridge/course-detail.png",
+      alt: "SayBridge English Conversation Lab 강의의 최근 공지와 과제 제출·수정·취소 버튼이 표시된 상세 화면",
+      caption: "강의 상세 — 공지, 첨부 자료, 학생별 과제 제출 상태를 한 화면에서 관리",
+    },
+    {
+      src: "/projects/saybridge/mypage.png",
+      alt: "SayBridge 학생 마이페이지에 현재 수강 중인 세 강의와 리뷰 작성 상태가 표시된 화면",
+      caption: "마이페이지 — 수강 강의, 프로필, 리뷰 작성 여부를 모아 확인",
+    },
+  ],
 
   highlights: ["WebRTC 검은 화면 해결", "N+1 · 100 → 1 쿼리", "응답 16.75ms → 3.99ms"],
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Chip, Eyebrow, Section } from "@/components/ui/primitives";
 import { profile, techStack } from "@/content/profile";
 import { projects } from "@/content/projects";
@@ -118,7 +119,7 @@ export default function Home() {
             </div>
             <div className="mt-4 flex items-center justify-between font-mono text-[10px] text-muted">
               <span>status: portfolio_ready</span>
-              <span>4 case studies</span>
+              <span>{projects.length} case studies</span>
             </div>
           </aside>
         </div>
@@ -180,7 +181,7 @@ export default function Home() {
 
       <Section
         id="projects"
-        eyebrow="// ARCHITECTURE CASE STUDIES · 4 PROJECTS"
+        eyebrow={`// ARCHITECTURE CASE STUDIES · ${projects.length} PROJECTS`}
         title="프로젝트"
         lead="기능 목록보다 문제를 어떻게 좁히고, 구조를 바꾸고, 결과를 검증했는지에 집중했습니다."
       >
@@ -191,25 +192,22 @@ export default function Home() {
                 href={`/projects/${project.slug}`}
                 className="precision-card group flex h-full flex-col overflow-hidden rounded-xl transition-all hover:-translate-y-0.5"
               >
-                <div className="metric-grid relative overflow-hidden border-b border-line bg-slate-50 p-6 sm:p-7">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="rounded-md border border-[color-mix(in_srgb,var(--accent)_25%,transparent)] bg-white px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--accent)]">
+                <div className="relative aspect-[16/10] overflow-hidden border-b border-line bg-slate-100">
+                  <Image
+                    src={project.preview.src}
+                    alt={project.preview.alt}
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="object-cover object-top transition duration-500 group-hover:scale-[1.02]"
+                  />
+                  <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 bg-gradient-to-b from-black/60 to-transparent p-4 sm:p-5">
+                    <span className="rounded-md border border-white/40 bg-black/45 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
                       Project {project.no}
                     </span>
-                    <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-muted">
-                      Architecture Case Study
+                    <span className="rounded bg-black/45 px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
+                      {project.slug === "aws-deploy" ? "Case Study" : "Real Service UI"}
                     </span>
                   </div>
-                  <p className="mt-10 max-w-lg text-2xl font-bold tracking-[-0.025em] text-ink sm:text-3xl">
-                    {project.highlights[0]}
-                  </p>
-                  <ul className="mt-6 flex flex-wrap gap-1.5">
-                    {project.stackFlat.slice(0, 5).map((item) => (
-                      <li key={item}>
-                        <Chip>{item}</Chip>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
                 <div className="flex flex-1 flex-col p-6">
                   <div className="flex items-start justify-between gap-4">

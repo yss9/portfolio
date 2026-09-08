@@ -2,12 +2,16 @@ import type { Project } from "../types";
 import { saybridge } from "./saybridge";
 import { glople } from "./glople";
 import { bluememories } from "./bluememories";
+import { neoulteo } from "./neoulteo";
+import { mofy } from "./mofy";
 import { awsDeploy } from "./aws-deploy";
 
 export const projects: Project[] = [
   saybridge,
   glople,
   bluememories,
+  neoulteo,
+  mofy,
   awsDeploy,
 ];
 

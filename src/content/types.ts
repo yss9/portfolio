@@ -76,6 +76,12 @@ export type DemoScreen = {
   caption: string;
 };
 
+export type ProjectScreenshot = {
+  src: string;
+  alt: string;
+  caption: string;
+};
+
 export type Project = {
   slug: string;
   /** ordinal shown in the project map, e.g. "01" */
@@ -104,10 +110,10 @@ export type Project = {
   designNotes?: Troubleshooting[];
   performance: PerfCase[];
   demo: DemoScreen[];
-  /** Screenshot of this project's mock demo actually running, captured from
-   *  the live page — used as the home-card thumbnail. Project pages don't
-   *  repeat it: the interactive demo sits there instead. */
+  /** Screenshot captured from the project's real frontend source. */
   preview: { src: string; alt: string };
+  /** Real service screens shown on the project detail page. */
+  screenshots?: ProjectScreenshot[];
   /** headline numbers surfaced on the home card */
   highlights: string[];
 };

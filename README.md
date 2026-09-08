@@ -14,7 +14,9 @@
 | 01 | SayBridge | 화상채팅 기반 외국어 교육 플랫폼 |
 | 02 | Glople | MBTI 기반 여행지 추천 커뮤니티 |
 | 03 | BlueMemories | AI 감정 기록 및 멘탈케어 커뮤니티 |
-| 04 | AWS Deploy | 풀스택 배포 자동화 파이프라인 |
+| 04 | Neoulteo | 공공 관광 데이터 기반 여행 계획 플랫폼 |
+| 05 | MOFY | 퍼스널 컬러 기반 패션 커뮤니티·중고 거래 |
+| 06 | AWS Deploy | 풀스택 배포 자동화 파이프라인 |
 
 프로젝트 상세 페이지에는 역할과 기술 스택, 핵심 구현 기능, 시스템 구성, 문제 해결 과정, 성능 개선 전후 수치와 측정 조건이 포함되어 있습니다.
 
@@ -61,7 +63,10 @@ src/
 - 프로젝트 글과 수치: `src/content/projects/<slug>.ts`
 - 색상과 타이포그래피: `src/app/globals.css`
 
-향후 실제 프로젝트 화면을 캡처하면 `public`에 저장하고 각 프로젝트 콘텐츠의 대표 이미지로 연결합니다.
+실제 서비스 화면은 `public/projects/<slug>`에 저장하고, 각 프로젝트 카드의 대표 이미지와 상세 페이지 갤러리에서 사용합니다. 캡처 스크립트는 실제 프론트엔드 빌드 또는 개발 서버를 실행하고 API 계약에 맞춘 로컬 fixture만 주입해 재현합니다.
+
+- `scripts/capture-real-services.mjs`: SayBridge, Glople, BlueMemories
+- `scripts/capture-mofy-neoulteo.mjs`: MOFY, Neoulteo
 
 ## 데이터 안내
 

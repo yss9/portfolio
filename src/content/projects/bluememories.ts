@@ -24,10 +24,33 @@ export const bluememories: Project = {
   links: [{ label: "GitHub", href: "https://github.com/yss9/BlueMemories", kind: "github" }],
 
   preview: {
-    src: "/shots/bluememories-write.png",
+    src: "/projects/bluememories/calendar.png",
     alt:
-      "BlueMemories 일기 작성 데모 — 저장 후 Clova Sentiment 감정 수치가 긍정·중립·부정 막대로 표시된 상태",
+      "BlueMemories 2026년 9월 감정 캘린더에 긍정·중립·부정 일기가 표정 아이콘으로 표시된 화면",
   },
+
+  screenshots: [
+    {
+      src: "/projects/bluememories/overview.png",
+      alt: "BlueMemories 메인 화면의 감정 기록 서비스 로고와 라이프스타일·일기·무드트래킹 소개",
+      caption: "서비스 홈 — 하루의 감정을 기록하고 공유하는 핵심 가치를 소개",
+    },
+    {
+      src: "/projects/bluememories/calendar.png",
+      alt: "BlueMemories 2026년 9월 달력에 작성한 일기의 감정이 웃음·무표정·슬픔 아이콘으로 표시된 화면",
+      caption: "감정 캘린더 — 일기별 감정 분석 결과를 월간 흐름으로 시각화",
+    },
+    {
+      src: "/projects/bluememories/community.png",
+      alt: "BlueMemories 커뮤니티에 비 온 뒤 맑아진 오후 등 이미지가 포함된 여섯 개의 공개 일기 카드가 배치된 화면",
+      caption: "커뮤니티 — 공개 일기를 이미지 카드로 탐색하고 상세 화면으로 이동",
+    },
+    {
+      src: "/projects/bluememories/detail.png",
+      alt: "BlueMemories 일기 상세 화면에서 비 온 뒤 맑아진 오후 본문과 긍정 76퍼센트 감정 분석 결과를 확인하는 모습",
+      caption: "일기 상세 — 본문, 날씨, 감정 점수, 콘텐츠 추천을 함께 제공",
+    },
+  ],
 
   highlights: ["응답 147.85ms → 3.63ms", "Payload 748KB → 4KB", "GPT 응답 JSON 계약화"],
 
