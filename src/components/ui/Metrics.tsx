@@ -51,7 +51,7 @@ export function MetricRow({ metric }: { metric: Metric }) {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <span className="tnum w-24 shrink-0 text-right font-mono text-[15px] font-semibold text-ink">
+          <span className="tnum w-24 shrink-0 text-right font-mono text-[15px] font-semibold text-gain">
             {metric.after}
           </span>
           <div className="h-[6px] flex-1 overflow-hidden rounded-full bg-surface-2">
@@ -77,7 +77,7 @@ export function MetricPanel({
   condition?: string;
 }) {
   return (
-    <div className="rounded-xl border border-line bg-surface p-5 sm:p-6">
+    <div className="precision-card rounded-xl p-5 sm:p-6">
       <div className="flex items-center justify-between gap-3 border-b border-line pb-3">
         <h4 className="font-mono text-[11px] uppercase tracking-[0.16em] text-faint">
           Measured Result

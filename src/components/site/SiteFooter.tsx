@@ -4,12 +4,13 @@ import { projects } from "@/content/projects";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line bg-bg-soft">
-      <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
+    <footer className="border-t border-line bg-white">
+      <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <p className="text-[15px] font-semibold tracking-tight text-ink">
-              {profile.name} · Backend Developer
+              <span className="font-mono">YOUNGSEOK SEO</span>
+              <span className="ml-2 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-1 font-mono text-[9px] font-semibold text-emerald-700">ONLINE</span>
             </p>
             <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-muted">
               {profile.headline}
@@ -66,7 +67,7 @@ export function SiteFooter() {
             © {new Date().getFullYear()} {profile.name}
           </p>
           <p className="font-mono text-[11px] text-faint">
-            사이트 내 데모는 모두 mock data로 동작합니다 · 실제 서비스 데이터가 아닙니다
+            Engineered with traceable decisions &amp; measurable improvements.
           </p>
         </div>
       </div>

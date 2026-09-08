@@ -49,8 +49,9 @@ export default async function ProjectPage({
   return (
     <div data-accent={project.slug}>
       {/* ---------------- hero ---------------- */}
-      <header className="bg-bg-soft">
-        <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
+      <header className="relative overflow-hidden border-b border-line bg-bg">
+        <div className="grid-field pointer-events-none absolute inset-0 opacity-50" />
+        <div className="relative mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20">
           <Link
             href="/#projects"
             className="inline-flex items-center gap-1.5 font-mono text-[11px] text-faint transition-colors hover:text-ink-dim"
@@ -58,9 +59,12 @@ export default async function ProjectPage({
             ← 프로젝트 목록
           </Link>
 
-          <div className="mt-6 flex items-baseline gap-3">
-            <span className="font-mono text-sm text-[var(--accent)]">{project.no}</span>
-            <h1 className="text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+          <div className="mt-6 flex flex-wrap items-center gap-2">
+            <span className="rounded border border-blue-200 bg-blue-50 px-2 py-1 font-mono text-[10px] font-semibold text-signal">ARCH · {project.no}</span>
+            <span className="rounded border border-emerald-200 bg-emerald-50 px-2 py-1 font-mono text-[10px] font-semibold text-emerald-700">DOCUMENTED</span>
+          </div>
+          <div className="mt-5 flex items-baseline gap-3">
+            <h1 className="text-4xl font-bold tracking-[-0.035em] text-ink sm:text-6xl">
               {project.name}
             </h1>
           </div>
@@ -68,7 +72,7 @@ export default async function ProjectPage({
             {project.tagline}
           </p>
 
-          <div className="mt-8 grid gap-8 lg:grid-cols-[1.6fr_1fr]">
+          <div className="mt-8 grid gap-8 lg:grid-cols-[1.55fr_0.75fr]">
             <div>
               <p className="max-w-2xl text-[14.5px] leading-relaxed text-ink-dim">
                 {project.summary}
@@ -85,7 +89,7 @@ export default async function ProjectPage({
                     href={l.href}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="inline-flex items-center gap-1.5 rounded-md border border-line bg-surface px-3.5 py-2 text-[13px] text-ink-dim transition-colors hover:border-line-strong hover:text-ink"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-line-strong bg-white px-3.5 py-2 text-[13px] font-semibold text-ink-dim shadow-sm transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
                   >
                     {l.kind === "github" ? "◆" : l.kind === "video" ? "▶" : "↗"} {l.label}
                   </a>
@@ -93,7 +97,7 @@ export default async function ProjectPage({
               </div>
             </div>
 
-            <dl className="rounded-xl border border-line bg-surface p-5">
+            <dl className="precision-card h-fit rounded-xl p-5">
               <MetaRow label="기간" value={project.period} />
               <MetaRow label="인원" value={project.team} />
               <MetaRow label="역할" value={project.role} />
@@ -120,7 +124,7 @@ export default async function ProjectPage({
           {project.features.map((f, i) => (
             <li
               key={f.title}
-              className="rounded-xl border border-line bg-surface p-5 transition-colors hover:border-line-strong"
+              className="precision-card rounded-xl p-5 transition-colors hover:-translate-y-0.5"
             >
               <span className="font-mono text-[11px] text-[var(--accent)]">
                 {String(i + 1).padStart(2, "0")}
@@ -143,7 +147,7 @@ export default async function ProjectPage({
           {project.architecture.map((n, i) => (
             <li
               key={n.id}
-              className="grid gap-3 rounded-xl border border-line bg-surface p-4 sm:grid-cols-[auto_200px_1fr] sm:items-center sm:p-5"
+              className="precision-card grid gap-3 rounded-xl p-4 sm:grid-cols-[auto_200px_1fr] sm:items-center sm:p-5"
             >
               <span className="font-mono text-[11px] text-faint sm:w-6">
                 {String(i + 1).padStart(2, "0")}
@@ -169,7 +173,7 @@ export default async function ProjectPage({
             ))}
           </div>
           {project.troubleshootingNote && (
-            <p className="mt-8 rounded-xl border border-line bg-surface p-5 text-[13.5px] leading-relaxed text-ink-dim">
+            <p className="precision-card mt-8 rounded-xl p-5 text-[13.5px] leading-relaxed text-ink-dim">
               {project.troubleshootingNote}
             </p>
           )}
@@ -223,7 +227,7 @@ export default async function ProjectPage({
       <Section id="stack" eyebrow="Tech Stack" title="사용 기술">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {project.stack.map((g) => (
-            <div key={g.group} className="rounded-xl border border-line bg-surface p-5">
+            <div key={g.group} className="precision-card rounded-xl p-5">
               <h3 className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--accent)]">
                 {g.group}
               </h3>
@@ -241,11 +245,11 @@ export default async function ProjectPage({
 
       {/* ---------------- pager ---------------- */}
       <nav className="border-t border-line" aria-label="프로젝트 이동">
-        <div className="mx-auto grid max-w-6xl gap-3 px-5 py-12 sm:grid-cols-2 sm:px-8">
+        <div className="mx-auto grid max-w-7xl gap-3 px-5 py-12 sm:grid-cols-2 sm:px-8">
           {prev ? (
             <Link
               href={`/projects/${prev.slug}`}
-              className="group rounded-xl border border-line bg-surface p-5 transition-colors hover:border-line-strong"
+              className="precision-card group rounded-xl p-5 transition-colors hover:-translate-y-0.5"
             >
               <span className="font-mono text-[11px] text-faint">← 이전</span>
               <p className="mt-1.5 text-[15px] font-semibold text-ink">{prev.name}</p>
@@ -257,7 +261,7 @@ export default async function ProjectPage({
           {next && (
             <Link
               href={`/projects/${next.slug}`}
-              className="group rounded-xl border border-line bg-surface p-5 text-right transition-colors hover:border-line-strong"
+              className="precision-card group rounded-xl p-5 text-right transition-colors hover:-translate-y-0.5"
             >
               <span className="font-mono text-[11px] text-faint">다음 →</span>
               <p className="mt-1.5 text-[15px] font-semibold text-ink">{next.name}</p>
@@ -274,7 +278,7 @@ export default async function ProjectPage({
 
 function TroubleshootingBlock({ item }: { item: Troubleshooting }) {
   return (
-    <article className="rounded-xl border border-line bg-surface p-5 sm:p-7">
+    <article className="precision-card rounded-xl p-5 sm:p-7">
       <h3 className="text-xl font-semibold tracking-tight text-ink">{item.title}</h3>
       <p className="mt-3 border-l-2 border-[var(--accent)] pl-4 text-[14px] leading-relaxed text-ink-dim">
         {item.problem}

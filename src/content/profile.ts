@@ -34,7 +34,7 @@ export const profile = {
     { label: "학력", value: "영남대학교 컴퓨터공학과 졸업" },
     { label: "전공 평점", value: "3.84 / 4.5" },
     { label: "자격증", value: "정보처리기사" },
-    { label: "교육", value: "삼성청년 SW·AI 아카데미 (2026.01 ~ )" },
+    { label: "교육", value: "삼성청년 SW/AI 아카데미 (2026.01 ~ )" },
   ],
 };
 
@@ -66,7 +66,7 @@ export const techStack: (StackGroup & { desc: string })[] = [
   },
   {
     group: "Frontend",
-    items: ["React", "Vue", "Next.js", "JavaScript"],
-    desc: "백엔드 API와 연결되는 사용자 흐름을 이해하고, 프로젝트에 필요한 화면을 직접 구현했습니다.",
+    items: ["React", "JavaScript", "CSS"],
+    desc: "백엔드 API와 연결되는 사용자 흐름을 이해하고, 프로젝트에 필요한 React 화면을 구현했습니다.",
   },
 ];

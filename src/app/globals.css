@@ -1,78 +1,55 @@
 @import "tailwindcss";
 
-/* ------------------------------------------------------------------
-   Design tokens — "계측 노트(instrumentation notebook)"
-   Dark, engineered, metric-forward. One warm signal accent; a separate
-   green reserved exclusively for measured improvement.
------------------------------------------------------------------- */
 @theme {
-  --color-bg: #08080a;
-  --color-bg-soft: #0c0c10;
-  --color-surface: #101015;
-  --color-surface-2: #16161d;
-  --color-surface-3: #1c1c25;
-  --color-line: #232329;
-  --color-line-strong: #34343f;
-
-  --color-ink: #ececf0;
-  --color-ink-dim: #b6b6c2;
-  --color-muted: #90909e;
-  --color-faint: #64646f;
-
-  --color-signal: #ffb454;
-  --color-signal-dim: #a9752f;
-  --color-gain: #5ee9a0;
-  --color-gain-dim: #2f8a5c;
-  --color-warn: #ff6b6b;
-
-  /* per-project accents */
-  --color-p-saybridge: #5b9dff;
-  --color-p-glople: #4ade80;
-  --color-p-bluememories: #98a6ff;
-  --color-p-neoulteo: #2dd4bf;
-  --color-p-mofy: #ff8fb1;
-  --color-p-aws: #ff9f45;
-
-  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", Roboto, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo,
+  --color-bg: #f8fafc;
+  --color-bg-soft: #f1f5f9;
+  --color-surface: #ffffff;
+  --color-surface-2: #f1f5f9;
+  --color-surface-3: #e2e8f0;
+  --color-line: #e2e8f0;
+  --color-line-strong: #cbd5e1;
+  --color-ink: #0f172a;
+  --color-ink-dim: #334155;
+  --color-muted: #64748b;
+  --color-faint: #94a3b8;
+  --color-signal: #2563eb;
+  --color-signal-dim: #1d4ed8;
+  --color-gain: #059669;
+  --color-gain-dim: #047857;
+  --color-warn: #d97706;
+  --color-p-saybridge: #2563eb;
+  --color-p-glople: #0284c7;
+  --color-p-bluememories: #6366f1;
+  --color-p-neoulteo: #0d9488;
+  --color-p-mofy: #db2777;
+  --color-p-aws: #d97706;
+  --font-sans: var(--font-inter), "Pretendard", "Noto Sans KR", ui-sans-serif,
+    system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo,
     Consolas, monospace;
 }
 
-/* Per-project accent, set on a wrapper via data-accent */
-[data-accent="saybridge"] {
-  --accent: var(--color-p-saybridge);
-}
-[data-accent="glople"] {
-  --accent: var(--color-p-glople);
-}
-[data-accent="bluememories"] {
-  --accent: var(--color-p-bluememories);
-}
-[data-accent="neoulteo"] {
-  --accent: var(--color-p-neoulteo);
-}
-[data-accent="mofy"] {
-  --accent: var(--color-p-mofy);
-}
-[data-accent="aws-deploy"] {
-  --accent: var(--color-p-aws);
-}
+[data-accent="saybridge"] { --accent: var(--color-p-saybridge); }
+[data-accent="glople"] { --accent: var(--color-p-glople); }
+[data-accent="bluememories"] { --accent: var(--color-p-bluememories); }
+[data-accent="neoulteo"] { --accent: var(--color-p-neoulteo); }
+[data-accent="mofy"] { --accent: var(--color-p-mofy); }
+[data-accent="aws-deploy"] { --accent: var(--color-p-aws); }
 
 :root {
   --accent: var(--color-signal);
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html {
   scroll-behavior: smooth;
-  /* nav height + breathing room, so anchored sections don't hide behind the bar */
   scroll-padding-top: 5.5rem;
-  background-color: var(--color-bg);
+  background: var(--color-bg);
 }
 
 body {
-  background-color: var(--color-bg);
+  min-width: 320px;
+  background: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -80,83 +57,66 @@ body {
   overflow-x: clip;
 }
 
-/* Tabular figures everywhere a number is compared against another number */
 .tnum {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--accent) 30%, transparent);
-  color: #fff;
+  background: color-mix(in srgb, var(--accent) 20%, white);
+  color: var(--color-ink);
 }
 
-/* Focus ring — visible, accent-tinted, never removed */
 :where(a, button, [role="tab"], input, select, textarea):focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: 4px;
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
-/* Thin scrollbars inside demo panes */
 .scroll-thin {
   scrollbar-width: thin;
   scrollbar-color: var(--color-line-strong) transparent;
 }
-.scroll-thin::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
+.scroll-thin::-webkit-scrollbar { width: 8px; height: 8px; }
 .scroll-thin::-webkit-scrollbar-thumb {
   background: var(--color-line-strong);
   border-radius: 999px;
 }
-.scroll-thin::-webkit-scrollbar-track {
-  background: transparent;
+
+.grid-field {
+  background-image: radial-gradient(circle, #cbd5e1 0.8px, transparent 0.8px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(to bottom, black 58%, transparent 100%);
 }
 
-/* Faint engineering grid used behind the hero */
-.grid-field {
+.precision-card {
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04),
+    0 1px 2px -1px rgba(15, 23, 42, 0.04);
+}
+
+.precision-card:hover {
+  border-color: var(--color-line-strong);
+  box-shadow: 0 8px 18px -12px rgba(15, 23, 42, 0.22);
+}
+
+.metric-grid {
   background-image:
-    linear-gradient(to right, color-mix(in srgb, var(--color-line) 55%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in srgb, var(--color-line) 55%, transparent) 1px, transparent 1px);
-  background-size: 56px 56px;
+    linear-gradient(to right, rgba(148, 163, 184, 0.14) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.14) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 @keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-.rise {
-  animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes pulse-dot {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.35;
-  }
-}
-.pulse-dot {
-  animation: pulse-dot 1.8s ease-in-out infinite;
-}
+.rise { animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;

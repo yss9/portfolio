@@ -11,6 +11,7 @@ const sections = [
   { href: "/#about", label: "About" },
   { href: "/#stack", label: "Tech Stack" },
   { href: "/#projects", label: "Projects" },
+  { href: "/#principles", label: "Principles" },
   { href: "/#contact", label: "Contact" },
 ];
 
@@ -34,24 +35,25 @@ export function SiteNav() {
       className={cx(
         "sticky top-0 z-50 border-b transition-colors duration-200",
         scrolled
-          ? "border-line bg-bg/85 backdrop-blur-md"
-          : "border-transparent bg-bg"
+          ? "border-line bg-white/90 shadow-sm backdrop-blur-md"
+          : "border-line bg-white"
       )}
     >
-      <nav className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-5 sm:px-8">
+      <nav className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-5 sm:px-8">
         <Link
           href="/"
           className="group flex shrink-0 items-center gap-2.5"
           aria-label="홈으로"
         >
-          <span className="grid h-7 w-7 place-items-center rounded-md border border-line-strong bg-surface-2 font-mono text-[11px] font-semibold text-signal">
-            서
+          <span className="flex items-center gap-1" aria-hidden="true">
+            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+            <span className="h-2 w-2 rounded-full bg-signal" />
           </span>
-          <span className="text-[14px] font-semibold tracking-tight text-ink">
-            {profile.name}
+          <span className="font-mono text-[12px] font-bold tracking-tight text-ink">
+            YS.DEV
           </span>
           <span className="hidden font-mono text-[11px] text-faint sm:inline">
-            / Backend
+            / backend
           </span>
         </Link>
 
@@ -60,7 +62,7 @@ export function SiteNav() {
             <Link
               key={s.href}
               href={s.href}
-              className="rounded-md px-3 py-1.5 text-[13px] text-muted transition-colors hover:bg-surface-2 hover:text-ink"
+            className="rounded-md px-2.5 py-1.5 text-[12px] text-muted transition-colors hover:bg-surface-2 hover:text-signal"
             >
               {s.label}
             </Link>
@@ -69,9 +71,16 @@ export function SiteNav() {
             href={profile.github}
             target="_blank"
             rel="noreferrer noopener"
-            className="ml-2 rounded-md border border-line bg-surface-2 px-3 py-1.5 text-[13px] text-ink-dim transition-colors hover:border-line-strong hover:text-ink"
+            className="ml-2 rounded-md border border-line bg-white px-3 py-1.5 font-mono text-[11px] font-semibold text-ink-dim transition-colors hover:border-line-strong hover:text-ink"
           >
             GitHub ↗
+          </a>
+          <a
+            href="/seo-youngseok-portfolio.pdf"
+            download
+            className="rounded-md bg-signal px-3 py-1.5 font-mono text-[11px] font-semibold text-white transition-colors hover:bg-signal-dim"
+          >
+            Resume ↓
           </a>
         </div>
 
@@ -80,7 +89,7 @@ export function SiteNav() {
           onClick={() => setOpenPath(open ? null : pathname)}
           aria-expanded={open}
           aria-controls="mobile-nav"
-          className="ml-auto grid h-9 w-9 place-items-center rounded-md border border-line bg-surface-2 text-ink-dim md:hidden"
+          className="ml-auto grid h-9 w-9 place-items-center rounded-md border border-line bg-white text-ink-dim md:hidden"
         >
           <span className="sr-only">메뉴 열기</span>
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
@@ -106,7 +115,7 @@ export function SiteNav() {
       {open && (
         <div
           id="mobile-nav"
-          className="border-t border-line bg-bg-soft px-5 py-4 md:hidden"
+          className="border-t border-line bg-white px-5 py-4 shadow-lg md:hidden"
         >
           <div className="grid gap-1">
             {sections.map((s) => (

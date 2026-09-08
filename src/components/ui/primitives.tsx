@@ -25,12 +25,12 @@ export function Section({
 }) {
   return (
     <section id={id} className={cx("border-t border-line", className)}>
-      <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-24">
+      <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
         {(eyebrow || title) && (
-          <header className="mb-12 max-w-3xl">
+          <header className="mb-10 max-w-3xl">
             {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
             {title && (
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+              <h2 className="mt-3 text-3xl font-bold tracking-[-0.025em] text-ink sm:text-4xl">
                 {title}
               </h2>
             )}
@@ -73,7 +73,7 @@ export function Chip({
   return (
     <span
       className={cx(
-        "inline-flex items-center rounded-md border px-2 py-[3px] font-mono text-[11px] leading-none tracking-tight",
+        "inline-flex items-center rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold leading-none tracking-tight",
         tones[tone]
       )}
     >
@@ -94,7 +94,7 @@ export function Card({
   return (
     <Tag
       className={cx(
-        "rounded-xl border border-line bg-surface transition-colors",
+        "precision-card rounded-xl transition-colors",
         className
       )}
     >
@@ -133,24 +133,24 @@ export function CodeCard({
   return (
     <figure
       className={cx(
-        "min-w-0 overflow-hidden rounded-lg border border-line bg-[#0b0b0f]",
+        "min-w-0 overflow-hidden rounded-lg border border-slate-800 bg-[#0f172a] shadow-sm",
         className
       )}
     >
       {(filename || language) && (
-        <figcaption className="flex items-center justify-between gap-3 border-b border-line bg-surface-2 px-3 py-2">
-          <span className="truncate font-mono text-[11px] text-ink-dim">
+        <figcaption className="flex items-center justify-between gap-3 border-b border-slate-700 bg-slate-900 px-3 py-2">
+          <span className="truncate font-mono text-[11px] text-slate-300">
             {filename ?? ""}
           </span>
           {language && (
-            <span className="shrink-0 font-mono text-[10px] uppercase tracking-wider text-faint">
+            <span className="shrink-0 font-mono text-[10px] uppercase tracking-wider text-slate-500">
               {language}
             </span>
           )}
         </figcaption>
       )}
       <pre className="scroll-thin overflow-x-auto px-4 py-3.5">
-        <code className="font-mono text-[12.5px] leading-[1.65] text-ink-dim">
+        <code className="font-mono text-[12.5px] leading-[1.65] text-slate-200">
           {code}
         </code>
       </pre>
