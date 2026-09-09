@@ -2,15 +2,15 @@ import type { Project } from "../types";
 
 export const neoulteo: Project = {
   slug: "neoulteo",
-  no: "04",
+  no: "02",
   name: "Neoulteo",
   tagline: "공공 관광 데이터 기반 여행 계획 플랫폼",
   summary:
     "공공 관광 데이터, 지도, 사용자 기록, 커뮤니티, AI 추천을 하나로 묶은 여행 계획 웹 서비스입니다. 지역별 관광지를 지도에서 탐색하고 마음에 드는 장소를 저장해 일차별 여행 코스를 만들 수 있으며, Spring AI 기반 여행 도우미가 코스 피드백과 지역 추천을 제공합니다.",
-  period: "SSAFY 관통 프로젝트",
-  team: "팀 프로젝트",
+  period: "2026.05 ~ 2026.06",
+  team: "2인 팀",
   role: "백엔드 · AI 연동 · 프론트엔드",
-  teamShort: "팀 프로젝트 · BE/AI",
+  teamShort: "2인 팀 · BE/AI",
 
   stack: [
     { group: "Backend", items: ["Spring Boot", "Spring Security", "Spring AI", "Spring Batch"] },

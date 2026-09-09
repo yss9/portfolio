@@ -28,19 +28,19 @@ export function MetricRow({ metric }: { metric: Metric }) {
   return (
     <div className="py-4">
       <div className="flex items-baseline justify-between gap-4">
-        <span className="text-[13px] font-medium text-ink-dim">{metric.label}</span>
+        <span className="text-[15px] font-medium text-ink-dim">{metric.label}</span>
         {metric.delta ? (
-          <span className="tnum shrink-0 rounded-md border border-[color-mix(in_srgb,var(--color-gain)_35%,transparent)] bg-[color-mix(in_srgb,var(--color-gain)_10%,transparent)] px-2 py-[3px] font-mono text-[11px] font-semibold text-gain">
+          <span className="tnum shrink-0 rounded-md border border-[color-mix(in_srgb,var(--color-gain)_35%,transparent)] bg-[color-mix(in_srgb,var(--color-gain)_10%,transparent)] px-2 py-[3px] font-mono text-xs font-semibold text-gain">
             {metric.delta}
           </span>
         ) : unchanged ? (
-          <span className="shrink-0 font-mono text-[11px] text-faint">유지</span>
+          <span className="shrink-0 font-mono text-xs text-faint">유지</span>
         ) : null}
       </div>
 
       <div className="mt-3 space-y-2">
         <div className="flex items-center gap-3">
-          <span className="tnum w-24 shrink-0 text-right font-mono text-[13px] text-faint line-through decoration-faint/50">
+          <span className="tnum w-24 shrink-0 text-right font-mono text-sm text-faint line-through decoration-faint/50">
             {metric.before}
           </span>
           <div className="h-[6px] flex-1 overflow-hidden rounded-full bg-surface-2">
@@ -51,7 +51,7 @@ export function MetricRow({ metric }: { metric: Metric }) {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <span className="tnum w-24 shrink-0 text-right font-mono text-[15px] font-semibold text-gain">
+          <span className="tnum w-24 shrink-0 text-right font-mono text-base font-semibold text-gain">
             {metric.after}
           </span>
           <div className="h-[6px] flex-1 overflow-hidden rounded-full bg-surface-2">
@@ -79,10 +79,10 @@ export function MetricPanel({
   return (
     <div className="precision-card rounded-xl p-5 sm:p-6">
       <div className="flex items-center justify-between gap-3 border-b border-line pb-3">
-        <h4 className="font-mono text-[11px] uppercase tracking-[0.16em] text-faint">
+        <h4 className="font-mono text-xs uppercase tracking-[0.16em] text-faint">
           Measured Result
         </h4>
-        <span className="font-mono text-[10px] uppercase tracking-wider text-faint">
+        <span className="font-mono text-xs uppercase tracking-wider text-faint">
           before → after
         </span>
       </div>
@@ -92,7 +92,7 @@ export function MetricPanel({
         ))}
       </div>
       {condition && (
-        <p className="mt-4 border-t border-line pt-3 font-mono text-[11px] leading-relaxed text-faint">
+        <p className="mt-4 border-t border-line pt-3 font-mono text-[13px] leading-6 text-faint">
           {condition}
         </p>
       )}
@@ -115,8 +115,8 @@ export function StatTile({
       <div className="tnum font-mono text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
         {value}
       </div>
-      <div className="mt-2 text-[13px] font-medium text-ink-dim">{label}</div>
-      {sub && <div className="mt-1 text-[12px] text-faint">{sub}</div>}
+      <div className="mt-2 text-[15px] font-medium text-ink-dim">{label}</div>
+      {sub && <div className="mt-1 text-sm text-faint">{sub}</div>}
     </div>
   );
 }

@@ -2,15 +2,15 @@ import type { Project } from "../types";
 
 export const bluememories: Project = {
   slug: "bluememories",
-  no: "03",
+  no: "06",
   name: "BlueMemories",
   tagline: "AI 감정 기록 및 멘탈케어 커뮤니티",
   summary:
     "기존 서비스 리뉴얼을 통해 감정 분석 및 콘텐츠 추천, 공유 일기장 구조를 확장한 멘탈케어 서비스입니다. 1:1 교환일기를 여러 명이 함께 쓰는 공유 일기장으로 확장하고, 소통을 위한 커뮤니티 기능을 신설했습니다.",
   period: "2024.07 ~ 2024.09",
-  team: "2인 (개발 1 · 디자인 1)",
+  team: "2인 (개발자 1인 + 디자인 1인)",
   role: "기획 및 백엔드/프론트엔드 개발 총괄",
-  teamShort: "2인 · 개발 총괄",
+  teamShort: "2인 팀 · 개발 총괄",
 
   stack: [
     { group: "Backend", items: ["Spring Boot", "Spring MVC", "Spring Security", "JWT", "WebClient"] },
@@ -52,7 +52,7 @@ export const bluememories: Project = {
     },
   ],
 
-  highlights: ["응답 147.85ms → 3.63ms", "Payload 748KB → 4KB", "GPT 응답 JSON 계약화"],
+  highlights: ["GPT 응답 JSON 계약화", "N:M 공유 일기장 확장", "AI 감정 분석 연동"],
 
   features: [
     {
@@ -158,59 +158,7 @@ export const bluememories: Project = {
     },
   ],
 
-  performance: [
-    {
-      id: "public-diary-projection",
-      title: "공개 일기 목록 조회 최적화",
-      summary:
-        "공개 일기 전체를 조회한 뒤 엔티티를 순회하며 DTO로 변환하고 있었습니다. Pagination과 JOIN Projection을 적용해 조회 범위와 응답 크기를 함께 줄였습니다.",
-      before: {
-        label: "Before: 비효율적 전체 조회",
-        code: {
-          language: "java",
-          code: `// 공개 일기 전체 조회 — 데이터 규모와 무관하게 전 레코드 로드
-List<Diary> diaries = diaryRepository.findByIsPrivateFalse();
-
-// Entity 순회 변환 — 연관된 User 접근마다 지연 로딩 발생
-return diaries.stream()
-    .map(d -> new DiaryDto(d, d.getUser().getNickname()))
-    .toList();`,
-        },
-        notes: [
-          "데이터 규모와 관계없이 모든 레코드를 메모리에 로드",
-          "연관 User 정보를 개별 순회하며 지연 로딩 발생",
-          "목록에 불필요한 본문·전체 이미지 경로까지 모두 전송",
-        ],
-      },
-      after: {
-        label: "After: Pagination & JOIN Projection",
-        code: {
-          language: "java",
-          code: `@Query("""
-    SELECT new com.bluememories.dto.DiaryListDto(
-        d.id, d.title, d.date, d.sentiment, d.likeNum, u.nickname)
-    FROM Diary d JOIN d.user u
-    WHERE d.isPrivate = false
-    ORDER BY d.createdAt DESC
-""")
-Page<DiaryListDto> findPublicDiaries(Pageable pageable);`,
-        },
-        notes: [
-          "필요한 만큼만 끊어서 가져오도록 Pagination 적용",
-          "DTO 전용 쿼리로 목록에 필수적인 필드만 선별 조회",
-          "대용량 텍스트 필드를 제외해 응답 범위와 크기를 축소",
-        ],
-      },
-      metrics: [
-        { label: "DB Query / Request", before: "1001", after: "1", delta: "-99.9%", better: "lower" },
-        { label: "Response Payload Size", before: "748KB", after: "4KB", delta: "-99.4%", better: "lower" },
-        { label: "Avg Response Time", before: "147.85ms", after: "3.63ms", delta: "-97.5%", better: "lower" },
-        { label: "p95 Response Time", before: "161.95ms", after: "5ms", delta: "-96.9%", better: "lower" },
-      ],
-      condition:
-        "측정 조건: 사용자 1,000명 / 일기 2,000건 · JMeter 20 threads × 15 loops (300 requests)",
-    },
-  ],
+  performance: [],
 
   demo: [
     {

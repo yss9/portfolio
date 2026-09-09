@@ -8,13 +8,13 @@ import { potner } from "./potner";
 import { awsDeploy } from "./aws-deploy";
 
 export const projects: Project[] = [
+  potner,
+  neoulteo,
+  awsDeploy,
   saybridge,
   glople,
   bluememories,
-  neoulteo,
   mofy,
-  potner,
-  awsDeploy,
 ];
 
 export function getProject(slug: string): Project | undefined {

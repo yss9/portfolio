@@ -2,7 +2,7 @@ import type { Project } from "../types";
 
 export const awsDeploy: Project = {
   slug: "aws-deploy",
-  no: "07",
+  no: "03",
   name: "AWS Deploy",
   tagline: "풀스택 애플리케이션 배포 자동화 파이프라인",
   summary:

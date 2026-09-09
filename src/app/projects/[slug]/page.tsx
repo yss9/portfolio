@@ -52,27 +52,27 @@ export default async function ProjectPage({
         <div className="relative mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20">
           <Link
             href="/#projects"
-            className="inline-flex items-center gap-1.5 font-mono text-[11px] text-faint transition-colors hover:text-ink-dim"
+            className="inline-flex items-center gap-1.5 font-mono text-[13px] text-faint transition-colors hover:text-ink-dim"
           >
             ← 프로젝트 목록
           </Link>
 
           <div className="mt-6 flex flex-wrap items-center gap-2">
-            <span className="rounded border border-blue-200 bg-blue-50 px-2 py-1 font-mono text-[10px] font-semibold text-signal">ARCH · {project.no}</span>
-            <span className="rounded border border-emerald-200 bg-emerald-50 px-2 py-1 font-mono text-[10px] font-semibold text-emerald-700">DOCUMENTED</span>
+            <span className="rounded border border-blue-200 bg-blue-50 px-2.5 py-1 font-mono text-xs font-semibold text-signal">ARCH · {project.no}</span>
+            <span className="rounded border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-mono text-xs font-semibold text-emerald-700">DOCUMENTED</span>
           </div>
           <div className="mt-5 flex items-baseline gap-3">
             <h1 className="text-4xl font-bold tracking-[-0.035em] text-ink sm:text-6xl">
               {project.name}
             </h1>
           </div>
-          <p className="mt-2 text-[15px] text-[var(--accent)] sm:text-base">
+          <p className="mt-3 text-lg font-medium text-[var(--accent)]">
             {project.tagline}
           </p>
 
           <div className="mt-8 grid gap-8 lg:grid-cols-[1.55fr_0.75fr]">
             <div>
-              <p className="max-w-2xl text-[14.5px] leading-relaxed text-ink-dim">
+              <p className="max-w-2xl text-base leading-8 text-ink-dim">
                 {project.summary}
               </p>
               <div className="mt-5 flex flex-wrap gap-1.5">
@@ -87,7 +87,7 @@ export default async function ProjectPage({
                     href={l.href}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-line-strong bg-white px-3.5 py-2 text-[13px] font-semibold text-ink-dim shadow-sm transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-line-strong bg-white px-4 py-2.5 text-[15px] font-semibold text-ink-dim shadow-sm transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
                   >
                     {l.kind === "github" ? "◆" : l.kind === "video" ? "▶" : "↗"} {l.label}
                   </a>
@@ -111,27 +111,24 @@ export default async function ProjectPage({
           title="실제 서비스 화면"
           lead="프로젝트의 실제 프론트엔드 소스코드를 로컬에서 실행하고, API 계약에 맞춘 테스트 데이터로 렌더링한 화면입니다."
         >
-          <div className="grid gap-5 lg:grid-cols-2">
-            {project.screenshots.map((screen, index) => (
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            {project.screenshots.slice(0, 6).map((screen, index) => (
               <figure
                 key={screen.src}
-                className={cx(
-                  "precision-card overflow-hidden rounded-xl",
-                  index === 0 && "lg:col-span-2"
-                )}
+                className="precision-card overflow-hidden rounded-xl"
               >
-                <div className="relative aspect-[16/10] overflow-hidden border-b border-line bg-slate-100">
+                <div className="relative aspect-square overflow-hidden border-b border-line bg-slate-100">
                   <Image
                     src={screen.src}
                     alt={screen.alt}
                     fill
-                    sizes={index === 0 ? "(min-width: 1280px) 1200px, 100vw" : "(min-width: 1024px) 50vw, 100vw"}
+                    sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
                     className="object-contain"
                     priority={index === 0}
                   />
                 </div>
-                <figcaption className="px-5 py-4 text-[13px] leading-relaxed text-ink-dim">
-                  <span className="mr-2 font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--accent)]">
+                <figcaption className="px-5 py-4 text-[15px] leading-7 text-ink-dim">
+                  <span className="mr-2 font-mono text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">
                     Screen {String(index + 1).padStart(2, "0")}
                   </span>
                   {screen.caption}
@@ -151,17 +148,17 @@ export default async function ProjectPage({
               className="precision-card rounded-xl p-5 transition-colors hover:-translate-y-0.5"
             >
               <div className="flex items-center justify-between gap-3">
-                <span className="font-mono text-[11px] text-[var(--accent)]">
+                <span className="font-mono text-[13px] text-[var(--accent)]">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 {f.category && (
-                  <span className="rounded border border-line bg-bg-soft px-2 py-1 font-mono text-[9px] font-semibold uppercase tracking-wider text-muted">
+                  <span className="rounded border border-line bg-bg-soft px-2 py-1 font-mono text-xs font-semibold uppercase tracking-wider text-muted">
                     {f.category}
                   </span>
                 )}
               </div>
-              <h3 className="mt-2 text-[15px] font-semibold text-ink">{f.title}</h3>
-              <p className="mt-2 text-[13.5px] leading-relaxed text-muted">{f.desc}</p>
+              <h3 className="mt-2 text-base font-semibold text-ink">{f.title}</h3>
+              <p className="mt-2 text-[15px] leading-7 text-muted">{f.desc}</p>
             </li>
           ))}
         </ul>
@@ -180,16 +177,16 @@ export default async function ProjectPage({
               key={n.id}
               className="precision-card grid gap-3 rounded-xl p-4 sm:grid-cols-[auto_200px_1fr] sm:items-center sm:p-5"
             >
-              <span className="font-mono text-[11px] text-faint sm:w-6">
+              <span className="font-mono text-[13px] text-faint sm:w-6">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <div className="flex items-center gap-2">
-                <span className="text-[14px] font-semibold text-ink">{n.label}</span>
-                <span className="rounded border border-line px-1.5 py-[1px] font-mono text-[9.5px] uppercase tracking-wider text-faint">
+                <span className="text-base font-semibold text-ink">{n.label}</span>
+                <span className="rounded border border-line px-1.5 py-0.5 font-mono text-xs uppercase tracking-wider text-faint">
                   {BAND_LABEL[n.band]}
                 </span>
               </div>
-              <p className="text-[13px] leading-relaxed text-muted">{n.role}</p>
+              <p className="text-[15px] leading-7 text-muted">{n.role}</p>
             </li>
           ))}
         </ol>
@@ -204,7 +201,7 @@ export default async function ProjectPage({
             ))}
           </div>
           {project.troubleshootingNote && (
-            <p className="precision-card mt-8 rounded-xl p-5 text-[13.5px] leading-relaxed text-ink-dim">
+            <p className="precision-card mt-8 rounded-xl p-5 text-[15px] leading-7 text-ink-dim">
               {project.troubleshootingNote}
             </p>
           )}
@@ -236,7 +233,7 @@ export default async function ProjectPage({
                 <h3 className="text-xl font-semibold tracking-tight text-ink">
                   {p.title}
                 </h3>
-                <p className="mt-2.5 max-w-3xl text-[14px] leading-relaxed text-muted">
+                <p className="mt-2.5 max-w-3xl text-base leading-8 text-muted">
                   {p.summary}
                 </p>
 
@@ -259,7 +256,7 @@ export default async function ProjectPage({
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {project.stack.map((g) => (
             <div key={g.group} className="precision-card rounded-xl p-5">
-              <h3 className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--accent)]">
+              <h3 className="font-mono text-xs uppercase tracking-[0.16em] text-[var(--accent)]">
                 {g.group}
               </h3>
               <ul className="mt-3 flex flex-wrap gap-1.5">
@@ -282,9 +279,9 @@ export default async function ProjectPage({
               href={`/projects/${prev.slug}`}
               className="precision-card group rounded-xl p-5 transition-colors hover:-translate-y-0.5"
             >
-              <span className="font-mono text-[11px] text-faint">← 이전</span>
-              <p className="mt-1.5 text-[15px] font-semibold text-ink">{prev.name}</p>
-              <p className="mt-0.5 text-[12.5px] text-muted">{prev.tagline}</p>
+              <span className="font-mono text-[13px] text-faint">← 이전</span>
+              <p className="mt-1.5 text-base font-semibold text-ink">{prev.name}</p>
+              <p className="mt-0.5 text-sm text-muted">{prev.tagline}</p>
             </Link>
           ) : (
             <span />
@@ -294,9 +291,9 @@ export default async function ProjectPage({
               href={`/projects/${next.slug}`}
               className="precision-card group rounded-xl p-5 text-right transition-colors hover:-translate-y-0.5"
             >
-              <span className="font-mono text-[11px] text-faint">다음 →</span>
-              <p className="mt-1.5 text-[15px] font-semibold text-ink">{next.name}</p>
-              <p className="mt-0.5 text-[12.5px] text-muted">{next.tagline}</p>
+              <span className="font-mono text-[13px] text-faint">다음 →</span>
+              <p className="mt-1.5 text-base font-semibold text-ink">{next.name}</p>
+              <p className="mt-0.5 text-sm text-muted">{next.tagline}</p>
             </Link>
           )}
         </div>
@@ -311,7 +308,7 @@ function TroubleshootingBlock({ item }: { item: Troubleshooting }) {
   return (
     <article className="precision-card rounded-xl p-5 sm:p-7">
       <h3 className="text-xl font-semibold tracking-tight text-ink">{item.title}</h3>
-      <p className="mt-3 border-l-2 border-[var(--accent)] pl-4 text-[14px] leading-relaxed text-ink-dim">
+      <p className="mt-3 border-l-2 border-[var(--accent)] pl-4 text-base leading-8 text-ink-dim">
         {item.problem}
       </p>
 
@@ -319,12 +316,12 @@ function TroubleshootingBlock({ item }: { item: Troubleshooting }) {
         <ol className="min-w-0 space-y-4">
           {item.steps.map((s) => (
             <li key={s.label + s.title} className="flex gap-3.5">
-              <span className="mt-0.5 grid h-6 shrink-0 place-items-center rounded border border-line bg-surface-2 px-1.5 font-mono text-[10px] uppercase tracking-wider text-[var(--accent)]">
+              <span className="mt-0.5 grid h-7 shrink-0 place-items-center rounded border border-line bg-surface-2 px-2 font-mono text-xs uppercase tracking-wider text-[var(--accent)]">
                 {s.label}
               </span>
               <div className="min-w-0">
-                <p className="text-[13.5px] font-semibold text-ink">{s.title}</p>
-                <p className="mt-1 text-[13px] leading-relaxed text-muted">{s.body}</p>
+                <p className="text-[15px] font-semibold text-ink">{s.title}</p>
+                <p className="mt-1 text-[15px] leading-7 text-muted">{s.body}</p>
               </div>
             </li>
           ))}
@@ -344,8 +341,8 @@ function TroubleshootingBlock({ item }: { item: Troubleshooting }) {
         )}
       </div>
 
-      <p className="mt-6 rounded-lg border border-line bg-bg-soft p-4 text-[13.5px] leading-relaxed text-ink-dim">
-        <span className="mr-2 font-mono text-[10px] uppercase tracking-wider text-[var(--accent)]">
+      <p className="mt-6 rounded-lg border border-line bg-bg-soft p-4 text-[15px] leading-7 text-ink-dim">
+        <span className="mr-2 font-mono text-xs uppercase tracking-wider text-[var(--accent)]">
           결과
         </span>
         {item.takeaway}
@@ -372,7 +369,7 @@ function BeforeAfterCard({
     >
       <h4
         className={cx(
-          "font-mono text-[11px] uppercase tracking-[0.14em]",
+          "font-mono text-xs uppercase tracking-[0.14em]",
           side === "after" ? "text-gain" : "text-faint"
         )}
       >
@@ -384,7 +381,7 @@ function BeforeAfterCard({
       {data.notes && (
         <ul className="mt-3.5 space-y-1.5">
           {data.notes.map((n) => (
-            <li key={n} className="flex gap-2 text-[12.5px] leading-relaxed text-muted">
+            <li key={n} className="flex gap-2 text-sm leading-6 text-muted">
               <span
                 className={cx(
                   "mt-[7px] h-1 w-1 shrink-0 rounded-full",

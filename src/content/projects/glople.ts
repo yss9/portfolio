@@ -2,15 +2,15 @@ import type { Project } from "../types";
 
 export const glople: Project = {
   slug: "glople",
-  no: "02",
+  no: "05",
   name: "Glople",
   tagline: "MBTI 기반 여행지 추천 커뮤니티",
   summary:
     "사용자 성향(MBTI, 연령, 성별)을 기반으로 맞춤형 여행지와 루트를 제안하는 커뮤니티 서비스입니다. 여행자는 자신의 성향에 맞는 여행지를 추천받고, 해당 지역의 전문가인 '글로플러'와 매칭되어 개인화된 여행 경험을 제공받습니다.",
   period: "2024.03 ~ 2024.11",
-  team: "5인 (개발 5 · 디자인 2)",
+  team: "7인 (개발자 5인 + 디자인 2인)",
   role: "팀장 · 추천 로직 구현 및 프론트 일부 개발",
-  teamShort: "5인 팀 · 팀장",
+  teamShort: "7인 팀 · 팀장",
 
   stack: [
     { group: "Backend", items: ["Spring Boot", "Spring Security", "Java 17"] },

@@ -2,15 +2,15 @@ import type { Project } from "../types";
 
 export const potner: Project = {
   slug: "potner",
-  no: "06",
+  no: "01",
   name: "PotneR",
   tagline: "식물 생육 환경을 스스로 돌보는 이동형 스마트 화분",
   summary:
     "Flutter 앱에서 식물의 토양 수분·조도·온습도와 성장 기록을 확인하고, Spring Boot 서버와 MQTT 장치 제어를 통해 급수·환기·일조량 관리를 자동화한 IoT 서비스입니다. 사진 일기와 전후 비교로 돌봄의 결과도 시간 흐름에 따라 확인할 수 있습니다.",
-  period: "2026.07 – 2026.09",
-  team: "팀 프로젝트",
+  period: "2026.07 ~ 2026.08",
+  team: "6인 팀",
   role: "App(Frontend) · Backend · Infra",
-  teamShort: "팀 프로젝트 · FE/BE/Infra",
+  teamShort: "6인 팀 · FE/BE/Infra",
 
   stack: [
     { group: "Application", items: ["Flutter", "Riverpod", "go_router", "Dio"] },
@@ -48,11 +48,6 @@ export const potner: Project = {
       src: "/projects/potner/growth-comparison.png",
       alt: "PotneR 성장 비교 화면에서 2026년 9월 1일과 9월 9일의 식물 사진을 나란히 비교하는 모습",
       caption: "성장 비교 — 두 날짜의 사진을 나란히 놓고 타임랩스로 변화 확인",
-    },
-    {
-      src: "/projects/potner/login.png",
-      alt: "PotneR 로고와 이메일·비밀번호 입력란, 회원가입 링크가 있는 로그인 화면",
-      caption: "로그인 — 토큰 기반 인증으로 개인 식물과 장치 데이터에 접근",
     },
   ],
 

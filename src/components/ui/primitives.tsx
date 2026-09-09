@@ -35,7 +35,7 @@ export function Section({
               </h2>
             )}
             {lead && (
-              <p className="mt-4 text-[15px] leading-relaxed text-muted">{lead}</p>
+              <p className="mt-4 text-base leading-8 text-muted">{lead}</p>
             )}
           </header>
         )}
@@ -47,7 +47,7 @@ export function Section({
 
 export function Eyebrow({ children }: { children: ReactNode }) {
   return (
-    <p className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--accent)]">
+    <p className="font-mono text-xs font-medium uppercase tracking-[0.18em] text-[var(--accent)]">
       {children}
     </p>
   );
@@ -73,7 +73,7 @@ export function Chip({
   return (
     <span
       className={cx(
-        "inline-flex items-center rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold leading-none tracking-tight",
+        "inline-flex items-center rounded-full border px-2.5 py-1.5 font-mono text-xs font-semibold leading-none tracking-tight",
         tones[tone]
       )}
     >
@@ -107,10 +107,10 @@ export function Card({
 export function MetaRow({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex gap-4 border-b border-line/70 py-2.5 last:border-0">
-      <dt className="w-20 shrink-0 font-mono text-[11px] uppercase tracking-wider text-faint">
+      <dt className="w-20 shrink-0 font-mono text-xs uppercase tracking-wider text-faint">
         {label}
       </dt>
-      <dd className="text-[13.5px] leading-relaxed text-ink-dim">{value}</dd>
+      <dd className="text-[15px] leading-7 text-ink-dim">{value}</dd>
     </div>
   );
 }
@@ -139,18 +139,18 @@ export function CodeCard({
     >
       {(filename || language) && (
         <figcaption className="flex items-center justify-between gap-3 border-b border-slate-700 bg-slate-900 px-3 py-2">
-          <span className="truncate font-mono text-[11px] text-slate-300">
+          <span className="truncate font-mono text-xs text-slate-300">
             {filename ?? ""}
           </span>
           {language && (
-            <span className="shrink-0 font-mono text-[10px] uppercase tracking-wider text-slate-500">
+            <span className="shrink-0 font-mono text-xs uppercase tracking-wider text-slate-500">
               {language}
             </span>
           )}
         </figcaption>
       )}
       <pre className="scroll-thin overflow-x-auto px-4 py-3.5">
-        <code className="font-mono text-[12.5px] leading-[1.65] text-slate-200">
+        <code className="font-mono text-[13px] leading-[1.7] text-slate-200">
           {code}
         </code>
       </pre>

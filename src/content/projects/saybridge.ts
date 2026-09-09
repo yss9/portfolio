@@ -2,7 +2,7 @@ import type { Project } from "../types";
 
 export const saybridge: Project = {
   slug: "saybridge",
-  no: "01",
+  no: "04",
   name: "SayBridge",
   tagline: "화상채팅 기반 외국어 교육 플랫폼",
   summary:
@@ -51,7 +51,7 @@ export const saybridge: Project = {
     },
   ],
 
-  highlights: ["WebRTC 검은 화면 해결", "N+1 · 100 → 1 쿼리", "응답 16.75ms → 3.99ms"],
+  highlights: ["WebRTC 검은 화면 해결", "WebSocket/STOMP 실시간 메시징", "QueryDSL 동적 강의 검색"],
 
   features: [
     {
@@ -185,45 +185,7 @@ case 'join':
     },
   ],
 
-  performance: [
-    {
-      id: "homework-n-plus-1",
-      title: "과제 제출 상태 조회 N+1 제거",
-      summary:
-        "게시글 목록에서 학생의 과제 제출 상태를 표시하기 위해 게시글마다 단건 조회가 반복되는 N+1 패턴을 발견했습니다. 이를 IN 조건 배치 조회와 Projection으로 최적화하여 DB 부하를 줄이고 응답 속도를 개선했습니다.",
-      before: {
-        label: "Before: 반복 쿼리 (N+1)",
-        code: {
-          language: "java",
-          code: `for (postId : postIds) {
-    submission = findSubmission(postId, user);
-    if (submission != null) {
-        result.put(postId, submission.url);
-    }
-}`,
-        },
-        notes: ["게시글 수만큼 단건 조회 반복", "목록 크기에 비례해 쿼리 증가"],
-      },
-      after: {
-        label: "After: IN 조건 배치 조회",
-        code: {
-          language: "sql",
-          code: `SELECT postId, attachmentUrl
-FROM Homework
-WHERE studentId = :studentId
-  AND postId IN :coursePostIds`,
-        },
-        notes: ["한 번의 쿼리로 전체 제출 상태 수집", "Projection으로 필요한 컬럼만 조회"],
-      },
-      metrics: [
-        { label: "DB Query / Request", before: "100", after: "1", delta: "-99%", better: "lower" },
-        { label: "Avg Response Time", before: "16.75ms", after: "3.99ms", delta: "-76.2%", better: "lower" },
-        { label: "p95 Latency", before: "20ms", after: "5ms", delta: "-75.0%", better: "lower" },
-        { label: "Error Rate", before: "0%", after: "0%", better: "lower" },
-      ],
-      condition: "측정 도구: JMeter · 조건: 30 threads × 20 loops (Total 600)",
-    },
-  ],
+  performance: [],
 
   demo: [
     {
@@ -243,12 +205,6 @@ WHERE studentId = :studentId
       label: "화상 수업",
       caption:
         "WebRTC P2P 영상 연결과 STOMP 채팅이 함께 동작하는 수업 화면입니다. 좌측 패널에서 시그널링 진행 순서를 확인할 수 있습니다.",
-    },
-    {
-      id: "homework",
-      label: "과제 제출 현황",
-      caption:
-        "N+1을 제거한 바로 그 화면입니다. 조회 방식을 전환하면 발생하는 쿼리 수가 어떻게 달라지는지 직접 확인할 수 있습니다.",
     },
     {
       id: "mypage",

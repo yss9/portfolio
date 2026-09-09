@@ -12,7 +12,6 @@ const sections = [
   { href: "/#stack", label: "Tech Stack" },
   { href: "/#projects", label: "Projects" },
   { href: "/#principles", label: "Principles" },
-  { href: "/#contact", label: "Contact" },
 ];
 
 export function SiteNav() {
@@ -49,10 +48,10 @@ export function SiteNav() {
             <span className="h-2 w-2 rounded-full bg-emerald-500" />
             <span className="h-2 w-2 rounded-full bg-signal" />
           </span>
-          <span className="font-mono text-[12px] font-bold tracking-tight text-ink">
+          <span className="font-mono text-[13px] font-bold tracking-tight text-ink">
             YS.DEV
           </span>
-          <span className="hidden font-mono text-[11px] text-faint sm:inline">
+          <span className="hidden font-mono text-xs text-faint sm:inline">
             / backend
           </span>
         </Link>
@@ -62,7 +61,7 @@ export function SiteNav() {
             <Link
               key={s.href}
               href={s.href}
-            className="rounded-md px-2.5 py-1.5 text-[12px] text-muted transition-colors hover:bg-surface-2 hover:text-signal"
+            className="rounded-md px-2.5 py-1.5 text-sm text-muted transition-colors hover:bg-surface-2 hover:text-signal"
             >
               {s.label}
             </Link>
@@ -71,14 +70,14 @@ export function SiteNav() {
             href={profile.github}
             target="_blank"
             rel="noreferrer noopener"
-            className="ml-2 rounded-md border border-line bg-white px-3 py-1.5 font-mono text-[11px] font-semibold text-ink-dim transition-colors hover:border-line-strong hover:text-ink"
+            className="ml-2 rounded-md border border-line bg-white px-3 py-1.5 font-mono text-xs font-semibold text-ink-dim transition-colors hover:border-line-strong hover:text-ink"
           >
             GitHub ↗
           </a>
           <a
             href="/seo-youngseok-portfolio.pdf"
             download
-            className="rounded-md bg-signal px-3 py-1.5 font-mono text-[11px] font-semibold text-white transition-colors hover:bg-signal-dim"
+            className="rounded-md bg-signal px-3 py-1.5 font-mono text-xs font-semibold text-white transition-colors hover:bg-signal-dim"
           >
             Resume ↓
           </a>
@@ -123,14 +122,14 @@ export function SiteNav() {
                 key={s.href}
                 href={s.href}
                 onClick={() => setOpenPath(null)}
-                className="rounded-md px-3 py-2 text-[14px] text-ink-dim hover:bg-surface-2"
+                className="rounded-md px-3 py-2 text-base text-ink-dim hover:bg-surface-2"
               >
                 {s.label}
               </Link>
             ))}
           </div>
           <div className="mt-3 border-t border-line pt-3">
-            <p className="px-3 pb-1.5 font-mono text-[10px] uppercase tracking-wider text-faint">
+            <p className="px-3 pb-1.5 font-mono text-xs uppercase tracking-wider text-faint">
               Projects
             </p>
             {projects.map((p) => (
@@ -138,9 +137,9 @@ export function SiteNav() {
                 key={p.slug}
                 href={`/projects/${p.slug}`}
                 onClick={() => setOpenPath(null)}
-                className="flex items-center gap-2.5 rounded-md px-3 py-2 text-[14px] text-ink-dim hover:bg-surface-2"
+                className="flex items-center gap-2.5 rounded-md px-3 py-2 text-base text-ink-dim hover:bg-surface-2"
               >
-                <span className="font-mono text-[11px] text-faint">{p.no}</span>
+                <span className="font-mono text-xs text-faint">{p.no}</span>
                 {p.name}
               </Link>
             ))}

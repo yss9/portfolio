@@ -2,12 +2,12 @@ import type { Project } from "../types";
 
 export const mofy: Project = {
   slug: "mofy",
-  no: "05",
+  no: "07",
   name: "MOFY",
   tagline: "퍼스널 컬러 기반 패션 커뮤니티 · 중고 거래",
   summary:
     "단순한 중고 의류 거래를 넘어, 사용자들이 소통하며 자신만의 패션 스타일을 발견할 수 있도록 돕는 커뮤니티형 중고 거래 플랫폼입니다. AI 이미지 분석으로 업로드한 사진에서 퍼스널 컬러 팔레트를 자동 추출해 스타일을 객관화합니다.",
-  period: "팀 프로젝트",
+  period: "2023.09 ~ 2023.11",
   team: "팀 프로젝트",
   role: "프론트엔드 · 백엔드",
   teamShort: "팀 프로젝트 · FE/BE",
@@ -30,11 +30,6 @@ export const mofy: Project = {
   },
 
   screenshots: [
-    {
-      src: "/projects/mofy/login.png",
-      alt: "MOFY 그라데이션 로고와 아이디·비밀번호 입력란, 계정 찾기와 회원가입 링크가 있는 로그인 화면",
-      caption: "로그인 — 아이디·비밀번호 인증과 계정 찾기·회원가입 진입점",
-    },
     {
       src: "/projects/mofy/overview.png",
       alt: "MOFY 홈 화면에 패션 스타일 랭킹 4개, 김민서 프로필, 서울 날씨, 커뮤니티와 중고 마켓 최신 글이 채워진 모습",
