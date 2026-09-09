@@ -157,62 +157,43 @@ export const potner: Project = {
   architectureIntent:
     "앱의 요청과 IoT 장치의 비동기 동작을 Spring Boot의 명령 이력으로 연결해, 작업 중복·타임아웃·결과 반영을 한 흐름에서 추적하도록 구성했습니다.",
 
-  troubleshooting: [
-    {
-      id: "jenkins-pipeline",
-      title: "Jenkins 멀티브랜치 CI/CD를 운영 데이터와 분리",
-      problem:
-        "기능 브랜치도 동시에 빌드되는 환경에서 공유 Gradle 캐시가 잠기고, 검증용 Spring Boot가 운영 DB에 Flyway를 적용하거나 운영 MQTT client ID와 충돌할 위험이 있었습니다. 배포 실패를 감지해 이전 버전으로 되돌리는 절차도 필요했습니다.",
-      steps: [
-        {
-          label: "App",
-          title: "재현 가능한 Flutter 빌드",
-          body: "Flutter 3.44.0 컨테이너 이미지를 고정하고 pub·Gradle·Android SDK를 named volume으로 캐시했습니다. 브랜치 병렬 빌드에서 Gradle journal lock이 충돌한 문제는 APK/AAB 빌드 구간에만 flock을 적용해 해결했습니다.",
-        },
-        {
-          label: "Server",
-          title: "브랜치별 격리 검증",
-          body: "Gradle 단위·Testcontainers 통합 테스트 후 브랜치명과 빌드 번호가 포함된 임시 이미지·컨테이너·MySQL 스키마를 생성했습니다. 별도 MQTT client ID로 기동하고 Actuator Health Check까지 통과한 이미지에만 배포 자격을 부여했습니다.",
-        },
-        {
-          label: "Deploy",
-          title: "master 전용 배포와 자동 롤백",
-          body: "Server-master에서만 릴리스 이미지를 태깅하고 Docker Compose 설정을 고정 배포 경로에 동기화했습니다. 새 컨테이너와 Nginx 경유 Health Check가 실패하면 보관해 둔 이전 이미지로 자동 재기동하도록 배포 스크립트를 구성했습니다.",
-        },
-        {
-          label: "Secret",
-          title: "자격증명 안전 주입",
-          body: "JWT·MQTT·LLM·Firebase 값은 Jenkins Credentials에서 주입했습니다. Firebase 키는 named volume으로 옮긴 뒤 non-root UID의 읽기 권한과 service_account 유형을 검증해, 배포는 성공했지만 푸시만 조용히 비활성화되는 문제를 막았습니다.",
-        },
-      ],
-      takeaway:
-        "CI와 CD를 단순 명령 실행이 아니라 운영 데이터 격리, 재현 가능한 빌드, 비밀값 보호, 실패 시 복구까지 포함한 하나의 안전장치로 설계했습니다.",
-    },
-    {
-      id: "care-run",
-      title: "자동 케어 한 회차의 명령 상태 일관성",
-      problem:
-        "급수·송풍·재배치가 순차적으로 연결되는 동안 장치가 작업을 건너뛰거나 로봇이 이미 작업 중이면 회차가 멈추거나 명령이 충돌할 수 있었습니다.",
-      steps: [
-        { label: "문제", title: "장치별 결과가 서로 다름", body: "완료·건너뜀·실패·타임아웃을 동일하게 처리하면 다음 케어 단계로 진행할 수 없었습니다." },
-        { label: "판단", title: "명령 이력을 상태 머신으로 관리", body: "명령 발행 시점부터 결과 회신까지 상태를 저장하고, 작업 중인 로봇에는 재배치 명령이 끼어들지 않도록 가드를 두었습니다." },
-        { label: "개선", title: "건너뜀과 실제 가동 시간 분리", body: "급수 건너뜀도 정상적인 판정 결과로 처리하고 펌프와 팬의 실제 가동 시간을 올바른 이력에 기록했습니다." },
-      ],
-      takeaway: "비동기 장치 제어에서는 성공/실패 이분법보다 업무 의미를 반영한 상태 모델과 멱등한 결과 반영이 중요했습니다.",
-    },
-    {
-      id: "photo-route",
-      title: "사진 저장·배포 경로의 수명 분리",
-      problem:
-        "성장 사진을 배포 디렉터리에 저장하면 새 배포 때 사라지고, 서버 절대 URL을 저장하면 도메인이나 HTTPS 전환에 취약했습니다.",
-      steps: [
-        { label: "저장", title: "named volume으로 분리", body: "사진을 배포 파일과 분리된 Docker named volume에 저장해 재배포 후에도 유지했습니다." },
-        { label: "서빙", title: "Nginx 읽기 전용 제공", body: "백엔드만 사진을 쓰고 Nginx는 정해진 UUID 경로를 읽기 전용으로 제공하도록 역할을 나눴습니다." },
-        { label: "계약", title: "상대 경로 응답", body: "API는 /media 이하의 상대 경로를 반환하고 앱이 API origin에 결합해 환경별 주소 설정을 줄였습니다." },
-      ],
-      takeaway: "사용자 생성 파일은 배포 산출물과 수명이 다르므로 저장 위치와 공개 URL 계약을 처음부터 분리해야 했습니다.",
-    },
-  ],
+  troubleshooting: [],
+
+  implementationStory: {
+    introduction: [
+      "스마트 화분 관리 서비스 PotneR를 개발하며 가장 도전적이었던 경험은 토양 수분 부족을 감지해 로봇이 스스로 급수 스테이션으로 이동하고, 급수한 뒤 원래 위치로 복귀하는 자동 케어 시스템을 구현한 것입니다. 저는 Spring Boot 백엔드를 중심으로 MQTT 센서 수집, 이상 상태 판정, 장치 명령 발행 및 결과 처리, Flutter 앱 연동까지 담당했습니다.",
+      "서버의 요청이 실제 하드웨어 동작으로 이어지는 만큼, MQTT QoS 1의 중복 전달과 네트워크 지연·순서 역전이 센서 중복 저장이나 급수 중복 실행 같은 장치 오작동으로 이어지지 않도록 설계했습니다.",
+    ],
+    decisions: [
+      {
+        title: "센서 데이터의 멱등성과 유효성 확보",
+        body: "센서 메시지 UUID를 DB 고유 키로 관리하고 INSERT IGNORE 방식으로 저장해 같은 메시지를 한 번만 반영했습니다. 토픽의 장치 ID, 페이로드의 장치 ID, 센서별 단위·범위·측정 시각을 함께 검증하고 최근 측정값의 중앙값으로 순간적인 센서 노이즈를 줄였습니다.",
+      },
+      {
+        title: "자동 급수를 이벤트 기반 상태 전이로 설계",
+        body: "수분 부족 알림 → 스테이션 이동 → 급수 → 원위치 복귀 흐름을 상태 전이로 연결했습니다. 명령을 DB에 먼저 저장한 뒤 트랜잭션 커밋 이후 MQTT로 발행해, 장치의 BUSY 응답이 서버의 명령 저장보다 먼저 도착하는 경쟁 상태를 막았습니다.",
+      },
+      {
+        title: "명령 결과의 식별 정보와 순서 검증",
+        body: "결과를 requestId 하나로만 매칭하지 않고 장치 ID, 명령 종류, 결과 messageId까지 함께 검증했습니다. 급수·송풍·촬영·광량 확보가 같은 로봇을 사용하므로 initiator와 purpose를 명령에 기록하고 Busy Guard로 자동 작업 간 개입을 차단했습니다.",
+      },
+      {
+        title: "부분 실패에서는 안전하게 체인 중단",
+        body: "실패한 급수 명령을 무작정 재시도하지 않았습니다. 네트워크에서 결과만 유실된 상황에서 재시도하면 실제로 물이 두 번 공급될 수 있기 때문에, 실패 시 체인을 중단하고 사용자 알림과 명령 이력으로 원인을 확인하도록 했습니다.",
+      },
+    ],
+    verification: "급수량 미설정, 스테이션 물 부족, 중복 응답, 장치 불일치, 다른 자동 체인의 응답, 기능 비활성화, 명령 실패와 지연 응답을 단위 테스트로 검증했습니다. 이후 같은 구조를 목표 광량 확보, 과습 시 자동 송풍, 성장 사진 촬영으로 확장했습니다. 이 과정에서 실제 하드웨어 제어는 성공 경로보다 멱등성·상태 추적·실패 시 안전한 중단을 먼저 설계해야 한다는 점을 배웠습니다.",
+    codeReferences: [
+      { label: "자동 급수 이벤트 체인", file: "AutoWateringOrchestrator.java", line: 49 },
+      { label: "DB 커밋 후 MQTT 발행", file: "DeviceCommandPublishListener.java", line: 23 },
+      { label: "중복 명령 차단", file: "DeviceCommandService.java", line: 100 },
+      { label: "명령 결과 검증", file: "DeviceCommandResultService.java", line: 27 },
+      { label: "MQTT 센서 메시지 검증", file: "SensorTelemetryMessageProcessor.java", line: 23 },
+      { label: "센서 중복 저장 방지", file: "SensorReadingService.java", line: 19 },
+      { label: "자동 작업 Busy Guard", file: "RobotBusyGuard.java", line: 20 },
+      { label: "예외 상황 단위 테스트", file: "AutoWateringOrchestratorTest.java", line: 27 },
+    ],
+  },
 
   performance: [],
   demo: [],

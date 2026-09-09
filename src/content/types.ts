@@ -84,6 +84,13 @@ export type ProjectScreenshot = {
   caption: string;
 };
 
+export type ImplementationStory = {
+  introduction: string[];
+  decisions: { title: string; body: string }[];
+  verification: string;
+  codeReferences: { label: string; file: string; line: number }[];
+};
+
 export type Project = {
   slug: string;
   /** ordinal shown in the project map, e.g. "01" */
@@ -105,6 +112,8 @@ export type Project = {
   /** intent line printed under the architecture diagram */
   architectureIntent: string;
   troubleshooting: Troubleshooting[];
+  /** Optional implementation narrative for projects better explained by design decisions. */
+  implementationStory?: ImplementationStory;
   /** Optional closing line printed under the troubleshooting list. */
   troubleshootingNote?: string;
   /** Documented design/implementation decisions. Used for projects that don't

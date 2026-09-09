@@ -111,11 +111,21 @@ export default async function ProjectPage({
           title="실제 서비스 화면"
           lead="프로젝트의 실제 프론트엔드 소스코드를 로컬에서 실행하고, API 계약에 맞춘 테스트 데이터로 렌더링한 화면입니다."
         >
-          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2">
+          <div
+            className={cx(
+              "grid overflow-hidden rounded-xl border border-line bg-line",
+              project.slug === "potner"
+                ? "grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4"
+                : "grid-cols-1 gap-px sm:grid-cols-2"
+            )}
+          >
             {project.screenshots.slice(0, 4).map((screen, index) => (
               <figure
                 key={screen.src}
-                className="overflow-hidden bg-white"
+                className={cx(
+                  "overflow-hidden bg-white",
+                  project.slug === "potner" && "rounded-xl border border-line"
+                )}
               >
                 <div
                   className={cx(
@@ -220,6 +230,54 @@ export default async function ProjectPage({
           </figure>
         )}
       </Section>
+
+      {project.implementationStory && (
+        <Section
+          id="implementation-story"
+          eyebrow="Implementation Decisions"
+          title="구현 과정과 판단"
+          lead="정상 흐름만 구현하는 데서 멈추지 않고, 실제 환경에서 발생할 수 있는 중복·지연·순서 역전·부분 실패까지 고려해 설계했습니다."
+        >
+          <div className="precision-card rounded-2xl p-5 sm:p-8">
+            <div className="max-w-4xl space-y-4">
+              {project.implementationStory.introduction.map((paragraph) => (
+                <p key={paragraph} className="text-base leading-8 text-ink-dim">{paragraph}</p>
+              ))}
+            </div>
+
+            <ol className="mt-8 grid gap-4 lg:grid-cols-2">
+              {project.implementationStory.decisions.map((decision, index) => (
+                <li key={decision.title} className="rounded-xl border border-line bg-bg-soft/60 p-5">
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-8 w-8 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-mono text-xs font-bold text-signal">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="text-base font-semibold text-ink">{decision.title}</h3>
+                  </div>
+                  <p className="mt-4 text-[15px] leading-7 text-muted">{decision.body}</p>
+                </li>
+              ))}
+            </ol>
+
+            <div className="mt-8 rounded-xl border border-emerald-200 bg-emerald-50/60 p-5">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-emerald-700">Verification</p>
+              <p className="mt-3 text-[15px] leading-7 text-ink-dim">{project.implementationStory.verification}</p>
+            </div>
+
+            <div className="mt-8 border-t border-line pt-6">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-signal">Code references</p>
+              <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                {project.implementationStory.codeReferences.map((reference) => (
+                  <li key={reference.file} className="rounded-lg border border-line bg-white px-4 py-3">
+                    <p className="text-sm font-semibold text-ink">{reference.label}</p>
+                    <p className="mt-1 break-all font-mono text-xs leading-6 text-muted">{reference.file}:{reference.line}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Section>
+      )}
 
       {/* ---------------- troubleshooting ---------------- */}
       {project.troubleshooting.length > 0 && (
