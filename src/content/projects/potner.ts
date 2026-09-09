@@ -21,7 +21,10 @@ export const potner: Project = {
   ],
   stackFlat: ["Flutter", "Spring Boot", "MySQL", "MQTT", "Raspberry Pi", "ROS 2", "Docker"],
 
-  links: [],
+  links: [
+    { label: "GitHub", href: "https://github.com/yss9/potner", kind: "github" },
+    { label: "시연 영상", href: "https://www.youtube.com/watch?v=JgmYadg7w9M", kind: "video" },
+  ],
 
   preview: {
     src: "/projects/potner/overview.png",
@@ -50,6 +53,13 @@ export const potner: Project = {
       caption: "성장 비교 — 두 날짜의 사진을 나란히 놓고 타임랩스로 변화 확인",
     },
   ],
+
+  architectureImage: {
+    src: "/projects/potner/architecture.png",
+    alt: "PotneR Flutter 앱, Spring Boot 서버, MySQL, MQTT 브로커, 라즈베리파이와 젯슨 장치의 시스템 아키텍처",
+    width: 1737,
+    height: 905,
+  },
 
   highlights: ["SSAFY 공통 프로젝트 우수상", "App · Backend · Infra 담당", "Jenkins CI/CD · 자동 롤백"],
 

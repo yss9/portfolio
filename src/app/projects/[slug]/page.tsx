@@ -111,23 +111,23 @@ export default async function ProjectPage({
           title="실제 서비스 화면"
           lead="프로젝트의 실제 프론트엔드 소스코드를 로컬에서 실행하고, API 계약에 맞춘 테스트 데이터로 렌더링한 화면입니다."
         >
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {project.screenshots.slice(0, 6).map((screen, index) => (
+          <div className="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2">
+            {project.screenshots.slice(0, 4).map((screen, index) => (
               <figure
                 key={screen.src}
-                className="precision-card overflow-hidden rounded-xl"
+                className="overflow-hidden bg-white"
               >
-                <div className="relative aspect-square overflow-hidden border-b border-line bg-slate-100">
+                <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
                   <Image
                     src={screen.src}
                     alt={screen.alt}
                     fill
-                    sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-contain"
+                    sizes="(min-width: 640px) 50vw, 100vw"
+                    className="object-cover object-top"
                     priority={index === 0}
                   />
                 </div>
-                <figcaption className="px-5 py-4 text-[15px] leading-7 text-ink-dim">
+                <figcaption className="border-t border-line px-5 py-4 text-[15px] leading-7 text-ink-dim">
                   <span className="mr-2 font-mono text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">
                     Screen {String(index + 1).padStart(2, "0")}
                   </span>
@@ -190,6 +190,24 @@ export default async function ProjectPage({
             </li>
           ))}
         </ol>
+        {project.architectureImage && (
+          <figure className="mt-8 overflow-hidden rounded-xl border border-line bg-white">
+            <Image
+              src={project.architectureImage.src}
+              alt={project.architectureImage.alt}
+              width={project.architectureImage.width}
+              height={project.architectureImage.height}
+              sizes="(min-width: 1024px) 1200px, 100vw"
+              className="h-auto w-full"
+            />
+            <figcaption className="border-t border-line px-5 py-4 text-[15px] leading-7 text-ink-dim">
+              <span className="mr-2 font-mono text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">
+                Architecture
+              </span>
+              프로젝트의 전체 요청·데이터·외부 서비스 연결 구조
+            </figcaption>
+          </figure>
+        )}
       </Section>
 
       {/* ---------------- troubleshooting ---------------- */}

@@ -2,7 +2,7 @@ import type { Project } from "../types";
 
 export const bluememories: Project = {
   slug: "bluememories",
-  no: "06",
+  no: "05",
   name: "BlueMemories",
   tagline: "AI 감정 기록 및 멘탈케어 커뮤니티",
   summary:
@@ -51,6 +51,13 @@ export const bluememories: Project = {
       caption: "일기 상세 — 본문, 날씨, 감정 점수, 콘텐츠 추천을 함께 제공",
     },
   ],
+
+  architectureImage: {
+    src: "/projects/bluememories/architecture.png",
+    alt: "BlueMemories React 프론트엔드, Spring Boot 백엔드, MySQL, 외부 AI·영상 API와 AWS S3 구조를 보여주는 시스템 아키텍처",
+    width: 1208,
+    height: 591,
+  },
 
   highlights: ["GPT 응답 JSON 계약화", "N:M 공유 일기장 확장", "AI 감정 분석 연동"],
 

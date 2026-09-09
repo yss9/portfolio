@@ -2,7 +2,7 @@ import type { Project } from "../types";
 
 export const awsDeploy: Project = {
   slug: "aws-deploy",
-  no: "03",
+  no: "07",
   name: "AWS Deploy",
   tagline: "풀스택 애플리케이션 배포 자동화 파이프라인",
   summary:
@@ -30,6 +30,13 @@ export const awsDeploy: Project = {
     src: "/shots/aws-deploy-troubleshooting.png",
     alt:
       "AWS Deploy 문제 해결 — Mixed Content 차단의 원인(프로토콜 불일치)과 해결(ALB + ACM 인증서 연결)을 단계별로 정리한 화면",
+  },
+
+  architectureImage: {
+    src: "/projects/aws-deploy/architecture.png",
+    alt: "AWS Route 53, CloudFront, S3, ALB, EC2, RDS와 GitHub Actions CI/CD 배포 구조를 보여주는 시스템 아키텍처",
+    width: 1695,
+    height: 827,
   },
 
   highlights: ["Mixed Content 해결", "RDS 연결 오류 추적", "CI/CD SSH Timeout 분석"],

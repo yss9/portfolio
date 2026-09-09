@@ -116,6 +116,13 @@ export type Project = {
   preview: { src: string; alt: string };
   /** Real service screens shown on the project detail page. */
   screenshots?: ProjectScreenshot[];
+  /** Optional architecture diagram shown below the system layers. */
+  architectureImage?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+  };
   /** headline numbers surfaced on the home card */
   highlights: string[];
 };

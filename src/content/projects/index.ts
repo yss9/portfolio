@@ -10,11 +10,11 @@ import { awsDeploy } from "./aws-deploy";
 export const projects: Project[] = [
   potner,
   neoulteo,
-  awsDeploy,
   saybridge,
   glople,
   bluememories,
   mofy,
+  awsDeploy,
 ];
 
 export function getProject(slug: string): Project | undefined {

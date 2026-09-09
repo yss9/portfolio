@@ -2,7 +2,7 @@ import type { Project } from "../types";
 
 export const glople: Project = {
   slug: "glople",
-  no: "05",
+  no: "04",
   name: "Glople",
   tagline: "MBTI 기반 여행지 추천 커뮤니티",
   summary:
@@ -31,30 +31,42 @@ export const glople: Project = {
   ],
 
   preview: {
-    src: "/projects/glople/overview.png",
+    src: "/projects/glople/main.png",
     alt:
       "Glople 메인 화면에서 세계 지도를 중심으로 여행지 추천과 예약 메뉴를 탐색하는 모습",
   },
 
   screenshots: [
     {
-      src: "/projects/glople/overview.png",
+      src: "/projects/glople/main.png",
       alt: "Glople 세계 지도 홈 화면과 여행지 예약·추천·루트 탐색·커뮤니티 메뉴",
       caption: "지도 홈 — 세계 지도에서 국가를 선택해 여행 정보 탐색을 시작",
     },
     {
-      src: "/projects/glople/keyword-selection.png",
-      alt: "Glople 키워드 추천 화면에서 자연과 박물관을 선택하고 해안·등산·온천 등 여행 취향을 고르는 모습",
-      caption: "키워드 추천 — 여행 취향 키워드를 조합해 개인화 추천 입력을 구성",
+      src: "/projects/glople/mbti.png",
+      alt: "Glople MBTI 추천 화면에서 ESTJ 성향과 잘 맞는 시드니, 싱가포르, 워싱턴 여행지를 확인하는 모습",
+      caption: "MBTI 여행지 추천 — 사용자의 성향과 잘 맞는 여행지를 결과 카드로 제공",
     },
     {
-      src: "/projects/glople/mbti-recommendation.png",
-      alt: "Glople ENFP 유사 사용자 추천 결과에 나이·성별·MBTI와 바르셀로나·리스본·제주 여행지가 표시된 화면",
-      caption: "사용자 기반 추천 — 인구통계와 MBTI가 유사한 사용자의 여행 기록을 추천",
+      src: "/projects/glople/keyword-result.png",
+      alt: "Glople 키워드 기반 맞춤 여행지 결과에 타우포 호수, 그레이트 배리어 리프, 본다이 비치가 표시된 화면",
+      caption: "키워드 추천 결과 — 선택한 여행 취향을 기준으로 맞춤 여행지를 제안",
+    },
+    {
+      src: "/projects/glople/cosine-route.png",
+      alt: "Glople 코사인 유사도 기반 여행 루트 화면에서 유사한 사용자가 다녀온 파리 여행 경로를 확인하는 모습",
+      caption: "유사 사용자 여행 루트 — 코사인 유사도로 찾은 사용자의 실제 여행 경로를 추천",
     },
   ],
 
-  highlights: ["MBTI 추천 27.9ms → 7.21ms", "Bitmask + Top-K 도입", "5인 팀 리딩"],
+  architectureImage: {
+    src: "/projects/glople/architecture.png",
+    alt: "Glople React 프론트엔드, Spring Boot 백엔드, MySQL, 외부 API와 Docker Compose 배포 구조를 보여주는 시스템 아키텍처",
+    width: 1323,
+    height: 719,
+  },
+
+  highlights: ["MBTI 추천 27.9ms → 7.21ms", "Bitmask + Top-K 도입", "7인 팀 리딩"],
 
   features: [
     {

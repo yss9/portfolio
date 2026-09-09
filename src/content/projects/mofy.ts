@@ -2,7 +2,7 @@ import type { Project } from "../types";
 
 export const mofy: Project = {
   slug: "mofy",
-  no: "07",
+  no: "06",
   name: "MOFY",
   tagline: "퍼스널 컬러 기반 패션 커뮤니티 · 중고 거래",
   summary:
@@ -13,13 +13,13 @@ export const mofy: Project = {
   teamShort: "팀 프로젝트 · FE/BE",
 
   stack: [
-    { group: "Frontend", items: ["Next.js", "React", "styled-components", "Ant Design", "Axios"] },
+    { group: "Frontend", items: ["React", "styled-components", "Ant Design", "Axios"] },
     { group: "Backend", items: ["Django REST Framework", "Python 3.9+", "SimpleJWT"] },
     { group: "Data", items: ["SQLite", "Media Storage"] },
     { group: "AI / Data", items: ["Rembg", "Pillow", "Extcolors", "Scikit-learn (TF-IDF)"] },
     { group: "External APIs", items: ["OpenWeatherMap"] },
   ],
-  stackFlat: ["Next.js", "Django DRF", "SQLite", "JWT", "Rembg", "Extcolors", "Scikit-learn"],
+  stackFlat: ["React", "Django DRF", "SQLite", "JWT", "Rembg", "Extcolors", "Scikit-learn"],
 
   links: [{ label: "GitHub", href: "https://github.com/yss9/Mofy", kind: "github" }],
 
@@ -36,19 +36,9 @@ export const mofy: Project = {
       caption: "서비스 홈 — 스타일 랭킹, 프로필, 날씨 추천과 최신 게시글을 한 화면에 구성",
     },
     {
-      src: "/projects/mofy/style-board.png",
-      alt: "MOFY 스타일 보드에서 라벤더 셔츠와 간절기 재킷 등 일곱 개 데일리룩 게시글을 검색하는 목록 화면",
-      caption: "스타일 보드 — OOTD 게시글 검색, 목록 탐색과 컬러 팔레트 기능 진입",
-    },
-    {
-      src: "/projects/mofy/market.png",
-      alt: "MOFY 중고 마켓에 의류와 신발 여섯 개의 제목, 가격, 판매 상태, 등록일이 표시된 거래 목록 화면",
-      caption: "중고 마켓 — 상품별 가격과 판매 상태를 비교하고 1:1 채팅으로 연결",
-    },
-    {
-      src: "/projects/mofy/style-detail.png",
-      alt: "MOFY 라벤더 셔츠 데일리룩 상세에서 작성자, 태그, 코디 설명과 패션 사진을 확인하는 화면",
-      caption: "스타일 상세 — 작성자·태그·코디 설명·이미지를 확인하고 좋아요로 반응",
+      src: "/projects/mofy/color-palette.png",
+      alt: "MOFY에서 원본 패션 이미지의 배경을 제거하고 의상에서 추출한 여섯 가지 주요 색상을 팔레트로 보여주는 화면",
+      caption: "컬러 팔레트 — 배경을 제거한 뒤 의상의 주요 색상을 추출해 비율별 팔레트로 제공",
     },
   ],
 
@@ -79,8 +69,8 @@ export const mofy: Project = {
 
   architecture: [
     {
-      id: "next",
-      label: "Next.js",
+      id: "react",
+      label: "React",
       role: "UI/UX 구성, Axios를 통한 API 요청, 상태 관리",
       band: "client",
     },

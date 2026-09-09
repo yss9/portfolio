@@ -2,7 +2,7 @@ import type { Project } from "../types";
 
 export const saybridge: Project = {
   slug: "saybridge",
-  no: "04",
+  no: "03",
   name: "SayBridge",
   tagline: "화상채팅 기반 외국어 교육 플랫폼",
   summary:
@@ -30,9 +30,9 @@ export const saybridge: Project = {
 
   screenshots: [
     {
-      src: "/projects/saybridge/overview.png",
-      alt: "SayBridge 메인 화면의 영어 말하기 학습 소개와 강사 안내 섹션",
-      caption: "서비스 소개 — 영어 회화 학습 흐름과 강사·추천 강의를 안내하는 메인 화면",
+      src: "/projects/saybridge/webcam.png",
+      alt: "SayBridge 1대1 화상 수업 화면에서 두 사용자의 웹캠 영상과 실시간 채팅을 함께 확인하는 모습",
+      caption: "1:1 화상 수업 — WebRTC 영상 통화와 실시간 채팅을 한 화면에서 진행",
     },
     {
       src: "/projects/saybridge/courses.png",
@@ -50,6 +50,13 @@ export const saybridge: Project = {
       caption: "마이페이지 — 수강 강의, 프로필, 리뷰 작성 여부를 모아 확인",
     },
   ],
+
+  architectureImage: {
+    src: "/projects/saybridge/architecture.png",
+    alt: "SayBridge React 프론트엔드, Spring Boot 백엔드, MySQL, Redis, S3와 WebRTC 화상 수업 구조를 보여주는 시스템 아키텍처",
+    width: 1229,
+    height: 655,
+  },
 
   highlights: ["WebRTC 검은 화면 해결", "WebSocket/STOMP 실시간 메시징", "QueryDSL 동적 강의 검색"],
 
