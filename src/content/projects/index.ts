@@ -4,6 +4,7 @@ import { glople } from "./glople";
 import { bluememories } from "./bluememories";
 import { neoulteo } from "./neoulteo";
 import { mofy } from "./mofy";
+import { potner } from "./potner";
 import { awsDeploy } from "./aws-deploy";
 
 export const projects: Project[] = [
@@ -12,6 +13,7 @@ export const projects: Project[] = [
   bluememories,
   neoulteo,
   mofy,
+  potner,
   awsDeploy,
 ];
 

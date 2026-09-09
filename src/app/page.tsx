@@ -4,35 +4,18 @@ import { Chip, Eyebrow, Section } from "@/components/ui/primitives";
 import { profile, techStack } from "@/content/profile";
 import { projects } from "@/content/projects";
 
-const telemetry = [
-  {
-    label: "DB QUERY / REQUEST",
-    value: "1001 → 1",
-    note: "BlueMemories · -99.9%",
-    width: "8%",
-    tone: "bg-gain",
-  },
-  {
-    label: "AVG RESPONSE TIME",
-    value: "147.85 → 3.63ms",
-    note: "BlueMemories · -97.5%",
-    width: "12%",
-    tone: "bg-signal",
-  },
-  {
-    label: "MBTI RECOMMENDATION",
-    value: "27.9 → 7.21ms",
-    note: "Glople · -74.2%",
-    width: "26%",
-    tone: "bg-cyan-500",
-  },
+const heroFacts = [
+  { label: "전공 평점", value: "3.88 / 4.5", meta: "MAJOR GPA" },
+  { label: "수상", value: "SSAFY 공통 프로젝트 우수상", meta: "PotneR" },
+  { label: "자격증", value: "정보처리기사", meta: "CERTIFIED" },
+  { label: "교육", value: "삼성청년 SW·AI 아카데미", meta: "2026.01 ~" },
 ];
 
 const credentials = [
   { label: "학력", value: "영남대학교 컴퓨터공학과 졸업", meta: "B.S. in CSE" },
-  { label: "전공 평점", value: "3.84 / 4.5", meta: "MAJOR GPA" },
+  { label: "전공 평점", value: "3.88 / 4.5", meta: "MAJOR GPA" },
   { label: "자격증", value: "정보처리기사", meta: "CERTIFIED" },
-  { label: "교육", value: "삼성청년 SW·AI 아카데미", meta: "2026.01 ~" },
+  { label: "대외활동·수상", value: "SSAFY 공통 프로젝트 우수상 · PotneR", meta: "SSAFY" },
 ];
 
 export default function Home() {
@@ -90,35 +73,34 @@ export default function Home() {
             </div>
           </div>
 
-          <aside className="precision-card metric-grid rise rounded-2xl p-4 sm:p-5 lg:ml-auto lg:w-full lg:max-w-[430px]">
+          <aside className="precision-card rise rounded-2xl p-4 sm:p-5 lg:ml-auto lg:w-full lg:max-w-[430px]">
             <div className="flex items-center justify-between border-b border-line pb-4">
               <div className="flex items-center gap-1.5" aria-hidden="true">
                 <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
                 <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
                 <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
               </div>
-              <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-emerald-700">
-                measured_results · verified
+              <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-signal">
+                profile · highlights
               </span>
             </div>
-            <div className="mt-4 space-y-3">
-              {telemetry.map((item) => (
-                <div key={item.label} className="rounded-xl border border-line bg-white p-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="font-mono text-[10px] font-semibold tracking-wide text-muted">{item.label}</p>
-                      <p className="tnum mt-1.5 text-xl font-bold tracking-tight text-ink">{item.value}</p>
-                    </div>
-                    <span className="font-mono text-[10px] font-semibold text-gain">{item.note}</span>
-                  </div>
-                  <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-100">
-                    <div className={`h-full rounded-full ${item.tone}`} style={{ width: item.width }} />
-                  </div>
+            <dl className="mt-4 divide-y divide-line overflow-hidden rounded-xl border border-line bg-white">
+              {heroFacts.map((item) => (
+                <div key={item.label} className="grid grid-cols-[92px_1fr] gap-4 px-4 py-4">
+                  <dt className="font-mono text-[10px] font-semibold uppercase tracking-wide text-muted">
+                    {item.label}
+                  </dt>
+                  <dd>
+                    <p className="text-sm font-semibold leading-5 text-ink">{item.value}</p>
+                    <p className="mt-1 font-mono text-[9px] font-semibold uppercase tracking-wider text-signal">
+                      {item.meta}
+                    </p>
+                  </dd>
                 </div>
               ))}
-            </div>
+            </dl>
             <div className="mt-4 flex items-center justify-between font-mono text-[10px] text-muted">
-              <span>status: portfolio_ready</span>
+              <span>backend developer</span>
               <span>{projects.length} case studies</span>
             </div>
           </aside>

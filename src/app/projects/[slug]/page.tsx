@@ -150,9 +150,16 @@ export default async function ProjectPage({
               key={f.title}
               className="precision-card rounded-xl p-5 transition-colors hover:-translate-y-0.5"
             >
-              <span className="font-mono text-[11px] text-[var(--accent)]">
-                {String(i + 1).padStart(2, "0")}
-              </span>
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-mono text-[11px] text-[var(--accent)]">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                {f.category && (
+                  <span className="rounded border border-line bg-bg-soft px-2 py-1 font-mono text-[9px] font-semibold uppercase tracking-wider text-muted">
+                    {f.category}
+                  </span>
+                )}
+              </div>
               <h3 className="mt-2 text-[15px] font-semibold text-ink">{f.title}</h3>
               <p className="mt-2 text-[13.5px] leading-relaxed text-muted">{f.desc}</p>
             </li>

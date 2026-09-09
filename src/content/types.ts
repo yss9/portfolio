@@ -55,6 +55,8 @@ export type ArchLayer = {
 export type Feature = {
   title: string;
   desc: string;
+  /** Optional ownership area shown as a badge on the project detail page. */
+  category?: string;
 };
 
 export type StackGroup = {

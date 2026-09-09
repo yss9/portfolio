@@ -32,9 +32,10 @@ export const profile = {
 
   facts: [
     { label: "학력", value: "영남대학교 컴퓨터공학과 졸업" },
-    { label: "전공 평점", value: "3.84 / 4.5" },
+    { label: "전공 평점", value: "3.88 / 4.5" },
     { label: "자격증", value: "정보처리기사" },
     { label: "교육", value: "삼성청년 SW/AI 아카데미 (2026.01 ~ )" },
+    { label: "대외활동·수상", value: "SSAFY 공통 프로젝트 우수상 · PotneR" },
   ],
 };
 
