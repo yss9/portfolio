@@ -111,19 +111,30 @@ export default async function ProjectPage({
           title="실제 서비스 화면"
           lead="프로젝트의 실제 프론트엔드 소스코드를 로컬에서 실행하고, API 계약에 맞춘 테스트 데이터로 렌더링한 화면입니다."
         >
-          <div className="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2">
             {project.screenshots.slice(0, 4).map((screen, index) => (
               <figure
                 key={screen.src}
                 className="overflow-hidden bg-white"
               >
-                <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                <div
+                  className={cx(
+                    "relative overflow-hidden bg-white",
+                    project.slug === "potner"
+                      ? "aspect-[9/19]"
+                      : "aspect-[16/10]"
+                  )}
+                >
                   <Image
                     src={screen.src}
                     alt={screen.alt}
                     fill
                     sizes="(min-width: 640px) 50vw, 100vw"
-                    className="object-cover object-top"
+                    className={cx(
+                      project.slug === "potner"
+                        ? "object-contain"
+                        : "object-cover object-top"
+                    )}
                     priority={index === 0}
                   />
                 </div>

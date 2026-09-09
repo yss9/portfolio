@@ -11,6 +11,39 @@ const credentials = [
   { label: "대외활동·수상", value: "SSAFY 공통 프로젝트 우수상 · PotneR", meta: "SSAFY" },
 ];
 
+const aiTools = ["Claude", "Claude Code", "Gemini", "Gemini Deep Research", "ChatGPT", "Codex", "Stitch"];
+
+const aiProcess = [
+  {
+    step: "01",
+    name: "Research",
+    title: "기술과 공식 문서 조사",
+    body: "필요한 기술의 동작 방식과 공식 문서를 먼저 확인합니다.",
+    tools: ["Gemini Deep Research"],
+  },
+  {
+    step: "02",
+    name: "Design",
+    title: "요구사항과 구조 검토",
+    body: "요구사항과 아키텍처를 검토하고 Stitch로 UI를 시각화합니다.",
+    tools: ["ChatGPT", "Claude", "Stitch"],
+  },
+  {
+    step: "03",
+    name: "Build",
+    title: "코드 분석·구현·리팩터링",
+    body: "기존 코드의 맥락을 분석한 뒤 구현하고 구조를 정리합니다.",
+    tools: ["Claude Code", "Codex"],
+  },
+  {
+    step: "04",
+    name: "Verify",
+    title: "실행 결과 직접 검증",
+    body: "테스트·빌드·로그·보안 검사를 통과한 결과만 반영합니다.",
+    tools: ["직접 검증"],
+  },
+];
+
 export default function Home() {
   return (
     <>
@@ -115,6 +148,56 @@ export default function Home() {
               <p className="mt-4 border-t border-line pt-4 text-[15px] leading-7 text-muted">{group.desc}</p>
             </article>
           ))}
+        </div>
+      </Section>
+
+      <Section
+        id="ai-assisted"
+        eyebrow="// AI-ASSISTED DEVELOPMENT"
+        title="AI를 활용해 더 빠르게 탐색하고, 직접 검증하며 완성합니다."
+        lead="기획·기술 조사·UI 설계·코드 구현·테스트 단계에 맞는 AI 도구를 선택하고, 생성된 결과는 아키텍처·보안·예외 처리·실행 결과를 기준으로 직접 검증합니다."
+      >
+        <div className="precision-card rounded-2xl p-5 sm:p-7">
+          <div className="flex flex-col gap-4 border-b border-line pb-6 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-signal">Working set</p>
+              <p className="mt-2 text-[15px] leading-7 text-ink-dim">목적에 맞는 도구를 선택하고, 결과의 책임은 개발자가 집니다.</p>
+            </div>
+            <ul className="flex flex-wrap gap-1.5" aria-label="사용 도구">
+              {aiTools.map((tool) => (
+                <li key={tool}>
+                  <Chip tone="ghost">{tool}</Chip>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <ol className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            {aiProcess.map((item, index) => (
+              <li key={item.name} className="relative rounded-xl border border-line bg-bg-soft/60 p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="grid h-8 w-8 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-mono text-xs font-bold text-signal">
+                    {item.step}
+                  </span>
+                  {index < aiProcess.length - 1 && (
+                    <span className="hidden font-mono text-xs text-faint xl:block" aria-hidden="true">→</span>
+                  )}
+                </div>
+                <h3 className="mt-5 font-mono text-lg font-semibold tracking-tight text-ink">{item.name}</h3>
+                <p className="mt-2 text-[15px] font-semibold leading-7 text-ink">{item.title}</p>
+                <p className="mt-2 min-h-14 text-sm leading-6 text-muted">{item.body}</p>
+                <ul className="mt-4 flex flex-wrap gap-1.5">
+                  {item.tools.map((tool) => (
+                    <li key={tool}>
+                      <span className={item.name === "Verify" ? "inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-2 py-1 font-mono text-xs font-semibold text-emerald-700" : "inline-flex rounded-full border border-line bg-white px-2 py-1 font-mono text-xs font-semibold text-ink-dim"}>
+                        {tool}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ol>
         </div>
       </Section>
 
