@@ -124,10 +124,13 @@ export default function Home() {
                 <p className="mt-4 text-base font-semibold leading-7 text-ink">{item.value}</p>
               </div>
             ))}
-            <a href={`mailto:${profile.email}`} className="precision-card rounded-xl p-5 sm:col-span-2">
+            <div className="precision-card rounded-xl p-5 sm:col-span-2">
               <p className="font-mono text-xs font-semibold uppercase tracking-wider text-muted">CONTACT</p>
-              <p className="mt-3 text-base font-semibold text-signal">{profile.email}</p>
-            </a>
+              <div className="mt-3 flex flex-col gap-1">
+                <a href={`mailto:${profile.email}`} className="text-base font-semibold text-signal hover:underline">{profile.email}</a>
+                <a href={`tel:${profile.phone}`} className="text-base font-semibold text-signal hover:underline">{profile.phone}</a>
+              </div>
+            </div>
           </div>
         </div>
       </Section>

@@ -50,6 +50,14 @@ export function SiteFooter() {
               </li>
               <li>
                 <a
+                  href={`tel:${profile.phone}`}
+                  className="text-sm text-ink-dim transition-colors hover:text-signal"
+                >
+                  {profile.phone}
+                </a>
+              </li>
+              <li>
+                <a
                   href={profile.github}
                   target="_blank"
                   rel="noreferrer noopener"

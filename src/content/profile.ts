@@ -6,6 +6,7 @@ export const profile = {
   headline:
     "기능 구현에서 멈추지 않고, 문제를 분석하고 개선 결과를 수치로 검증하는 백엔드 개발자를 지향합니다.",
   email: "yse2196@gmail.com",
+  phone: "010-5054-5065",
   github: "https://github.com/yss9",
   githubLabel: "github.com/yss9",
 
