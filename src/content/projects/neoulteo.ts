@@ -9,16 +9,16 @@ export const neoulteo: Project = {
     "공공 관광 데이터, 지도, 사용자 기록, 커뮤니티, AI 추천을 하나로 묶은 여행 계획 웹 서비스입니다. 지역별 관광지를 지도에서 탐색하고 마음에 드는 장소를 저장해 일차별 여행 코스를 만들 수 있으며, Spring AI 기반 여행 도우미가 코스 피드백과 지역 추천을 제공합니다.",
   period: "2026.05 ~ 2026.06",
   team: "2인 팀",
-  role: "백엔드 · AI 연동 · 프론트엔드",
-  teamShort: "2인 팀 · BE/AI",
+  role: "백엔드 중심 · AI 연동 · 프론트 일부",
+  teamShort: "2인 팀 · BE/AI/FE",
 
   stack: [
     { group: "Backend", items: ["Spring Boot", "Spring Security", "Spring AI", "Spring Batch"] },
     { group: "Frontend", items: ["Vue 3", "Vite", "Vue Router"] },
     { group: "Data", items: ["MySQL", "MyBatis"] },
-    { group: "AI", items: ["Spring AI", "RAG", "Tool Calling", "GMS OpenAI", "FastAPI", "ChromaDB"] },
+    { group: "AI", items: ["Spring AI", "Hybrid RAG", "GMS OpenAI", "FastAPI", "ChromaDB (별도 실험)"] },
     { group: "Map / Data", items: ["Kakao Map API", "SVG Korea Map", "한국관광공사 TourAPI"] },
-    { group: "Auth", items: ["JWT", "Remember-me Cookie"] },
+    { group: "Auth", items: ["JWT", "localStorage / sessionStorage"] },
   ],
   stackFlat: ["Spring Boot", "Vue 3", "MySQL", "MyBatis", "Spring AI", "Spring Batch", "Kakao Map"],
 
@@ -53,12 +53,12 @@ export const neoulteo: Project = {
     },
   ],
 
-  highlights: ["Spring AI Tool Calling", "TourAPI 배치 동기화", "RAG 기반 검색 보강"],
+  highlights: ["Spring AI 여행 도우미", "TourAPI Spring Batch", "DB 기반 Hybrid RAG"],
 
   features: [
     {
       title: "회원과 인증",
-      desc: "JWT 기반 인증과 Spring Security 접근 제어, Remember-me 로그인 유지, 프로필 관리 및 회원 탈퇴",
+      desc: "Spring Security 기반 Stateless JWT 인증과 접근 제어를 구현했습니다. 로그인 유지 선택에 따라 프론트엔드가 토큰을 localStorage 또는 sessionStorage에 저장하며, 프로필 관리와 회원 탈퇴 흐름을 제공합니다.",
     },
     {
       title: "관광지 검색",
@@ -78,11 +78,11 @@ export const neoulteo: Project = {
     },
     {
       title: "AI 여행 도우미",
-      desc: "Spring AI 기반 챗봇이 Tool Calling과 RAG로 DB 관광지 정보를 근거 삼아 답하고, 여행 계획의 일정 강도·동선·카테고리 균형을 평가",
+      desc: "질문의 키워드를 기준으로 관광지·날씨·검색 도구를 애플리케이션에서 조합하고, 도구 결과와 DB 기반 RAG 문맥을 Spring AI ChatClient에 전달해 답변과 여행 계획 피드백을 생성합니다.",
     },
     {
       title: "관광지 데이터 배치",
-      desc: "Spring Batch로 TourAPI를 동기화하고 기존 DB와 비교해 신규·수정 관광지를 반영, 비교 결과를 PDF 리포트로 생성",
+      desc: "Spring Batch로 TourAPI 데이터를 수집하고 기존 DB와 비교해 신규·수정·유지 항목을 집계합니다. 저장 단계에서는 전체 수집 항목을 ON DUPLICATE KEY UPDATE 방식으로 upsert하고 비교 결과를 PDF 리포트로 생성합니다.",
     },
   ],
 
@@ -102,13 +102,13 @@ export const neoulteo: Project = {
     {
       id: "ai",
       label: "Spring AI",
-      role: "질문 의도 분석 후 관광지 검색 Tool·RAG 호출, 프롬프트 보강 후 최종 답변 생성",
+      role: "키워드 조건으로 관광지·날씨·검색 도구를 조합하고 DB 기반 RAG 문맥으로 프롬프트를 보강해 답변 생성",
       band: "server",
     },
     {
       id: "batch",
       label: "Spring Batch",
-      role: "TourAPI 콘텐츠 타입별 수집, 기존 DB와 비교해 변경분 반영 및 PDF 리포트 생성",
+      role: "TourAPI 콘텐츠 타입별 수집, 기존 DB와 비교·집계, 전체 항목 upsert 및 PDF 리포트 생성",
       band: "infra",
     },
     {
@@ -119,29 +119,29 @@ export const neoulteo: Project = {
     },
     {
       id: "external",
-      label: "TourAPI · Kakao Map · ChromaDB",
-      role: "공공 관광 데이터 수집, 지도 렌더링, RAG 문서 벡터 검색(FastAPI 서버)",
+      label: "TourAPI · Kakao Map · FastAPI/ChromaDB",
+      role: "공공 관광 데이터 수집과 지도 렌더링을 담당하며, FastAPI·ChromaDB는 Spring RAG와 분리된 실험 endpoint로 구성",
       band: "external",
     },
   ],
   architectureIntent:
-    "공공 데이터는 배치로 미리 동기화해두고, AI는 그 DB를 근거로만 답하도록 Tool Calling과 RAG를 붙였습니다.",
+    "공공 데이터는 배치로 미리 동기화하고, 애플리케이션이 질문에 필요한 도구와 DB 기반 RAG 문맥을 조합해 AI가 실제 관광지 데이터를 근거로 답하도록 구성했습니다.",
 
   troubleshooting: [],
 
   designNotes: [
     {
       id: "spring-ai-tool-calling",
-      title: "Spring AI Tool Calling · RAG 동작 설계",
+      title: "Spring AI 도구 오케스트레이션 · RAG 설계",
       problem:
-        "일반 지식만으로 답하는 챗봇은 프로젝트 DB에 있는 실제 관광지를 추천하지 못합니다. 질문을 받으면 필요한 도구를 먼저 호출하고, 그 결과를 근거로 답하도록 설계했습니다.",
+        "일반 지식만으로 답하는 챗봇은 프로젝트 DB에 있는 실제 관광지를 추천하지 못합니다. 애플리케이션이 질문의 키워드에 따라 필요한 도구를 선택하고, 조회 결과를 근거로 답하도록 설계했습니다.",
       steps: [
         { label: "1", title: "질문 입력", body: "사용자가 여행 관련 질문을 입력합니다." },
-        { label: "2", title: "의도 분석", body: "Spring AI가 질문 의도를 분석해 어떤 도구가 필요한지 판단합니다." },
+        { label: "2", title: "키워드 분석", body: "애플리케이션이 질문의 키워드를 검사해 날씨·웹 검색 도구의 실행 여부를 결정합니다." },
         {
           label: "3",
           title: "Tool / RAG 호출",
-          body: "필요한 경우 관광지 검색 Tool이나 RAG 검색을 호출합니다. 날씨 Tool과 외부 여행 검색 Tool은 확장 포인트로 열어 두었습니다.",
+          body: "관광지 검색과 RAG를 실행하고, 질문에 관련 키워드가 있을 때 날씨 또는 외부 검색 도구를 추가로 호출합니다.",
         },
         {
           label: "4",
@@ -151,7 +151,7 @@ export const neoulteo: Project = {
         { label: "5", title: "답변 생성", body: "GMS OpenAI 모델이 보강된 컨텍스트로 최종 답변을 생성합니다." },
       ],
       takeaway:
-        "모델이 알고 있는 일반 지식이 아니라 프로젝트 DB의 관광지 정보를 근거로 답하게 되어, 추천 결과를 서비스 안에서 바로 여행 계획으로 이어붙일 수 있습니다.",
+        "LLM에 도구 선택을 완전히 위임하지 않고 애플리케이션이 호출 조건을 통제해 실행 흐름을 예측 가능하게 유지하면서, 프로젝트 DB의 관광지 정보를 답변 근거로 제공했습니다.",
     },
     {
       id: "tourapi-batch",
@@ -160,8 +160,8 @@ export const neoulteo: Project = {
         "공공 관광 데이터는 수시로 갱신되지만 매 요청마다 외부 API를 호출하면 응답 지연과 호출 한도 문제가 생깁니다. 배치로 미리 동기화하는 구조를 택했습니다.",
       steps: [
         { label: "1", title: "수집", body: "Spring Batch로 콘텐츠 타입별 관광지 데이터를 수집합니다." },
-        { label: "2", title: "비교", body: "기존 DB 데이터와 API 응답을 비교해 신규·수정 대상을 가려냅니다." },
-        { label: "3", title: "반영", body: "변경분만 DB에 반영해 전체 재적재를 피합니다." },
+        { label: "2", title: "비교", body: "기존 DB 데이터와 API 응답을 비교해 신규·수정·유지 항목을 분류하고 집계합니다." },
+        { label: "3", title: "반영", body: "전체 수집 항목에 대해 ON DUPLICATE KEY UPDATE 방식으로 upsert해 truncate 후 재적재 없이 데이터를 갱신합니다." },
         {
           label: "4",
           title: "리포트",
@@ -208,13 +208,13 @@ export const neoulteo: Project = {
       id: "ai",
       label: "AI 여행 도우미",
       caption:
-        "질문을 넣으면 어떤 Tool이 호출되고 어떤 문서가 근거로 붙는지 단계별로 보여줍니다. 여행 계획 평가도 여기서 실행합니다.",
+        "질문 키워드에 따라 어떤 도구가 실행되고 어떤 DB 문서가 근거로 붙는지 단계별로 보여줍니다. 여행 계획 평가도 여기서 실행합니다.",
     },
     {
       id: "batch",
       label: "TourAPI 동기화",
       caption:
-        "Spring Batch가 API 응답과 DB를 비교해 신규·수정 건을 가려내고 리포트를 만드는 과정입니다.",
+        "Spring Batch가 API 응답과 DB를 비교·집계하고 전체 항목을 upsert한 뒤 리포트를 만드는 과정입니다.",
     },
   ],
 };

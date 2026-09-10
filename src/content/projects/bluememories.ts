@@ -15,11 +15,10 @@ export const bluememories: Project = {
   stack: [
     { group: "Backend", items: ["Spring Boot", "Spring MVC", "Spring Security", "JWT", "WebClient"] },
     { group: "Frontend", items: ["React", "styled-components"] },
-    { group: "Realtime", items: ["WebSocket"] },
     { group: "Data", items: ["MySQL", "AWS S3"] },
-    { group: "External APIs", items: ["Naver Clova Sentiment", "OpenAI API", "YouTube Data API"] },
+    { group: "AI / External", items: ["OpenAI API", "Ollama", "YouTube Data API", "Naver Clova (초기 버전)"] },
   ],
-  stackFlat: ["Spring Boot", "React", "MySQL", "WebClient", "JWT", "S3", "OpenAI", "Clova"],
+  stackFlat: ["Spring Boot", "React", "MySQL", "WebClient", "JWT", "S3", "OpenAI", "Ollama"],
 
   links: [{ label: "GitHub", href: "https://github.com/yss9/BlueMemories", kind: "github" }],
 
@@ -59,7 +58,7 @@ export const bluememories: Project = {
     height: 591,
   },
 
-  highlights: ["GPT 응답 JSON 계약화", "N:M 공유 일기장 확장", "AI 감정 분석 연동"],
+  highlights: ["AI 응답 JSON 계약·Fallback", "N:M 공유 일기장 확장", "DTO Projection 목록 조회"],
 
   features: [
     {
@@ -68,7 +67,7 @@ export const bluememories: Project = {
     },
     {
       title: "AI 감정 분석 연동",
-      desc: "Naver Clova Sentiment API를 활용하여 작성된 일기 텍스트의 감정 수치를 분석하고 저장",
+      desc: "초기에는 Naver Clova로 일기의 감정을 분석했으며, 이후 OpenAI 또는 Ollama를 설정으로 선택하고 JSON 감정 점수를 검증하는 구조로 사후 리팩터링했습니다.",
     },
     {
       title: "맞춤형 콘텐츠 추천",
@@ -81,6 +80,10 @@ export const bluememories: Project = {
     {
       title: "인증 및 파일 저장",
       desc: "JWT 기반 보안 인증 체계 구축 및 AWS S3를 연동한 이미지 업로드/관리 구조 최적화",
+    },
+    {
+      title: "커뮤니티 목록 DTO Projection",
+      desc: "Entity 조회 후 작성자·댓글·좋아요를 후처리하던 구조를 작성자 정보와 집계값을 직접 반환하는 DTO Projection으로 사후 리팩터링했습니다.",
     },
   ],
 
@@ -106,7 +109,7 @@ export const bluememories: Project = {
     {
       id: "ai",
       label: "AI APIs",
-      role: "Naver(감정 분석), OpenAI(키워드 생성), YouTube(콘텐츠 검색) 연동",
+      role: "OpenAI 또는 Ollama로 감정·추천 JSON을 생성하고 YouTube API로 콘텐츠 검색, 초기 버전에서는 Naver Clova 사용",
       band: "external",
     },
     {
@@ -117,14 +120,14 @@ export const bluememories: Project = {
     },
   ],
   architectureIntent:
-    "감정 분석·추천처럼 외부 응답에 의존하는 구간을 WebClient로 분리하고, 실패해도 사용자 흐름이 끊기지 않도록 설계했습니다.",
+    "감정 분석과 추천처럼 외부 응답에 의존하는 구간에 JSON 검증·제한된 재시도·기본값 fallback을 적용해 일기 저장 흐름이 중단되지 않도록 구성했습니다.",
 
   troubleshooting: [
     {
       id: "gpt-json-contract",
-      title: "GPT 응답 파싱 오류 해결",
+      title: "AI 응답 파싱 구조 사후 리팩터링",
       problem:
-        "정규식으로 GPT 응답을 억지로 파싱하던 구조를 JSON 계약 + DTO 검증 + fallback 구조로 바꿔 추천 실패를 줄였습니다.",
+        "2026년 포트폴리오 사후 리팩터링에서 정규식으로 AI 응답을 파싱하던 구조를 JSON 계약 + DTO 검증 + fallback 구조로 변경했습니다.",
       steps: [
         {
           label: "AS-IS",
@@ -161,7 +164,7 @@ export const bluememories: Project = {
         },
       ],
       takeaway:
-        "응답 형식이 흔들려도 추천 실패를 감지하고, 검증된 데이터만 저장하도록 AI 추천 처리 흐름의 안정성을 높였습니다.",
+        "현재 코드는 응답 형식이 흔들려도 추천 실패를 감지하고 검증된 데이터만 사용합니다. 이 개선은 2024년 프로젝트 당시 구현과 구분해 2026년 사후 리팩터링으로 표기합니다.",
     },
   ],
 
@@ -172,7 +175,7 @@ export const bluememories: Project = {
       id: "write",
       label: "일기 작성 · 감정 분석",
       caption:
-        "일기를 저장하면 Clova Sentiment가 긍정·중립·부정 confidence를 돌려주고, 그 값이 그대로 Diary 레코드에 저장됩니다.",
+        "일기를 저장하면 설정된 OpenAI 또는 Ollama 제공자가 JSON 감정 점수를 반환하고, 서버가 점수 범위를 검증한 뒤 Diary 레코드에 저장합니다.",
     },
     {
       id: "calendar",
@@ -196,7 +199,7 @@ export const bluememories: Project = {
       id: "community",
       label: "커뮤니티 목록",
       caption:
-        "JOIN Projection으로 최적화한 바로 그 화면입니다. 조회 방식을 전환하면 쿼리 수와 응답 크기가 어떻게 달라지는지 볼 수 있습니다.",
+        "작성자 정보와 댓글·좋아요 수를 DTO Projection으로 함께 조회하는 목록 화면입니다. 정량 성능 수치는 별도 측정 자료가 없어 표기하지 않습니다.",
     },
   ],
 };

@@ -58,7 +58,7 @@ export const saybridge: Project = {
     height: 655,
   },
 
-  highlights: ["WebRTC 검은 화면 해결", "WebSocket/STOMP 실시간 메시징", "QueryDSL 동적 강의 검색"],
+  highlights: ["WebRTC 협상 순서 안정화", "WebSocket/STOMP 실시간 메시징", "QueryDSL 동적 강의 검색"],
 
   features: [
     {
@@ -111,7 +111,7 @@ export const saybridge: Project = {
     {
       id: "storage",
       label: "MySQL · S3 · Redis",
-      role: "영속 데이터(MySQL), 파일(S3), 메시지 중계 확장성(Redis)을 고려한 데이터 설계",
+      role: "영속 데이터(MySQL), 강의·과제 파일(S3), 저장된 채팅 메시지 ID 목록(Redis)을 분리해 관리",
       band: "data",
     },
   ],
@@ -121,34 +121,34 @@ export const saybridge: Project = {
   troubleshooting: [
     {
       id: "webrtc-black-screen",
-      title: "WebRTC 검은 화면 해결",
+      title: "WebRTC 협상 순서 안정화",
       problem:
-        "Offer/Answer 교환은 정상이었지만 상대방 영상이 표시되지 않는 검은 화면 발생 — SDP 교환 성공 여부만으로는 미디어 스트림 연결 상태를 보장할 수 없음",
+        "미디어 스트림 준비, STOMP 연결, 상대방 입장과 Offer 생성이 서로 다른 비동기 흐름에서 실행되어 초기 연결 시점에 따라 영상 연결 상태가 달라졌습니다.",
       steps: [
         {
           label: "1",
           title: "문제 현상",
-          body: "WebSocket 시그널링 로그상 Offer/Answer 교환 정상 완료. 그러나 양측 화면 모두 검은 화면 유지, 미디어 스트림 수신 없음",
+          body: "Offer/Answer 시그널링은 진행됐지만 일부 연결에서 상대방 영상이 표시되지 않아, 시그널링 메시지와 미디어 트랙 준비 시점을 함께 추적했습니다.",
         },
         {
           label: "2",
           title: "원인 추적",
-          body: "브라우저 콘솔에서 SDP를 직접 복사해 상대방에게 수동 주입하는 테스트 진행. WebRTC 코어 연결 문제와 자동화 시그널링 로직 문제를 분리해 범위 축소",
+          body: "getUserMedia, addTrack, STOMP connect, 상대방 join, createOffer의 실행 순서를 나눠 확인해 자동 시그널링의 비동기 순서 문제로 범위를 좁혔습니다.",
         },
         {
           label: "3",
-          title: "실제 원인",
-          body: "SDP 로그 비교 결과, addTrack() 완료 전에 createOffer()가 먼저 실행됨. 자동 생성 SDP에서 m-line 누락 및 direction 비활성 상태 확인",
+          title: "확인한 구조적 문제",
+          body: "로컬 스트림 준비와 STOMP 연결이 분리되어 있고, 상대방 준비 여부와 무관하게 협상이 시작될 수 있어 PeerConnection 상태에 따라 연결 결과가 달라질 수 있었습니다.",
         },
         {
           label: "4",
           title: "해결",
-          body: "async/await로 미디어 트랙 등록 완료를 보장한 이후 Offer SDP를 생성하도록 실행 순서 제어",
+          body: "로컬 미디어 트랙을 먼저 PeerConnection에 등록한 뒤 STOMP를 연결하고, 상대방 join과 stable 상태를 확인한 경우에만 Offer를 생성하도록 순서를 재구성했습니다.",
         },
         {
           label: "5",
           title: "결과",
-          body: "영상 연결 정상화. SDP 생성 시점과 PeerConnection 상태를 함께 확인해야 하며, 시그널링 성공이 곧 미디어 연결 성공을 의미하지 않음을 학습",
+          body: "초기 협상 순서를 하나의 흐름으로 통제해 연결 시점에 따른 불안정성을 줄였습니다. 시그널링 성공 여부뿐 아니라 트랙 등록과 PeerConnection 상태를 함께 확인하도록 개선했습니다.",
         },
       ],
       code: [
@@ -188,7 +188,7 @@ case 'join':
         },
       ],
       takeaway:
-        "시그널링 성공이 곧 미디어 연결 성공은 아닙니다. SDP 생성 시점과 PeerConnection 상태를 함께 확인해야 합니다.",
+        "현재 저장소에서는 특정 SDP m-line 누락을 직접 입증할 로그가 없으므로 원인을 단정하지 않고, 코드와 이력으로 확인되는 미디어 준비·상대방 입장·Offer 생성 순서의 안정화에 초점을 맞췄습니다.",
     },
   ],
 

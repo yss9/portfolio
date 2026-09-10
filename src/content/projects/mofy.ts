@@ -4,13 +4,13 @@ export const mofy: Project = {
   slug: "mofy",
   no: "06",
   name: "MOFY",
-  tagline: "퍼스널 컬러 기반 패션 커뮤니티 · 중고 거래",
+  tagline: "색상 팔레트 추출과 메시지를 제공하는 패션 커뮤니티",
   summary:
-    "단순한 중고 의류 거래를 넘어, 사용자들이 소통하며 자신만의 패션 스타일을 발견할 수 있도록 돕는 커뮤니티형 중고 거래 플랫폼입니다. AI 이미지 분석으로 업로드한 사진에서 퍼스널 컬러 팔레트를 자동 추출해 스타일을 객관화합니다.",
+    "사용자가 패션 이미지를 공유하고 중고 의류를 거래하며 메시지로 소통할 수 있는 팀 프로젝트입니다. 업로드 이미지의 배경을 제거하고 주요 색상을 추출해 팔레트로 제공하는 이미지 처리 기능을 포함합니다.",
   period: "2023.09 ~ 2023.11",
   team: "팀 프로젝트",
-  role: "프론트엔드 · 백엔드",
-  teamShort: "팀 프로젝트 · FE/BE",
+  role: "사용자 메시지 기능 공동 구현",
+  teamShort: "팀 프로젝트 · 메시지",
 
   stack: [
     { group: "Frontend", items: ["React", "styled-components", "Ant Design", "Axios"] },
@@ -33,37 +33,47 @@ export const mofy: Project = {
     {
       src: "/projects/mofy/overview.png",
       alt: "MOFY 홈 화면에 패션 스타일 랭킹 4개, 김민서 프로필, 서울 날씨, 커뮤니티와 중고 마켓 최신 글이 채워진 모습",
-      caption: "서비스 홈 — 스타일 랭킹, 프로필, 날씨 추천과 최신 게시글을 한 화면에 구성",
+      caption: "서비스 홈 — 스타일 게시물, 프로필, 현재 날씨와 최신 커뮤니티·마켓 글을 한 화면에 구성",
     },
     {
       src: "/projects/mofy/color-palette.png",
       alt: "MOFY에서 원본 패션 이미지의 배경을 제거하고 의상에서 추출한 여섯 가지 주요 색상을 팔레트로 보여주는 화면",
-      caption: "컬러 팔레트 — 배경을 제거한 뒤 의상의 주요 색상을 추출해 비율별 팔레트로 제공",
+      caption: "컬러 팔레트 — 배경을 제거한 뒤 이미지의 주요 색상을 추출해 팔레트로 제공",
     },
   ],
 
-  highlights: ["Rembg → Extcolors 파이프라인", "TF-IDF 검색어 추천", "boardType 기반 게시판 분리"],
+  highlights: ["메시지 기능 공동 구현", "Rembg → Extcolors", "boardType 기반 게시판"],
 
   features: [
     {
-      title: "AI 퍼스널 컬러 팔레트 추출",
-      desc: "rembg로 배경을 제거하고 extcolors로 의상의 주요 색상을 추출해 시각적인 팔레트로 제공, 사용자가 자신의 옷이 어떤 컬러 톤인지 직관적으로 확인",
+      title: "사용자 메시지 기능",
+      desc: "사용자 간 메시지를 작성하고 목록과 내용을 확인하는 프론트엔드·백엔드 흐름을 팀원과 공동 구현했습니다.",
+      category: "나의 기여",
+    },
+    {
+      title: "이미지 색상 팔레트 추출",
+      desc: "rembg로 이미지 배경을 제거하고 Pillow·extcolors로 남은 영역의 주요 색상을 추출해 팔레트 이미지로 제공합니다. 퍼스널 컬러 계절형을 진단하는 기능은 아닙니다.",
+      category: "팀 전체 기능",
     },
     {
       title: "스타일 공유 (OOTD)",
-      desc: "데일리룩을 공유하고 좋아요·댓글로 소통하며 스타일 랭킹에 도전",
+      desc: "데일리룩 게시물을 공유하고 좋아요·댓글로 소통하는 패션 게시판",
+      category: "팀 전체 기능",
     },
     {
       title: "중고 거래",
       desc: "입지 않는 옷을 판매하거나 취향에 맞는 옷을 구매, boardType으로 일반 커뮤니티 글과 거래 글을 명확히 구분",
+      category: "팀 전체 기능",
     },
     {
-      title: "스마트 검색 및 추천",
-      desc: "Scikit-learn TF-IDF로 검색 기록을 분석해 유사 키워드를 추천하고, OpenWeatherMap과 연동해 날씨·기온에 맞는 옷차림 제안",
+      title: "연관 검색어와 현재 날씨",
+      desc: "전체 누적 검색어의 TF-IDF 코사인 유사도로 연관 검색어를 제공하고, OpenWeatherMap과 사용자 위치를 이용해 현재 기온과 날씨를 표시합니다.",
+      category: "팀 전체 기능",
     },
     {
       title: "사용자 관리 및 편의성",
       desc: "SimpleJWT 토큰 기반 인증과 키·몸무게·신발 사이즈 등 거래에 필요한 신체 정보 관리로 사이즈 실패 없는 거래 지원",
+      category: "팀 전체 기능",
     },
   ],
 
@@ -77,7 +87,7 @@ export const mofy: Project = {
     {
       id: "drf",
       label: "Django REST Framework",
-      role: "REST API ViewSet, SimpleJWT 인증, ORM 기반 DB 제어",
+      role: "APIView·함수형 View 기반 REST API, SimpleJWT 인증, ORM 기반 DB 제어",
       band: "server",
     },
     {
@@ -89,7 +99,7 @@ export const mofy: Project = {
     {
       id: "recsys",
       label: "Scikit-learn",
-      role: "TF-IDF / Cosine Similarity 기반 검색어 및 스타일 추천",
+      role: "전체 누적 검색어의 TF-IDF / Cosine Similarity 기반 연관 검색어 제공",
       band: "external",
     },
     {
@@ -101,19 +111,19 @@ export const mofy: Project = {
     {
       id: "weather",
       label: "OpenWeatherMap",
-      role: "현재 위치의 날씨·기온 조회 후 옷차림 추천에 반영",
+      role: "현재 위치의 날씨·기온을 조회해 홈 화면에 표시",
       band: "external",
     },
   ],
   architectureIntent:
-    "이미지 처리와 추천 연산을 API 뒤로 감춰, 프론트는 결과 팔레트와 추천 목록만 받아 렌더링하도록 나눴습니다.",
+    "Django API가 게시판·메시지·이미지 처리·검색어 계산을 담당하고, React는 API 결과와 날씨 정보를 사용자 화면에 렌더링하도록 구성했습니다.",
 
   troubleshooting: [],
 
   designNotes: [
     {
       id: "color-pipeline",
-      title: "퍼스널 컬러 추출 파이프라인",
+      title: "이미지 색상 팔레트 추출 파이프라인",
       problem:
         "사진을 그대로 색상 추출에 넣으면 배경색이 상위 팔레트를 차지해 정작 의상 색이 밀립니다. 배경 제거를 전처리 단계로 분리했습니다.",
       steps: [
@@ -122,16 +132,16 @@ export const mofy: Project = {
         {
           label: "3",
           title: "색상 추출",
-          body: "extcolors로 남은 영역의 주요 색상과 비율을 뽑아냅니다.",
+          body: "extcolors로 남은 영역의 주요 색상 목록을 추출합니다.",
         },
         {
           label: "4",
           title: "팔레트 구성",
-          body: "추출된 색상 데이터를 비율 순으로 정렬해 시각적 팔레트로 제공합니다.",
+          body: "추출된 색상을 동일한 폭의 색상 블록으로 그려 시각적 팔레트 이미지로 제공합니다.",
         },
       ],
       takeaway:
-        "전처리를 한 단계 앞에 두는 것만으로 추출 품질이 크게 달라졌습니다. 이미지 파이프라인은 단계를 나눠 각각 검증하는 편이 디버깅에 유리했습니다.",
+        "이 기능은 이미지의 주요 색상을 보여주는 팔레트 추출이며, 개인의 퍼스널 컬러나 계절형을 판정하는 분석 기능으로 설명하지 않습니다.",
     },
     {
       id: "boardtype",
@@ -142,7 +152,7 @@ export const mofy: Project = {
         {
           label: "선택",
           title: "단일 테이블 + 타입 컬럼",
-          body: "Board에 boardType(SmallInteger)을 두고 자유·패션·거래를 구분했습니다. 거래글만 쓰는 price·state·address는 같은 테이블에 nullable로 두었습니다.",
+          body: "Board에 boardType(SmallInteger)을 두고 자유·패션·거래를 구분했습니다. price와 state는 기본값을 가진 공통 필드이고 address는 선택 필드로 두었습니다.",
         },
         {
           label: "이유",
@@ -152,7 +162,7 @@ export const mofy: Project = {
         {
           label: "대가",
           title: "타입별 필드가 비게 됨",
-          body: "거래 전용 필드가 다른 타입에서는 비어 있게 됩니다. 게시판 규모가 커지면 타입별 테이블 분리를 검토할 지점입니다.",
+          body: "게시판 타입별로 사용하지 않는 필드와 기본값이 함께 존재합니다. 타입별 속성이 늘어나면 별도 테이블 또는 하위 타입 분리를 검토할 지점입니다.",
         },
       ],
       takeaway:
@@ -165,9 +175,9 @@ export const mofy: Project = {
   demo: [
     {
       id: "palette",
-      label: "퍼스널 컬러 분석",
+      label: "컬러 팔레트",
       caption:
-        "이미지를 고르면 배경 제거 → 색상 추출 파이프라인이 단계별로 진행되고, 비율 순 팔레트가 만들어집니다.",
+        "이미지를 고르면 배경 제거 → 주요 색상 추출 파이프라인이 진행되고 동일한 폭의 색상 블록으로 팔레트가 만들어집니다.",
     },
     {
       id: "style",
@@ -184,7 +194,7 @@ export const mofy: Project = {
       id: "search",
       label: "검색 · 추천",
       caption:
-        "검색어를 넣으면 TF-IDF 코사인 유사도로 유사 키워드를 추천하고, 날씨에 맞는 옷차림도 함께 제안합니다.",
+        "검색어를 넣으면 전체 누적 검색어의 TF-IDF 코사인 유사도로 연관 키워드를 제공합니다. 홈에서는 현재 위치의 날씨를 별도로 표시합니다.",
     },
     {
       id: "profile",

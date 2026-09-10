@@ -6,7 +6,7 @@ export const awsDeploy: Project = {
   name: "AWS Deploy",
   tagline: "풀스택 애플리케이션 배포 자동화 파이프라인",
   summary:
-    "백엔드는 Docker 컨테이너화하여 EC2에서 실행하고, 프론트엔드는 S3와 CloudFront로 정적 배포를 수행했습니다. GitHub Actions를 통해 전체 배포 파이프라인을 자동화하고, Route 53과 ACM으로 도메인·인증서를 연결했습니다.",
+    "백엔드는 Docker 이미지로 빌드해 EC2에 배포하고, 프론트엔드는 S3와 CloudFront로 정적 배포했습니다. GitHub Actions 워크플로로 두 배포 경로를 자동화했으며, Route 53·ACM·ALB·RDS 구성은 AWS 콘솔에서 진행하고 저장소 문서에 아키텍처로 기록했습니다.",
   period: "2025.09",
   team: "1인 구축",
   role: "인프라 설계 및 배포 자동화 구축",
@@ -39,7 +39,7 @@ export const awsDeploy: Project = {
     height: 827,
   },
 
-  highlights: ["Mixed Content 해결", "RDS 연결 오류 추적", "CI/CD SSH Timeout 분석"],
+  highlights: ["S3·CloudFront 자동 배포", "DockerHub·EC2 자동 배포", "AWS 네트워크 장애 분석"],
 
   features: [
     {
@@ -52,15 +52,15 @@ export const awsDeploy: Project = {
     },
     {
       title: "Database 연동",
-      desc: "EC2 서버와 RDS PostgreSQL을 Security Group으로 격리해 연동",
+      desc: "Node.js 서버가 환경 변수로 RDS PostgreSQL 연결 정보를 주입받고 SSL 옵션을 사용하도록 구성",
     },
     {
       title: "HTTPS 구성",
-      desc: "CloudFront/ALB + ACM 인증서를 활용해 외부 요청 구간 전체에 HTTPS 적용",
+      desc: "HTTPS 프론트엔드에서 HTTP API가 차단되는 문제를 해결하기 위해 ALB와 ACM을 사용하는 HTTPS API 구조를 AWS 콘솔에서 구성",
     },
     {
       title: "DNS 연결",
-      desc: "Route 53으로 도메인을 연결하고 ACM 인증서를 리전별로 적용",
+      desc: "Route 53과 ACM을 이용한 도메인·인증서 연결을 구성하고 저장소 README에 전체 요청 경로를 문서화",
     },
   ],
 
@@ -86,13 +86,13 @@ export const awsDeploy: Project = {
     {
       id: "ec2",
       label: "EC2 + Docker",
-      role: "Node.js 서버를 컨테이너로 실행, Security Group으로 ALB에서 오는 트래픽만 허용",
+      role: "Node.js 서버를 컨테이너로 실행하고 GitHub Actions의 SSH 배포 대상으로 사용",
       band: "server",
     },
     {
       id: "rds",
       label: "RDS PostgreSQL",
-      role: "EC2 Security Group에서만 5432 접근을 허용하도록 격리",
+      role: "Node.js 서버의 영속 데이터 저장소로 사용하고 환경 변수와 SSL 옵션으로 연결",
       band: "data",
     },
     {
@@ -103,7 +103,7 @@ export const awsDeploy: Project = {
     },
   ],
   architectureIntent:
-    "정적 리소스와 동적 API의 진입 경로를 분리하고, 각 구간마다 인증서와 Security Group을 따로 두어 외부 노출 면을 좁혔습니다.",
+    "정적 리소스는 S3·CloudFront, 동적 API는 ALB·EC2, 데이터는 RDS로 경로를 분리했습니다. GitHub Actions 코드는 저장소에서 확인할 수 있고 AWS 리소스 연결은 콘솔 구성과 README 아키텍처로 관리했습니다.",
 
   troubleshooting: [
     {
@@ -120,7 +120,7 @@ export const awsDeploy: Project = {
         {
           label: "해결",
           title: "ALB + ACM 인증서 연결",
-          body: "ALB를 앞에 두고 ACM 인증서를 연결해 Backend API Endpoint를 HTTPS로 통일했습니다.",
+          body: "AWS 콘솔에서 ALB와 ACM 인증서를 연결해 Backend API Endpoint를 HTTPS로 구성하고, 프론트엔드는 배포 Secret의 API URL을 주입받도록 변경했습니다.",
         },
       ],
       takeaway:
@@ -128,48 +128,48 @@ export const awsDeploy: Project = {
     },
     {
       id: "rds-500",
-      title: "500 Internal Server Error — RDS 연결 실패",
+      title: "RDS 연결 오류 — 환경 변수와 SSL 확인",
       problem:
-        "배포 직후 서버는 정상 실행됐지만 모든 API 요청에서 500 오류가 발생했습니다.",
+        "배포 환경에서 PostgreSQL 연결 오류가 발생해 애플리케이션 설정과 AWS 네트워크 설정을 구분해 확인했습니다.",
       steps: [
         {
           label: "원인",
-          title: "Security Group · Secrets · SSL",
-          body: "RDS Security Group이 설정되지 않았고, Secrets 값 오류로 잘못된 DB URL이 생성되었으며, SSL 옵션도 불일치했습니다.",
+          title: "연결 설정 범위 분리",
+          body: "저장소에서 확인 가능한 원인은 런타임 환경 변수와 PostgreSQL SSL 옵션입니다. Security Group과 Secrets의 당시 값은 저장소에 남지 않아 코드만으로 장애 원인을 단정하지 않았습니다.",
         },
         {
           label: "해결",
           title: "로그 기준 단계적 확인",
-          body: "docker logs로 서버 오류를 추적한 뒤 RDS 접근을 허용하고, Secrets를 검증해 DB 연결 정보와 SSL 옵션을 수정했습니다.",
+          body: "docker logs를 기준으로 DB 환경 변수와 SSL 연결 옵션을 확인하고 서버의 PostgreSQL Pool 설정에 SSL 옵션을 추가했습니다. AWS 콘솔 설정 변경은 별도 운영 작업으로 구분했습니다.",
         },
       ],
       takeaway:
-        "로그를 기준으로 네트워크 → 인증 → DB 연결 순서로 원인의 범위를 좁혀 해결했습니다.",
+        "코드로 확인되는 SSL 설정과 당시 콘솔에서 수행한 네트워크 작업을 구분해 기록해야 재현 가능한 트러블슈팅이 됩니다.",
     },
     {
       id: "cicd-ssh-timeout",
-      title: "CI/CD SSH Timeout — Runner IP 변동",
+      title: "CI/CD SSH Timeout — 대안 검토",
       problem:
         "GitHub Actions 배포 단계에서 EC2 SSH 연결 시간 초과가 발생했습니다.",
       steps: [
         {
           label: "원인",
-          title: "Runner 공인 IP 변경",
-          body: "GitHub Actions Runner의 공인 IP가 매번 달라지는데, EC2 Security Group은 특정 IP만 허용하도록 되어 있어 접근이 차단됐습니다.",
+          title: "Runner 네트워크 변동 가능성",
+          body: "GitHub-hosted Runner는 고정 공인 IP를 보장하지 않으므로 특정 IP만 허용하는 EC2 접근 정책과 충돌할 수 있습니다. 당시 연결 로그가 저장소에는 남아 있지 않아 코드만으로 원인을 확정하지 않았습니다.",
         },
         {
           label: "해결",
-          title: "접근 정책 재검토",
-          body: "배포 서버 접근 정책을 재검토하고 고정 접근 환경을 검토했으며, AWS SSM 기반 배포 방식을 대안으로 고려했습니다.",
+          title: "현재 방식과 대안",
+          body: "현재 워크플로는 GitHub-hosted Runner에서 SSH로 배포합니다. 고정 접근이 필요한 경우 self-hosted Runner 또는 AWS SSM으로 전환하는 방안을 검토했습니다.",
         },
       ],
       takeaway:
-        "Runner IP가 고정되지 않는 환경에서는 네트워크 변동성을 고려한 배포 구조가 필요합니다.",
+        "SSM은 검토한 대안이며 현재 구현된 방식은 아닙니다. 장애 로그를 추가로 확보하기 전에는 Runner IP를 확정 원인으로 단정하지 않습니다.",
     },
   ],
 
   troubleshootingNote:
-    "브라우저 오류 → 네트워크 경로 → 로드밸런서/인증서 → 서버 로그 → DB 연결. 추측으로 설정을 변경하기보다 실행 경로와 로그를 기준으로 원인의 범위를 단계적으로 좁혀 확인했습니다.",
+    "GitHub Actions 워크플로와 애플리케이션 연결 코드는 저장소에서 검증할 수 있습니다. Route 53·ACM·ALB·Security Group의 실제 상태와 당시 장애 로그는 IaC로 관리되지 않아 AWS 콘솔 구성 경험으로 구분해 설명합니다.",
 
   performance: [],
 

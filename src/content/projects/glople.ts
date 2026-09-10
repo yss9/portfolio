@@ -9,8 +9,8 @@ export const glople: Project = {
     "사용자 성향(MBTI, 연령, 성별)을 기반으로 맞춤형 여행지와 루트를 제안하는 커뮤니티 서비스입니다. 여행자는 자신의 성향에 맞는 여행지를 추천받고, 해당 지역의 전문가인 '글로플러'와 매칭되어 개인화된 여행 경험을 제공받습니다.",
   period: "2024.03 ~ 2024.11",
   team: "7인 (개발자 5인 + 디자인 2인)",
-  role: "팀장 · 추천 로직 구현 및 프론트 일부 개발",
-  teamShort: "7인 팀 · 팀장",
+  role: "추천 로직 구현 · 프론트 일부 개발",
+  teamShort: "7인 팀 · 추천/FE",
 
   stack: [
     { group: "Backend", items: ["Spring Boot", "Spring Security", "Java 17"] },
@@ -66,16 +66,16 @@ export const glople: Project = {
     height: 719,
   },
 
-  highlights: ["MBTI 추천 27.9ms → 7.21ms", "Bitmask + Top-K 도입", "7인 팀 리딩"],
+  highlights: ["Bitmask 기반 후보 필터링", "PriorityQueue Top-K", "WebSocket 실시간 채팅"],
 
   features: [
     {
       title: "개인 맞춤형 추천",
-      desc: "MBTI 4축과 인구통계 정보를 벡터화하여 코사인 유사도 기반 맞춤형 루트 추천",
+      desc: "나이·성별·MBTI 유형을 수치 벡터로 변환하고 코사인 유사도를 계산해 유사 사용자의 여행 루트를 추천",
     },
     {
       title: "키워드 필터링",
-      desc: "사용자가 선택한 관심 키워드를 여행지 설명과 매칭해 관련 여행지를 정렬",
+      desc: "100개 이상의 키워드를 두 개의 63-bit mask로 변환하고 MySQL BIT_COUNT로 공통 키워드가 많은 여행지를 정렬",
     },
     {
       title: "AI 대화형 챗봇",
@@ -86,8 +86,8 @@ export const glople: Project = {
       desc: "WebSocket을 활용하여 사용자 간 매칭 및 채팅 흐름 구현",
     },
     {
-      title: "팀 리딩 및 관리",
-      desc: "5인 규모 팀의 일정 관리, 기능 조율, 발표 준비 등 프로젝트 진행 총괄",
+      title: "2026년 추천 로직 사후 리팩터링",
+      desc: "프로젝트 종료 후 전체 조회·정렬 구조를 DB 후보 필터링과 PriorityQueue Top-K 방식으로 개선했습니다. 당시 구현과 구분해 사후 리팩터링으로 공개합니다.",
     },
   ],
 
@@ -131,17 +131,17 @@ export const glople: Project = {
       id: "recommend-analysis",
       title: "추천 로직 병목 분석",
       problem:
-        "추천 결과의 정확도와 응답 속도가 함께 문제였습니다. 정확도·문자열 탐색·정렬 비용 세 축으로 나눠 원인을 분리했습니다.",
+        "프로젝트 종료 후 코드를 다시 검토하면서 전체 데이터 조회, 반복 문자열 탐색, 전체 정렬이 추천 범위보다 많은 작업을 수행하는 문제를 확인했습니다.",
       steps: [
         {
           label: "1",
-          title: "추천 정확도 문제 (Accuracy)",
-          body: "초기 설계는 사용자를 16가지 MBTI 유형 중 하나로 분류했습니다. 동일 MBTI 안의 취향 차이와 세부 성향 유사도를 충분히 반영하기 어려웠습니다. → MBTI 4축 + 인구통계 벡터화 및 코사인 유사도 도입",
+          title: "기존 추천 흐름 확인",
+          body: "나이·성별·MBTI 값을 수치 벡터로 변환해 코사인 유사도를 계산했지만, 모든 사용자를 조회하고 전체 결과를 정렬한 뒤 상위 12건만 사용했습니다.",
         },
         {
           label: "2",
           title: "Keyword 추천 병목 (String Search)",
-          body: "전체 데이터를 조회(findAll)한 뒤 Java에서 문자열 탐색(contains)을 반복했습니다. 정렬 과정에서도 매칭 키워드 수 계산이 중복되었습니다. → keyword_mask 후보 필터링 + Java bitCount 점수 계산",
+          body: "전체 데이터를 조회(findAll)한 뒤 Java에서 문자열 탐색(contains)을 반복했습니다. → keyword_mask 후보 필터링과 MySQL BIT_COUNT 점수 계산으로 변경했습니다.",
         },
         {
           label: "3",
@@ -150,7 +150,7 @@ export const glople: Project = {
         },
       ],
       takeaway:
-        "필요한 결과가 상위 N건뿐이라면 전체를 계산하고 정렬하는 구조 자체가 비용입니다. 후보군을 먼저 줄이고 Top-K만 뽑는 방향으로 재설계했습니다.",
+        "필요한 결과가 상위 N건뿐이라면 전체를 계산하고 정렬할 필요가 없습니다. 2026년 사후 리팩터링에서 후보군을 먼저 줄이고 Top-K만 유지하는 방향으로 재설계했습니다.",
     },
   ],
 
@@ -159,7 +159,7 @@ export const glople: Project = {
       id: "keyword-bitmask",
       title: "Keyword 추천 — 문자열 탐색을 비트 연산으로",
       summary:
-        "전체 여행지를 조회한 뒤 Java에서 문자열 포함 검사를 반복하던 구조를, DB 단계에서 비트마스크로 후보를 거르고 bitCount로 점수를 계산하는 방식으로 바꿨습니다.",
+        "2026년 사후 리팩터링에서 전체 여행지를 조회한 뒤 Java 문자열 포함 검사를 반복하던 구조를, DB 단계에서 두 개의 비트마스크로 후보를 거르고 BIT_COUNT로 점수를 계산하는 방식으로 변경했습니다.",
       before: {
         label: "Before: 전체 조회 후 Java 문자열 탐색",
         code: {
@@ -178,25 +178,23 @@ export const glople: Project = {
         label: "After: Bitmask 필터링 + bitCount 점수",
         code: {
           language: "sql",
-          code: `-- DB에서 후보군만 추림
-WHERE (keyword_mask & :mask) <> 0
-
--- 점수는 비트 개수로 즉시 계산
-score = bitCount(keyword_mask & mask)`,
+          code: `-- 두 개의 63-bit mask로 후보와 공통 키워드 수 계산
+WHERE (keyword_mask_low & :maskLow) <> 0
+   OR (keyword_mask_high & :maskHigh) <> 0
+ORDER BY BIT_COUNT(keyword_mask_low & :maskLow)
+       + BIT_COUNT(keyword_mask_high & :maskHigh) DESC
+LIMIT :limit`,
         },
-        notes: ["후보군을 DB에서 선별", "점수 계산이 비교 1회당 상수 시간"],
+        notes: ["후보군과 점수를 DB에서 계산", "애플리케이션에는 상위 결과만 반환"],
       },
-      metrics: [
-        { label: "Keyword 추천 Avg", before: "15.7ms", after: "8.92ms", delta: "-43.3%", better: "lower" },
-        { label: "Keyword 추천 p95", before: "20ms", after: "10ms", delta: "-50.0%", better: "lower" },
-      ],
-      condition: "측정 도구: JMeter",
+      metrics: [],
+      condition: "코드 Before/After는 Git 이력으로 확인했습니다. 재현 가능한 JMeter 결과 파일과 측정 로그가 없어 정량 수치는 표기하지 않습니다.",
     },
     {
       id: "mbti-topk",
       title: "MBTI 추천 — 전체 정렬을 Top-K 추출로",
       summary:
-        "상위 12건만 필요한데도 전체 사용자에 대해 벡터 변환과 유사도 계산을 수행하고 전체 정렬 후 limit을 적용하고 있었습니다. 후보군을 먼저 좁히고 PriorityQueue로 Top-K만 유지하도록 바꿨습니다.",
+        "2026년 사후 리팩터링에서 상위 12건만 필요한데도 전체 사용자를 계산·정렬하던 구조를, 후보군을 먼저 좁히고 PriorityQueue로 Top-K만 유지하도록 변경했습니다.",
       before: {
         label: "Before: 전체 계산 및 정렬",
         code: {
@@ -218,11 +216,8 @@ var topScores = new PriorityQueue<Score>(12);
         },
         notes: ["성별·연령으로 후보군 선축소", "힙 크기를 12로 고정해 정렬 비용 제거"],
       },
-      metrics: [
-        { label: "MBTI 추천 Avg", before: "27.9ms", after: "7.21ms", delta: "-74.2%", better: "lower" },
-        { label: "MBTI 추천 p95", before: "33ms", after: "9ms", delta: "-72.7%", better: "lower" },
-      ],
-      condition: "측정 도구: JMeter",
+      metrics: [],
+      condition: "코드 Before/After는 Git 이력으로 확인했습니다. 데이터 규모·반복 횟수·p95를 포함한 벤치마크가 없어 구조적 개선만 설명합니다.",
     },
   ],
 
@@ -231,7 +226,7 @@ var topScores = new PriorityQueue<Score>(12);
       id: "mbti-test",
       label: "MBTI 진단",
       caption:
-        "16가지 유형으로 분류하는 대신 4축을 각각 연속값으로 저장합니다. 응답을 바꾸면 아래 벡터가 바로 갱신됩니다.",
+        "나이·성별·각 MBTI 문자를 수치 벡터로 변환합니다. MBTI 문자는 연속형 점수가 아니라 유형별 이진값으로 사용합니다.",
     },
     {
       id: "recommend",

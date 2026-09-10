@@ -76,6 +76,19 @@ export function MetricPanel({
   metrics: Metric[];
   condition?: string;
 }) {
+  if (metrics.length === 0) {
+    return (
+      <div className="precision-card rounded-xl p-5 sm:p-6">
+        <h4 className="font-mono text-xs uppercase tracking-[0.16em] text-faint">
+          Verification
+        </h4>
+        <p className="mt-3 font-mono text-[13px] leading-6 text-faint">
+          {condition ?? "정량 측정 자료가 없어 코드 구조의 Before/After만 설명합니다."}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="precision-card rounded-xl p-5 sm:p-6">
       <div className="flex items-center justify-between gap-3 border-b border-line pb-3">

@@ -9,8 +9,8 @@ export const potner: Project = {
     "Flutter 앱에서 식물의 토양 수분·조도·온습도와 성장 기록을 확인하고, Spring Boot 서버와 MQTT 장치 제어를 통해 급수·환기·일조량 관리를 자동화한 IoT 서비스입니다. 사진 일기와 전후 비교로 돌봄의 결과도 시간 흐름에 따라 확인할 수 있습니다.",
   period: "2026.07 ~ 2026.08",
   team: "6인 팀",
-  role: "App(Frontend) · Backend · Infra",
-  teamShort: "6인 팀 · FE/BE/Infra",
+  role: "Flutter App · Backend · Infra",
+  teamShort: "6인 팀 · App/BE/Infra",
 
   stack: [
     { group: "Application", items: ["Flutter", "Riverpod", "go_router", "Dio"] },
@@ -111,7 +111,7 @@ export const potner: Project = {
     },
     {
       title: "Jenkins 멀티브랜치 CI/CD와 자동 롤백",
-      desc: "Flutter 파이프라인에 의존성 설치→정적 분석→테스트→debug APK/App Bundle 빌드를 구성하고 산출물을 보관했습니다. 서버는 Gradle 단위·통합 테스트, 추론 가중치 검증, Docker 이미지 빌드, 브랜치별 임시 DB 기동 검증 후 master에서만 배포하도록 구성했으며, Health Check 실패 시 이전 이미지로 자동 롤백하도록 구현했습니다.",
+      desc: "Flutter 파이프라인에 의존성 설치→정적 분석→테스트→debug APK/App Bundle 빌드를 구성하고 산출물을 보관했습니다. 서버는 Gradle 단위·통합 테스트, 추론 가중치 검증, Docker 이미지 빌드, 브랜치별 임시 DB 기동 검증 후 master에서만 배포하도록 구성했으며, Health Check 실패 시 이전 이미지로 자동 롤백하도록 구현했습니다. 공개 저장소에서는 민감한 배포 인프라 설정을 제외했습니다.",
       category: "Infra",
     },
   ],
@@ -184,8 +184,8 @@ export const potner: Project = {
     ],
     verification: "급수량 미설정, 스테이션 물 부족, 중복 응답, 장치 불일치, 다른 자동 체인의 응답, 기능 비활성화, 명령 실패와 지연 응답을 단위 테스트로 검증했습니다. 이후 같은 구조를 목표 광량 확보, 과습 시 자동 송풍, 성장 사진 촬영으로 확장했습니다. 이 과정에서 실제 하드웨어 제어는 성공 경로보다 멱등성·상태 추적·실패 시 안전한 중단을 먼저 설계해야 한다는 점을 배웠습니다.",
     codeReferences: [
-      { label: "자동 급수 이벤트 체인", file: "AutoWateringOrchestrator.java", line: 49 },
-      { label: "DB 커밋 후 MQTT 발행", file: "DeviceCommandPublishListener.java", line: 23 },
+      { label: "자동 급수 이벤트 체인", file: "AutoWateringOrchestrator.java", line: 81 },
+      { label: "DB 커밋 후 MQTT 발행", file: "DeviceCommandPublishListener.java", line: 31 },
       { label: "중복 명령 차단", file: "DeviceCommandService.java", line: 100 },
       { label: "명령 결과 검증", file: "DeviceCommandResultService.java", line: 27 },
       { label: "MQTT 센서 메시지 검증", file: "SensorTelemetryMessageProcessor.java", line: 23 },
