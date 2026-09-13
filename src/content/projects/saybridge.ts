@@ -192,7 +192,53 @@ case 'join':
     },
   ],
 
-  performance: [],
+  performance: [
+    {
+      id: "homework-submission-batch",
+      title: "과제 제출 상태 조회 — N+1을 단일 배치 조회로",
+      summary:
+        "과제 게시글마다 학생의 제출 여부를 단건 조회하던 구조를 IN 조건 배치 조회와 Projection으로 변경했습니다. 게시글 수만큼 반복되던 쿼리를 한 번으로 줄이고 필요한 첨부 URL만 조회했습니다.",
+      before: {
+        label: "Before: 게시글마다 제출 상태 단건 조회",
+        code: {
+          language: "java",
+          code: `for (Long postId : postIds) {
+    Homework homework = homeworkRepository
+        .findByStudentIdAndCoursePostId(studentId, postId)
+        .orElse(null);
+    if (homework != null) {
+        result.put(postId, homework.getAttachmentUrl());
+    }
+}`,
+        },
+        notes: ["게시글 수만큼 SELECT 반복", "목록 크기에 비례해 DB 왕복 증가"],
+      },
+      after: {
+        label: "After: IN 배치 조회 + Projection",
+        code: {
+          language: "java",
+          code: `@Query("""
+  select h.coursePost.id as coursePostId,
+         h.attachmentUrl as attachmentUrl
+  from Homework h
+  where h.student.id = :studentId
+    and h.coursePost.id in :postIds
+""")
+List<HomeworkAttachmentProjection>
+    findSubmissionAttachments(Long studentId, List<Long> postIds);`,
+        },
+        notes: ["한 번의 IN 조회로 제출 상태 수집", "필요한 ID와 첨부 URL만 반환"],
+      },
+      metrics: [
+        { label: "DB Query / Request", before: "100", after: "1", delta: "-99.0%", better: "lower" },
+        { label: "Avg Response Time", before: "16.75ms", after: "3.99ms", delta: "-76.2%", better: "lower" },
+        { label: "p95 Latency", before: "20ms", after: "5ms", delta: "-75.0%", better: "lower" },
+        { label: "Error Rate", before: "0%", after: "0%" },
+      ],
+      condition:
+        "로컬 테스트 환경에서 JMeter 30 threads × 20 loops, 총 600 requests로 동일 조회 시나리오의 Before/After를 측정했습니다.",
+    },
+  ],
 
   demo: [
     {

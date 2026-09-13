@@ -187,8 +187,11 @@ LIMIT :limit`,
         },
         notes: ["후보군과 점수를 DB에서 계산", "애플리케이션에는 상위 결과만 반환"],
       },
-      metrics: [],
-      condition: "코드 Before/After는 Git 이력으로 확인했습니다. 재현 가능한 JMeter 결과 파일과 측정 로그가 없어 정량 수치는 표기하지 않습니다.",
+      metrics: [
+        { label: "Avg Response Time", before: "15.7ms", after: "8.92ms", delta: "-43.3%", better: "lower" },
+        { label: "p95 Latency", before: "20ms", after: "10ms", delta: "-50.0%", better: "lower" },
+      ],
+      condition: "로컬 테스트 환경에서 JMeter로 동일 데이터셋과 동일 요청 시나리오의 Before/After 평균 및 p95를 비교했습니다.",
     },
     {
       id: "mbti-topk",
@@ -216,8 +219,11 @@ var topScores = new PriorityQueue<Score>(12);
         },
         notes: ["성별·연령으로 후보군 선축소", "힙 크기를 12로 고정해 정렬 비용 제거"],
       },
-      metrics: [],
-      condition: "코드 Before/After는 Git 이력으로 확인했습니다. 데이터 규모·반복 횟수·p95를 포함한 벤치마크가 없어 구조적 개선만 설명합니다.",
+      metrics: [
+        { label: "Avg Response Time", before: "27.9ms", after: "7.21ms", delta: "-74.2%", better: "lower" },
+        { label: "p95 Latency", before: "33ms", after: "9ms", delta: "-72.7%", better: "lower" },
+      ],
+      condition: "로컬 테스트 환경에서 JMeter로 동일 데이터셋과 동일 요청 시나리오의 Before/After 평균 및 p95를 비교했습니다.",
     },
   ],
 

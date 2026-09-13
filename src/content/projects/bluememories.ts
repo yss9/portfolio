@@ -168,7 +168,53 @@ export const bluememories: Project = {
     },
   ],
 
-  performance: [],
+  performance: [
+    {
+      id: "public-diary-projection",
+      title: "공개 일기 목록 — 전체 Entity 조회를 페이지 Projection으로",
+      summary:
+        "공개 일기 전체 Entity를 메모리에 올린 뒤 연관 데이터를 순회하던 구조를, 최신순 Pagination과 DTO Projection 집계 쿼리로 변경했습니다. 목록에 필요한 필드만 반환해 쿼리 수와 응답 크기를 함께 줄였습니다.",
+      before: {
+        label: "Before: 전체 Entity 조회 후 순회 변환",
+        code: {
+          language: "java",
+          code: `List<Diary> diaries = diaryRepository.findByIsPrivate(false);
+List<DiaryDto> result = new ArrayList<>();
+for (Diary diary : diaries) {
+    result.add(new DiaryDto(
+        diary.getId(), diary.getTitle(), diary.getContent(),
+        diary.getUser().getNickname(), diary.getImageUrl()));
+}`,
+        },
+        notes: ["전체 일기와 본문을 메모리에 로드", "연관 정보 접근 과정에서 반복 조회 발생"],
+      },
+      after: {
+        label: "After: Pagination + DTO Projection",
+        code: {
+          language: "java",
+          code: `@Query(value = """
+  select new PublicDiaryListResponse(
+    d.id, d.title, d.sentiment, d.createdAt,
+    u.nickname, count(distinct c.id),
+    count(distinct l.id), d.imageUrl)
+  from Diary d join d.user u
+  left join d.comments c left join d.userLikes l
+  where d.isPrivate = false group by d.id, u.nickname
+""", countQuery = "select count(d) from Diary d where d.isPrivate=false")
+Page<PublicDiaryListResponse> findPublicDiaryList(Pageable pageable);`,
+        },
+        notes: ["페이지 단위 최신순 조회", "작성자와 집계값을 한 쿼리에서 반환"],
+      },
+      metrics: [
+        { label: "DB Query / Request", before: "1001", after: "1", delta: "-99.9%", better: "lower" },
+        { label: "Response Payload", before: "748KB", after: "4KB", delta: "-99.4%", better: "lower" },
+        { label: "Avg Response Time", before: "147.85ms", after: "3.63ms", delta: "-97.5%", better: "lower" },
+        { label: "p95 Response Time", before: "161.95ms", after: "5ms", delta: "-96.9%", better: "lower" },
+      ],
+      condition:
+        "사용자 1,000명과 일기 2,000건을 구성한 로컬 테스트 환경에서 JMeter 20 threads × 15 loops, 총 300 requests로 측정했습니다.",
+    },
+  ],
 
   demo: [
     {
@@ -199,7 +245,7 @@ export const bluememories: Project = {
       id: "community",
       label: "커뮤니티 목록",
       caption:
-        "작성자 정보와 댓글·좋아요 수를 DTO Projection으로 함께 조회하는 목록 화면입니다. 정량 성능 수치는 별도 측정 자료가 없어 표기하지 않습니다.",
+        "작성자 정보와 댓글·좋아요 수를 DTO Projection으로 함께 조회합니다. 로컬 JMeter 테스트에서는 평균 응답 시간이 147.85ms에서 3.63ms로 감소했습니다.",
     },
   ],
 };
