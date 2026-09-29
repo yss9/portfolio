@@ -155,6 +155,26 @@ export default async function ProjectPage({
         </Section>
       )}
 
+      {/* ---------------- stack ---------------- */}
+      <Section id="stack" eyebrow="Tech Stack" title="사용 기술">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {project.stack.map((g) => (
+            <div key={g.group} className="precision-card rounded-xl p-5">
+              <h3 className="font-mono text-xs uppercase tracking-[0.16em] text-[var(--accent)]">
+                {g.group}
+              </h3>
+              <ul className="mt-3 flex flex-wrap gap-1.5">
+                {g.items.map((i) => (
+                  <li key={i}>
+                    <Chip>{i}</Chip>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </Section>
+
       {/* ---------------- features ---------------- */}
       <Section id="features" eyebrow="Features" title="구현 기능">
         <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -178,26 +198,6 @@ export default async function ProjectPage({
             </li>
           ))}
         </ul>
-      </Section>
-
-      {/* ---------------- stack ---------------- */}
-      <Section id="stack" eyebrow="Tech Stack" title="사용 기술">
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {project.stack.map((g) => (
-            <div key={g.group} className="precision-card rounded-xl p-5">
-              <h3 className="font-mono text-xs uppercase tracking-[0.16em] text-[var(--accent)]">
-                {g.group}
-              </h3>
-              <ul className="mt-3 flex flex-wrap gap-1.5">
-                {g.items.map((i) => (
-                  <li key={i}>
-                    <Chip>{i}</Chip>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
       </Section>
 
       {/* ---------------- architecture ---------------- */}
