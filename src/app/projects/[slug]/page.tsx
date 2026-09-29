@@ -75,11 +75,6 @@ export default async function ProjectPage({
               <p className="max-w-2xl text-base leading-8 text-ink-dim">
                 {project.summary}
               </p>
-              <div className="mt-5 flex flex-wrap gap-1.5">
-                {project.stackFlat.map((s) => (
-                  <Chip key={s}>{s}</Chip>
-                ))}
-              </div>
               <div className="mt-6 flex flex-wrap gap-2">
                 {project.links.map((l) => (
                   <a
@@ -109,7 +104,7 @@ export default async function ProjectPage({
           id="screens"
           eyebrow="Real Service Screens"
           title="실제 서비스 화면"
-          lead="프로젝트의 실제 프론트엔드 소스코드를 로컬에서 실행하고, API 계약에 맞춘 테스트 데이터로 렌더링한 화면입니다."
+          lead="실제 서비스의 주요 화면을 모았습니다."
         >
           <div
             className={cx(
@@ -162,181 +157,28 @@ export default async function ProjectPage({
 
       {/* ---------------- features ---------------- */}
       <Section id="features" eyebrow="Features" title="구현 기능">
-        <ul className="grid gap-3 sm:grid-cols-2">
+        <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {project.features.map((f, i) => (
-            <li
-              key={f.title}
-              className="precision-card rounded-xl p-5 transition-colors hover:-translate-y-0.5"
-            >
-              <div className="flex items-center justify-between gap-3">
-                <span className="font-mono text-[13px] text-[var(--accent)]">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                {f.category && (
-                  <span className="rounded border border-line bg-bg-soft px-2 py-1 font-mono text-xs font-semibold uppercase tracking-wider text-muted">
-                    {f.category}
+            <li key={f.title}>
+              <details className="precision-card group rounded-xl">
+                <summary className="flex cursor-pointer list-none items-center gap-3 p-5 marker:hidden [&::-webkit-details-marker]:hidden">
+                  <span className="font-mono text-[13px] text-[var(--accent)]">
+                    {String(i + 1).padStart(2, "0")}
                   </span>
-                )}
-              </div>
-              <h3 className="mt-2 text-base font-semibold text-ink">{f.title}</h3>
-              <p className="mt-2 text-[15px] leading-7 text-muted">{f.desc}</p>
+                  <span className="min-w-0 flex-1 text-base font-semibold text-ink">{f.title}</span>
+                  {f.category && (
+                    <span className="hidden rounded border border-line bg-bg-soft px-2 py-1 font-mono text-xs font-semibold uppercase tracking-wider text-muted sm:inline">
+                      {f.category}
+                    </span>
+                  )}
+                  <span className="text-lg leading-none text-faint transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                </summary>
+                <p className="border-t border-line px-5 py-4 text-[15px] leading-7 text-muted">{f.desc}</p>
+              </details>
             </li>
           ))}
         </ul>
       </Section>
-
-      {/* ---------------- architecture ---------------- */}
-      <Section
-        id="architecture"
-        eyebrow="System Architecture"
-        title="시스템 구성"
-        lead={project.architectureIntent}
-      >
-        <ol className="space-y-2.5">
-          {project.architecture.map((n, i) => (
-            <li
-              key={n.id}
-              className="precision-card grid gap-3 rounded-xl p-4 sm:grid-cols-[auto_200px_1fr] sm:items-center sm:p-5"
-            >
-              <span className="font-mono text-[13px] text-faint sm:w-6">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div className="flex items-center gap-2">
-                <span className="text-base font-semibold text-ink">{n.label}</span>
-                <span className="rounded border border-line px-1.5 py-0.5 font-mono text-xs uppercase tracking-wider text-faint">
-                  {BAND_LABEL[n.band]}
-                </span>
-              </div>
-              <p className="text-[15px] leading-7 text-muted">{n.role}</p>
-            </li>
-          ))}
-        </ol>
-        {project.architectureImage && (
-          <figure className="mt-8 overflow-hidden rounded-xl border border-line bg-white">
-            <Image
-              src={project.architectureImage.src}
-              alt={project.architectureImage.alt}
-              width={project.architectureImage.width}
-              height={project.architectureImage.height}
-              sizes="(min-width: 1024px) 1200px, 100vw"
-              className="h-auto w-full"
-            />
-            <figcaption className="border-t border-line px-5 py-4 text-[15px] leading-7 text-ink-dim">
-              <span className="mr-2 font-mono text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">
-                Architecture
-              </span>
-              프로젝트의 전체 요청·데이터·외부 서비스 연결 구조
-            </figcaption>
-          </figure>
-        )}
-      </Section>
-
-      {project.implementationStory && (
-        <Section
-          id="implementation-story"
-          eyebrow="Implementation Decisions"
-          title="구현 과정과 판단"
-          lead="정상 흐름만 구현하는 데서 멈추지 않고, 실제 환경에서 발생할 수 있는 중복·지연·순서 역전·부분 실패까지 고려해 설계했습니다."
-        >
-          <div className="precision-card rounded-2xl p-5 sm:p-8">
-            <div className="max-w-4xl space-y-4">
-              {project.implementationStory.introduction.map((paragraph) => (
-                <p key={paragraph} className="text-base leading-8 text-ink-dim">{paragraph}</p>
-              ))}
-            </div>
-
-            <ol className="mt-8 grid gap-4 lg:grid-cols-2">
-              {project.implementationStory.decisions.map((decision, index) => (
-                <li key={decision.title} className="rounded-xl border border-line bg-bg-soft/60 p-5">
-                  <div className="flex items-center gap-3">
-                    <span className="grid h-8 w-8 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-mono text-xs font-bold text-signal">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="text-base font-semibold text-ink">{decision.title}</h3>
-                  </div>
-                  <p className="mt-4 text-[15px] leading-7 text-muted">{decision.body}</p>
-                </li>
-              ))}
-            </ol>
-
-            <div className="mt-8 rounded-xl border border-emerald-200 bg-emerald-50/60 p-5">
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-emerald-700">Verification</p>
-              <p className="mt-3 text-[15px] leading-7 text-ink-dim">{project.implementationStory.verification}</p>
-            </div>
-
-            <div className="mt-8 border-t border-line pt-6">
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-signal">Code references</p>
-              <ul className="mt-4 grid gap-2 sm:grid-cols-2">
-                {project.implementationStory.codeReferences.map((reference) => (
-                  <li key={reference.file} className="rounded-lg border border-line bg-white px-4 py-3">
-                    <p className="text-sm font-semibold text-ink">{reference.label}</p>
-                    <p className="mt-1 break-all font-mono text-xs leading-6 text-muted">{reference.file}:{reference.line}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </Section>
-      )}
-
-      {/* ---------------- troubleshooting ---------------- */}
-      {project.troubleshooting.length > 0 && (
-        <Section id="troubleshooting" eyebrow="Troubleshooting" title="문제 해결">
-          <div className="space-y-8">
-            {project.troubleshooting.map((t) => (
-              <TroubleshootingBlock key={t.id} item={t} />
-            ))}
-          </div>
-          {project.troubleshootingNote && (
-            <p className="precision-card mt-8 rounded-xl p-5 text-[15px] leading-7 text-ink-dim">
-              {project.troubleshootingNote}
-            </p>
-          )}
-        </Section>
-      )}
-
-      {/* ---------------- design notes ---------------- */}
-      {project.designNotes && project.designNotes.length > 0 && (
-        <Section
-          id="design-notes"
-          eyebrow="Design Notes"
-          title="설계 판단"
-          lead="구현 과정에서 선택지를 두고 판단한 지점들입니다."
-        >
-          <div className="space-y-8">
-            {project.designNotes.map((t) => (
-              <TroubleshootingBlock key={t.id} item={t} />
-            ))}
-          </div>
-        </Section>
-      )}
-
-      {/* ---------------- performance ---------------- */}
-      {project.performance.length > 0 && (
-        <Section id="performance" eyebrow="Performance" title="성능 개선">
-          <div className="space-y-12">
-            {project.performance.map((p) => (
-              <article key={p.id}>
-                <h3 className="text-xl font-semibold tracking-tight text-ink">
-                  {p.title}
-                </h3>
-                <p className="mt-2.5 max-w-3xl text-base leading-8 text-muted">
-                  {p.summary}
-                </p>
-
-                <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_1fr]">
-                  <BeforeAfterCard side="before" data={p.before} />
-                  <BeforeAfterCard side="after" data={p.after} />
-                </div>
-
-                <div className="mt-4">
-                  <MetricPanel metrics={p.metrics} condition={p.condition} />
-                </div>
-              </article>
-            ))}
-          </div>
-        </Section>
-      )}
 
       {/* ---------------- stack ---------------- */}
       <Section id="stack" eyebrow="Tech Stack" title="사용 기술">
@@ -357,6 +199,174 @@ export default async function ProjectPage({
           ))}
         </div>
       </Section>
+
+      {/* ---------------- architecture ---------------- */}
+      <Section
+        id="architecture"
+        eyebrow="System Architecture"
+        title="시스템 구성"
+      >
+        {project.architectureImage && (
+          <figure className="overflow-hidden rounded-xl border border-line bg-white">
+            <Image
+              src={project.architectureImage.src}
+              alt={project.architectureImage.alt}
+              width={project.architectureImage.width}
+              height={project.architectureImage.height}
+              sizes="(min-width: 1024px) 1200px, 100vw"
+              className="h-auto w-full"
+            />
+          </figure>
+        )}
+        <details className="precision-card group mt-4 rounded-xl" open={!project.architectureImage}>
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-5 text-base font-semibold text-ink marker:hidden [&::-webkit-details-marker]:hidden">
+            <span>구성 요소와 설계 의도</span>
+            <span className="text-lg leading-none text-faint transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+          </summary>
+          <div className="border-t border-line px-5 py-5">
+            <p className="mb-5 max-w-3xl text-[15px] leading-7 text-muted">{project.architectureIntent}</p>
+            <ol className="grid gap-3 sm:grid-cols-2">
+              {project.architecture.map((n, i) => (
+                <li key={n.id} className="rounded-lg border border-line bg-bg-soft p-4">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-mono text-xs text-faint">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="text-[15px] font-semibold text-ink">{n.label}</span>
+                    <span className="rounded border border-line bg-white px-1.5 py-0.5 font-mono text-xs uppercase tracking-wider text-faint">{BAND_LABEL[n.band]}</span>
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-muted">{n.role}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </details>
+      </Section>
+
+      {project.implementationStory && (
+        <Section
+          id="implementation-story"
+          eyebrow="Implementation Decisions"
+          title="구현 과정과 판단"
+          lead="센서 중복부터 장치 명령의 실패 처리까지, 자동 케어 흐름을 설계한 과정입니다."
+        >
+          <div className="precision-card rounded-2xl p-5 sm:p-8">
+            <details className="group rounded-xl border border-line bg-white">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-4 text-base font-semibold text-ink marker:hidden [&::-webkit-details-marker]:hidden">
+                <span>자동 케어의 과제</span>
+                <span className="text-lg leading-none text-faint transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <div className="space-y-4 border-t border-line px-4 py-5">
+                {project.implementationStory.introduction.map((paragraph) => (
+                  <p key={paragraph} className="text-[15px] leading-7 text-ink-dim">{paragraph}</p>
+                ))}
+              </div>
+            </details>
+
+            <ol className="mt-4 grid gap-3 lg:grid-cols-2">
+              {project.implementationStory.decisions.map((decision, index) => (
+                <li key={decision.title}>
+                  <details className="group h-full rounded-xl border border-line bg-bg-soft/60">
+                    <summary className="flex cursor-pointer list-none items-center gap-3 p-5 marker:hidden [&::-webkit-details-marker]:hidden">
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-mono text-xs font-bold text-signal">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="min-w-0 flex-1 text-base font-semibold text-ink">{decision.title}</span>
+                      <span className="text-lg leading-none text-faint transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                    </summary>
+                    <p className="border-t border-line px-5 py-4 text-[15px] leading-7 text-muted">{decision.body}</p>
+                  </details>
+                </li>
+              ))}
+            </ol>
+
+            <details className="group mt-4 rounded-xl border border-emerald-200 bg-emerald-50/60">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-5 text-base font-semibold text-ink marker:hidden [&::-webkit-details-marker]:hidden">
+                <span>검증한 예외 상황</span>
+                <span className="text-lg leading-none text-emerald-700 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <p className="border-t border-emerald-200 px-5 py-4 text-[15px] leading-7 text-ink-dim">{project.implementationStory.verification}</p>
+            </details>
+
+            <details className="group mt-4 rounded-xl border border-line bg-white">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-5 text-base font-semibold text-ink marker:hidden [&::-webkit-details-marker]:hidden">
+                <span>코드 근거 {project.implementationStory.codeReferences.length}건</span>
+                <span className="text-lg leading-none text-faint transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <ul className="grid gap-2 border-t border-line p-4 sm:grid-cols-2">
+                {project.implementationStory.codeReferences.map((reference) => (
+                  <li key={reference.file} className="rounded-lg border border-line bg-white px-4 py-3">
+                    <p className="text-sm font-semibold text-ink">{reference.label}</p>
+                    <p className="mt-1 break-all font-mono text-xs leading-6 text-muted">{reference.file}:{reference.line}</p>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </div>
+        </Section>
+      )}
+
+      {/* ---------------- troubleshooting ---------------- */}
+      {project.troubleshooting.length > 0 && (
+        <Section id="troubleshooting" eyebrow="Troubleshooting" title="문제 해결">
+          <div className="space-y-3">
+            {project.troubleshooting.map((t) => (
+              <TroubleshootingBlock key={t.id} item={t} />
+            ))}
+          </div>
+          {project.troubleshootingNote && (
+            <p className="precision-card mt-8 rounded-xl p-5 text-[15px] leading-7 text-ink-dim">
+              {project.troubleshootingNote}
+            </p>
+          )}
+        </Section>
+      )}
+
+      {/* ---------------- design notes ---------------- */}
+      {project.designNotes && project.designNotes.length > 0 && (
+        <Section
+          id="design-notes"
+          eyebrow="Design Notes"
+          title="설계 판단"
+          lead="구현 과정에서 선택지를 두고 판단한 지점들입니다."
+        >
+          <div className="space-y-3">
+            {project.designNotes.map((t) => (
+              <TroubleshootingBlock key={t.id} item={t} />
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {/* ---------------- performance ---------------- */}
+      {project.performance.length > 0 && (
+        <Section id="performance" eyebrow="Performance" title="성능 개선">
+          <div className="space-y-12">
+            {project.performance.map((p) => (
+              <article key={p.id}>
+                <h3 className="text-xl font-semibold tracking-tight text-ink">
+                  {p.title}
+                </h3>
+                <p className="mt-2.5 max-w-3xl text-base leading-8 text-muted">
+                  {p.summary}
+                </p>
+
+                <div className="mt-4">
+                  <MetricPanel metrics={p.metrics} condition={p.condition} />
+                </div>
+                <details className="precision-card group mt-4 rounded-xl">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-5 text-base font-semibold text-ink marker:hidden [&::-webkit-details-marker]:hidden">
+                    <span>개선 전후 구현 자세히 보기</span>
+                    <span className="text-lg leading-none text-faint transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                  </summary>
+                  <div className="grid gap-4 border-t border-line p-5 lg:grid-cols-2">
+                    <BeforeAfterCard side="before" data={p.before} />
+                    <BeforeAfterCard side="after" data={p.after} />
+                  </div>
+                </details>
+              </article>
+            ))}
+          </div>
+        </Section>
+      )}
 
       {/* ---------------- pager ---------------- */}
       <nav className="border-t border-line" aria-label="프로젝트 이동">
@@ -393,48 +403,52 @@ export default async function ProjectPage({
 
 function TroubleshootingBlock({ item }: { item: Troubleshooting }) {
   return (
-    <article className="precision-card rounded-xl p-5 sm:p-7">
-      <h3 className="text-xl font-semibold tracking-tight text-ink">{item.title}</h3>
-      <p className="mt-3 border-l-2 border-[var(--accent)] pl-4 text-base leading-8 text-ink-dim">
-        {item.problem}
-      </p>
-
-      <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1fr]">
-        <ol className="min-w-0 space-y-4">
-          {item.steps.map((s) => (
-            <li key={s.label + s.title} className="flex gap-3.5">
-              <span className="mt-0.5 grid h-7 shrink-0 place-items-center rounded border border-line bg-surface-2 px-2 font-mono text-xs uppercase tracking-wider text-[var(--accent)]">
-                {s.label}
-              </span>
-              <div className="min-w-0">
-                <p className="text-[15px] font-semibold text-ink">{s.title}</p>
-                <p className="mt-1 text-[15px] leading-7 text-muted">{s.body}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-
-        {item.code && item.code.length > 0 && (
-          <div className="min-w-0 space-y-3">
-            {item.code.map((c, i) => (
-              <CodeCard
-                key={i}
-                filename={c.filename}
-                language={c.language}
-                code={c.code}
-              />
+    <details className="precision-card group rounded-xl">
+      <summary className="flex cursor-pointer list-none items-center gap-4 p-5 marker:hidden sm:p-6 [&::-webkit-details-marker]:hidden">
+        <span className="min-w-0 flex-1 text-lg font-semibold tracking-tight text-ink">{item.title}</span>
+        <span className="shrink-0 text-lg leading-none text-faint transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+      </summary>
+      <div className="border-t border-line px-5 pb-5 pt-5 sm:px-6 sm:pb-6">
+        <p className="border-l-2 border-[var(--accent)] pl-4 text-[15px] leading-7 text-ink-dim">
+          {item.problem}
+        </p>
+        <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1fr]">
+          <ol className="min-w-0 space-y-4">
+            {item.steps.map((s) => (
+              <li key={s.label + s.title} className="flex gap-3.5">
+                <span className="mt-0.5 grid h-7 shrink-0 place-items-center rounded border border-line bg-surface-2 px-2 font-mono text-xs uppercase tracking-wider text-[var(--accent)]">
+                  {s.label}
+                </span>
+                <div className="min-w-0">
+                  <p className="text-[15px] font-semibold text-ink">{s.title}</p>
+                  <p className="mt-1 text-[15px] leading-7 text-muted">{s.body}</p>
+                </div>
+              </li>
             ))}
-          </div>
-        )}
-      </div>
+          </ol>
 
-      <p className="mt-6 rounded-lg border border-line bg-bg-soft p-4 text-[15px] leading-7 text-ink-dim">
-        <span className="mr-2 font-mono text-xs uppercase tracking-wider text-[var(--accent)]">
-          결과
-        </span>
-        {item.takeaway}
-      </p>
-    </article>
+          {item.code && item.code.length > 0 && (
+            <div className="min-w-0 space-y-3">
+              {item.code.map((c, i) => (
+                <CodeCard
+                  key={i}
+                  filename={c.filename}
+                  language={c.language}
+                  code={c.code}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <p className="mt-6 rounded-lg border border-line bg-bg-soft p-4 text-[15px] leading-7 text-ink-dim">
+          <span className="mr-2 font-mono text-xs uppercase tracking-wider text-[var(--accent)]">
+            결과
+          </span>
+          {item.takeaway}
+        </p>
+      </div>
+    </details>
   );
 }
 
