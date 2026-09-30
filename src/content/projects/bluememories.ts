@@ -6,7 +6,7 @@ export const bluememories: Project = {
   name: "BlueMemories",
   tagline: "AI 감정 기록 및 멘탈케어 커뮤니티",
   summary:
-    "기존 서비스 리뉴얼을 통해 감정 분석 및 콘텐츠 추천, 공유 일기장 구조를 확장한 멘탈케어 서비스입니다. 1:1 교환일기를 여러 명이 함께 쓰는 공유 일기장으로 확장하고, 소통을 위한 커뮤니티 기능을 신설했습니다.",
+    "일기 감정 분석과 콘텐츠 추천을 제공하고, 1:1 교환일기를 여러 명이 쓰는 공유 일기장으로 확장한 멘탈케어 서비스입니다.",
   period: "2024.07 ~ 2024.09",
   team: "2인 (개발자 1인 + 디자인 1인)",
   role: "기획 및 백엔드/프론트엔드 개발 총괄",
@@ -67,7 +67,7 @@ export const bluememories: Project = {
     },
     {
       title: "AI 감정 분석 연동",
-      desc: "초기에는 Naver Clova로 일기의 감정을 분석했으며, 이후 OpenAI 또는 Ollama를 설정으로 선택하고 JSON 감정 점수를 검증하는 구조로 사후 리팩터링했습니다.",
+      desc: "초기 Naver Clova 분석에서 확장해 OpenAI 또는 Ollama를 선택하고 JSON 감정 점수를 검증하도록 구성했습니다.",
     },
     {
       title: "맞춤형 콘텐츠 추천",
@@ -83,7 +83,7 @@ export const bluememories: Project = {
     },
     {
       title: "커뮤니티 목록 DTO Projection",
-      desc: "Entity 조회 후 작성자·댓글·좋아요를 후처리하던 구조를 작성자 정보와 집계값을 직접 반환하는 DTO Projection으로 사후 리팩터링했습니다.",
+      desc: "Entity 조회 후 연관 데이터를 반복 조회하던 문제를 작성자 정보와 집계값을 바로 반환하는 DTO Projection으로 해결했습니다.",
     },
   ],
 
@@ -125,9 +125,11 @@ export const bluememories: Project = {
   troubleshooting: [
     {
       id: "gpt-json-contract",
-      title: "AI 응답 파싱 구조 사후 리팩터링",
+      title: "AI 응답 형식 변동에 대응",
       problem:
-        "2026년 포트폴리오 사후 리팩터링에서 정규식으로 AI 응답을 파싱하던 구조를 JSON 계약 + DTO 검증 + fallback 구조로 변경했습니다.",
+        "추천 응답을 정규식으로 파싱해, AI가 문구나 순서를 바꾸면 키워드가 누락됐습니다.",
+      solution:
+        "songs[]와 searchKeywords[]를 JSON 계약으로 정의하고 DTO에서 필드와 개수를 검증했습니다. 파싱 실패 시에는 기본 추천값을 사용합니다.",
       steps: [
         {
           label: "AS-IS",
@@ -164,57 +166,11 @@ export const bluememories: Project = {
         },
       ],
       takeaway:
-        "현재 코드는 응답 형식이 흔들려도 추천 실패를 감지하고 검증된 데이터만 사용합니다. 이 개선은 2024년 프로젝트 당시 구현과 구분해 2026년 사후 리팩터링으로 표기합니다.",
+        "형식 오류를 서버에서 감지하고, AI 응답에 문제가 있어도 추천 화면이 중단되지 않도록 했습니다.",
     },
   ],
 
-  performance: [
-    {
-      id: "public-diary-projection",
-      title: "공개 일기 목록 — 전체 Entity 조회를 페이지 Projection으로",
-      summary:
-        "공개 일기 전체 Entity를 메모리에 올린 뒤 연관 데이터를 순회하던 구조를, 최신순 Pagination과 DTO Projection 집계 쿼리로 변경했습니다. 목록에 필요한 필드만 반환해 쿼리 수와 응답 크기를 함께 줄였습니다.",
-      before: {
-        label: "Before: 전체 Entity 조회 후 순회 변환",
-        code: {
-          language: "java",
-          code: `List<Diary> diaries = diaryRepository.findByIsPrivate(false);
-List<DiaryDto> result = new ArrayList<>();
-for (Diary diary : diaries) {
-    result.add(new DiaryDto(
-        diary.getId(), diary.getTitle(), diary.getContent(),
-        diary.getUser().getNickname(), diary.getImageUrl()));
-}`,
-        },
-        notes: ["전체 일기와 본문을 메모리에 로드", "연관 정보 접근 과정에서 반복 조회 발생"],
-      },
-      after: {
-        label: "After: Pagination + DTO Projection",
-        code: {
-          language: "java",
-          code: `@Query(value = """
-  select new PublicDiaryListResponse(
-    d.id, d.title, d.sentiment, d.createdAt,
-    u.nickname, count(distinct c.id),
-    count(distinct l.id), d.imageUrl)
-  from Diary d join d.user u
-  left join d.comments c left join d.userLikes l
-  where d.isPrivate = false group by d.id, u.nickname
-""", countQuery = "select count(d) from Diary d where d.isPrivate=false")
-Page<PublicDiaryListResponse> findPublicDiaryList(Pageable pageable);`,
-        },
-        notes: ["페이지 단위 최신순 조회", "작성자와 집계값을 한 쿼리에서 반환"],
-      },
-      metrics: [
-        { label: "DB Query / Request", before: "1001", after: "1", delta: "-99.9%", better: "lower" },
-        { label: "Response Payload", before: "748KB", after: "4KB", delta: "-99.4%", better: "lower" },
-        { label: "Avg Response Time", before: "147.85ms", after: "3.63ms", delta: "-97.5%", better: "lower" },
-        { label: "p95 Response Time", before: "161.95ms", after: "5ms", delta: "-96.9%", better: "lower" },
-      ],
-      condition:
-        "사용자 1,000명과 일기 2,000건을 구성한 로컬 테스트 환경에서 JMeter 20 threads × 15 loops, 총 300 requests로 측정했습니다.",
-    },
-  ],
+  performance: [],
 
   demo: [
     {

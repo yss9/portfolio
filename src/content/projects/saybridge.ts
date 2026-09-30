@@ -6,7 +6,7 @@ export const saybridge: Project = {
   name: "SayBridge",
   tagline: "화상채팅 기반 외국어 교육 플랫폼",
   summary:
-    "관심사에 맞는 수업을 선택하고 선생님과 1:1 화상 수업을 진행하는 서비스입니다. 수업 개설부터 화상 통화, 실시간 채팅, 과제 제출까지 전체 학습 흐름을 통합 구현했습니다.",
+    "수업 탐색부터 1:1 WebRTC 화상 수업, 실시간 채팅과 과제 제출까지 연결한 온라인 학습 서비스입니다.",
   period: "2025.01 ~ 2025.05",
   team: "1인 개발",
   role: "프론트엔드 및 백엔드 개발",
@@ -124,6 +124,8 @@ export const saybridge: Project = {
       title: "WebRTC 협상 순서 안정화",
       problem:
         "미디어 스트림 준비, STOMP 연결, 상대방 입장과 Offer 생성이 서로 다른 비동기 흐름에서 실행되어 초기 연결 시점에 따라 영상 연결 상태가 달라졌습니다.",
+      solution:
+        "로컬 트랙을 PeerConnection에 먼저 등록하고 STOMP를 연결했습니다. 상대방 입장과 stable 상태를 확인한 뒤 Offer를 생성하도록 순서를 고정했습니다.",
       steps: [
         {
           label: "1",
@@ -188,57 +190,11 @@ case 'join':
         },
       ],
       takeaway:
-        "현재 저장소에서는 특정 SDP m-line 누락을 직접 입증할 로그가 없으므로 원인을 단정하지 않고, 코드와 이력으로 확인되는 미디어 준비·상대방 입장·Offer 생성 순서의 안정화에 초점을 맞췄습니다.",
+        "연결 시점에 따라 영상이 표시되지 않던 흐름을 안정화했습니다. 시그널링과 미디어 트랙 상태를 함께 확인했습니다.",
     },
   ],
 
-  performance: [
-    {
-      id: "homework-submission-batch",
-      title: "과제 제출 상태 조회 — N+1을 단일 배치 조회로",
-      summary:
-        "과제 게시글마다 학생의 제출 여부를 단건 조회하던 구조를 IN 조건 배치 조회와 Projection으로 변경했습니다. 게시글 수만큼 반복되던 쿼리를 한 번으로 줄이고 필요한 첨부 URL만 조회했습니다.",
-      before: {
-        label: "Before: 게시글마다 제출 상태 단건 조회",
-        code: {
-          language: "java",
-          code: `for (Long postId : postIds) {
-    Homework homework = homeworkRepository
-        .findByStudentIdAndCoursePostId(studentId, postId)
-        .orElse(null);
-    if (homework != null) {
-        result.put(postId, homework.getAttachmentUrl());
-    }
-}`,
-        },
-        notes: ["게시글 수만큼 SELECT 반복", "목록 크기에 비례해 DB 왕복 증가"],
-      },
-      after: {
-        label: "After: IN 배치 조회 + Projection",
-        code: {
-          language: "java",
-          code: `@Query("""
-  select h.coursePost.id as coursePostId,
-         h.attachmentUrl as attachmentUrl
-  from Homework h
-  where h.student.id = :studentId
-    and h.coursePost.id in :postIds
-""")
-List<HomeworkAttachmentProjection>
-    findSubmissionAttachments(Long studentId, List<Long> postIds);`,
-        },
-        notes: ["한 번의 IN 조회로 제출 상태 수집", "필요한 ID와 첨부 URL만 반환"],
-      },
-      metrics: [
-        { label: "DB Query / Request", before: "100", after: "1", delta: "-99.0%", better: "lower" },
-        { label: "Avg Response Time", before: "16.75ms", after: "3.99ms", delta: "-76.2%", better: "lower" },
-        { label: "p95 Latency", before: "20ms", after: "5ms", delta: "-75.0%", better: "lower" },
-        { label: "Error Rate", before: "0%", after: "0%" },
-      ],
-      condition:
-        "로컬 테스트 환경에서 JMeter 30 threads × 20 loops, 총 600 requests로 동일 조회 시나리오의 Before/After를 측정했습니다.",
-    },
-  ],
+  performance: [],
 
   demo: [
     {

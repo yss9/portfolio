@@ -56,14 +56,14 @@ export default function Home() {
               Backend Developer · Ready to grow
             </div>
             <h1 className="mt-8 max-w-6xl text-[2.65rem] font-bold leading-[1.16] tracking-[-0.035em] text-ink sm:text-6xl lg:text-[3.75rem] xl:text-[4rem]">
-              기능 구현에서 멈추지 않고, <span className="relative inline-block text-signal">
-                문제를 분석하고
+              문제를 구조로 풀고, <span className="relative inline-block text-signal">
+                결과를 검증하는
                 <span className="absolute inset-x-0 -bottom-1 h-[3px] bg-signal/25" />
-              </span> 개선 결과를 수치로 검증합니다.
+              </span> 백엔드 개발자입니다.
             </h1>
             <p className="mt-7 max-w-3xl text-lg leading-9 text-ink-dim">
-              사용자 흐름과 데이터 처리 과정을 먼저 파악하고, 로그와 실행 순서,
-              쿼리 흐름을 따라 원인을 좁힙니다. 개선 전후는 성능 수치로 확인합니다.
+              Spring Boot로 서비스 흐름을 구현하고, 로그·테스트·성능 측정으로
+              선택한 설계가 실제로 동작하는지 확인합니다.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -88,22 +88,18 @@ export default function Home() {
                 PDF 포트폴리오 ↓
               </a>
             </div>
-            <div className="mt-9 flex flex-wrap gap-2">
-              {techStack.slice(0, 4).flatMap((group) => group.items.slice(0, 3)).map((item) => (
-                <Chip key={item}>{item}</Chip>
-              ))}
-            </div>
+            <p className="mt-9 font-mono text-sm text-muted">Spring Boot · 실시간 통신 · 데이터 흐름 · 검증</p>
           </div>
         </div>
       </section>
 
-      <Section id="about" eyebrow="// BACKGROUND & PROFILE" title="기본 정보와 개발 방식">
+      <Section id="about" eyebrow="// PROFILE" title="서영석 · 백엔드 개발자">
         <div className="grid gap-5 lg:grid-cols-[1.08fr_0.92fr]">
           <article className="precision-card rounded-xl p-6 sm:p-8">
             <div className="mb-6 flex items-center justify-between gap-4 border-b border-line pb-5">
               <div>
                 <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-signal">Introduction</p>
-                <h3 className="mt-2 text-xl font-bold tracking-tight text-ink">안정적인 개선 과정을 중요하게 생각합니다.</h3>
+                <h3 className="mt-2 text-xl font-bold tracking-tight text-ink">설계 이유와 검증 결과를 설명할 수 있는 개발을 합니다.</h3>
               </div>
               <span className="hidden rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 font-mono text-xs font-semibold text-emerald-700 sm:inline">OPEN TO WORK</span>
             </div>
@@ -133,6 +129,62 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </Section>
+
+      <Section
+        id="projects"
+        eyebrow={`// ARCHITECTURE CASE STUDIES · ${projects.length} PROJECTS`}
+        title="프로젝트"
+        lead="맡은 역할과 구현 근거, 문제 해결 결과를 프로젝트별로 정리했습니다."
+      >
+        <ul className="grid gap-5 md:grid-cols-2">
+          {projects.map((project) => (
+            <li key={project.slug} data-accent={project.slug}>
+              <Link
+                href={`/projects/${project.slug}`}
+                className="precision-card group flex h-full flex-col overflow-hidden rounded-xl transition-all hover:-translate-y-0.5"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden border-b border-line bg-slate-100">
+                  <Image
+                    src={project.preview.src}
+                    alt={project.preview.alt}
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="object-cover object-top transition duration-500 group-hover:scale-[1.02]"
+                  />
+                  <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 bg-gradient-to-b from-black/60 to-transparent p-4 sm:p-5">
+                    <span className="rounded-md border border-white/40 bg-black/45 px-2.5 py-1 font-mono text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
+                      Project {project.no}
+                    </span>
+                    <span className="rounded bg-black/45 px-2 py-1 font-mono text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
+                      {project.slug === "aws-deploy" ? "Case Study" : "Real Service UI"}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="text-xl font-bold tracking-tight text-ink">{project.name}</h3>
+                      <p className="mt-1 text-[15px] font-semibold text-[var(--accent)]">{project.tagline}</p>
+                    </div>
+                    <span className="shrink-0 rounded-full border border-line bg-slate-50 px-2.5 py-1 font-mono text-xs font-semibold text-muted">{project.period}</span>
+                  </div>
+                  <p className="mt-4 text-[15px] leading-7 text-muted">{project.summary}</p>
+                  <p className="mt-4 text-sm font-semibold text-ink-dim">담당 · {project.role}</p>
+                  <ul className="mt-4 flex flex-wrap gap-2">
+                    {project.highlights.slice(0, 2).map((highlight) => (
+                      <li key={highlight} className="rounded-lg border border-line bg-slate-50 px-3 py-2 text-xs font-semibold text-ink-dim">{highlight}</li>
+                    ))}
+                  </ul>
+                  <div className="mt-6 flex items-center justify-between border-t border-line pt-4">
+                    <span className="font-mono text-xs text-muted">{project.teamShort}</span>
+                    <span className="font-mono text-[13px] font-semibold text-[var(--accent)]">자세히 보기 →</span>
+                  </div>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </Section>
 
       <Section
@@ -204,60 +256,7 @@ export default function Home() {
         </div>
       </Section>
 
-      <Section
-        id="projects"
-        eyebrow={`// ARCHITECTURE CASE STUDIES · ${projects.length} PROJECTS`}
-        title="프로젝트"
-        lead="기능 목록보다 문제를 어떻게 좁히고, 구조를 바꾸고, 결과를 검증했는지에 집중했습니다."
-      >
-        <ul className="grid gap-5 md:grid-cols-2">
-          {projects.map((project) => (
-            <li key={project.slug} data-accent={project.slug}>
-              <Link
-                href={`/projects/${project.slug}`}
-                className="precision-card group flex h-full flex-col overflow-hidden rounded-xl transition-all hover:-translate-y-0.5"
-              >
-                <div className="relative aspect-[16/10] overflow-hidden border-b border-line bg-slate-100">
-                  <Image
-                    src={project.preview.src}
-                    alt={project.preview.alt}
-                    fill
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    className="object-cover object-top transition duration-500 group-hover:scale-[1.02]"
-                  />
-                  <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 bg-gradient-to-b from-black/60 to-transparent p-4 sm:p-5">
-                    <span className="rounded-md border border-white/40 bg-black/45 px-2.5 py-1 font-mono text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
-                      Project {project.no}
-                    </span>
-                    <span className="rounded bg-black/45 px-2 py-1 font-mono text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
-                      {project.slug === "aws-deploy" ? "Case Study" : "Real Service UI"}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex flex-1 flex-col p-6">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="text-xl font-bold tracking-tight text-ink">{project.name}</h3>
-                      <p className="mt-1 text-[15px] font-semibold text-[var(--accent)]">{project.tagline}</p>
-                    </div>
-                    <span className="shrink-0 rounded-full border border-line bg-slate-50 px-2.5 py-1 font-mono text-xs font-semibold text-muted">{project.period}</span>
-                  </div>
-                  <p className="mt-4 line-clamp-3 text-[15px] leading-7 text-muted">{project.summary}</p>
-                  <ul className="mt-5 grid gap-2 sm:grid-cols-2">
-                    {project.highlights.slice(0, 4).map((highlight) => (
-                      <li key={highlight} className="rounded-lg border border-line bg-slate-50 px-3 py-2.5 font-mono text-xs font-semibold text-ink-dim">{highlight}</li>
-                    ))}
-                  </ul>
-                  <div className="mt-6 flex items-center justify-between border-t border-line pt-4">
-                    <span className="font-mono text-xs text-muted">{project.teamShort}</span>
-                    <span className="font-mono text-[13px] font-semibold text-[var(--accent)]">자세히 보기 →</span>
-                  </div>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </Section>
+
 
       <Section id="principles" eyebrow="// ENGINEERING CORE PRINCIPLES" title="코드 한 줄 뒤의 원리와 측정 가능한 신뢰">
         <div className="grid gap-4 md:grid-cols-3">

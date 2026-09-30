@@ -6,7 +6,7 @@ export const neoulteo: Project = {
   name: "Neoulteo",
   tagline: "공공 관광 데이터 기반 여행 계획 플랫폼",
   summary:
-    "공공 관광 데이터, 지도, 사용자 기록, 커뮤니티, AI 추천을 하나로 묶은 여행 계획 웹 서비스입니다. 지역별 관광지를 지도에서 탐색하고 마음에 드는 장소를 저장해 일차별 여행 코스를 만들 수 있으며, Spring AI 기반 여행 도우미가 코스 피드백과 지역 추천을 제공합니다.",
+    "공공 관광 데이터로 장소를 탐색하고 일차별 코스를 만들며, Spring AI 여행 도우미로 추천을 받는 여행 계획 웹 서비스입니다.",
   period: "2026.05 ~ 2026.06",
   team: "2인 팀",
   role: "백엔드 중심 · AI 연동 · 프론트 일부",
@@ -135,6 +135,8 @@ export const neoulteo: Project = {
       title: "Spring AI 도구 오케스트레이션 · RAG 설계",
       problem:
         "일반 지식만으로 답하는 챗봇은 프로젝트 DB에 있는 실제 관광지를 추천하지 못합니다. 애플리케이션이 질문의 키워드에 따라 필요한 도구를 선택하고, 조회 결과를 근거로 답하도록 설계했습니다.",
+      solution:
+        "질문 키워드에 따라 관광지 검색·RAG·날씨 도구를 호출하고, DB 조회 결과를 프롬프트에 더해 답변의 근거로 사용했습니다.",
       steps: [
         { label: "1", title: "질문 입력", body: "사용자가 여행 관련 질문을 입력합니다." },
         { label: "2", title: "키워드 분석", body: "애플리케이션이 질문의 키워드를 검사해 날씨·웹 검색 도구의 실행 여부를 결정합니다." },
@@ -158,6 +160,8 @@ export const neoulteo: Project = {
       title: "TourAPI 동기화 배치 설계",
       problem:
         "공공 관광 데이터는 수시로 갱신되지만 매 요청마다 외부 API를 호출하면 응답 지연과 호출 한도 문제가 생깁니다. 배치로 미리 동기화하는 구조를 택했습니다.",
+      solution:
+        "Spring Batch로 데이터를 수집하고 기존 DB와 비교했습니다. ON DUPLICATE KEY UPDATE로 변경된 관광지만 반영했습니다.",
       steps: [
         { label: "1", title: "수집", body: "Spring Batch로 콘텐츠 타입별 관광지 데이터를 수집합니다." },
         { label: "2", title: "비교", body: "기존 DB 데이터와 API 응답을 비교해 신규·수정·유지 항목을 분류하고 집계합니다." },

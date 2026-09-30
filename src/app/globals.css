@@ -104,6 +104,18 @@ body {
   box-shadow: 0 8px 18px -12px rgba(15, 23, 42, 0.22);
 }
 
+.project-detail > section > div {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (max-width: 639px) {
+  .project-detail > section > div {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
+
 .metric-grid {
   background-image:
     linear-gradient(to right, rgba(148, 163, 184, 0.14) 1px, transparent 1px),

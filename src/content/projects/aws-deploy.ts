@@ -6,7 +6,7 @@ export const awsDeploy: Project = {
   name: "AWS Deploy",
   tagline: "풀스택 애플리케이션 배포 자동화 파이프라인",
   summary:
-    "백엔드는 Docker 이미지로 빌드해 EC2에 배포하고, 프론트엔드는 S3와 CloudFront로 정적 배포했습니다. GitHub Actions 워크플로로 두 배포 경로를 자동화했으며, Route 53·ACM·ALB·RDS 구성은 AWS 콘솔에서 진행하고 저장소 문서에 아키텍처로 기록했습니다.",
+    "React 프론트엔드와 Docker 백엔드를 AWS에 분리 배포하고 GitHub Actions로 배포 흐름을 자동화한 인프라 실습입니다.",
   period: "2025.09",
   team: "1인 구축",
   role: "인프라 설계 및 배포 자동화 구축",
@@ -111,6 +111,8 @@ export const awsDeploy: Project = {
       title: "Mixed Content — HTTPS 페이지의 HTTP API 차단",
       problem:
         "HTTPS 페이지에서 HTTP API 요청이 브라우저에 차단되어 통신이 되지 않았습니다.",
+      solution:
+        "ALB에 ACM 인증서를 연결해 API도 HTTPS로 제공하고, 프론트엔드 배포 시 HTTPS API 주소를 주입했습니다.",
       steps: [
         {
           label: "원인",
@@ -124,13 +126,15 @@ export const awsDeploy: Project = {
         },
       ],
       takeaway:
-        "프론트엔드와 백엔드 간 통신 프로토콜의 일관성과 보안 계층 설계의 중요성을 확인했습니다.",
+        "브라우저의 Mixed Content 차단 없이 프론트엔드에서 API를 호출할 수 있게 했습니다.",
     },
     {
       id: "rds-500",
       title: "RDS 연결 오류 — 환경 변수와 SSL 확인",
       problem:
         "배포 환경에서 PostgreSQL 연결 오류가 발생해 애플리케이션 설정과 AWS 네트워크 설정을 구분해 확인했습니다.",
+      solution:
+        "컨테이너 로그를 기준으로 DB 환경 변수와 PostgreSQL SSL 옵션을 점검하고 연결 설정에 SSL 옵션을 추가했습니다.",
       steps: [
         {
           label: "원인",
@@ -144,13 +148,15 @@ export const awsDeploy: Project = {
         },
       ],
       takeaway:
-        "코드로 확인되는 SSL 설정과 당시 콘솔에서 수행한 네트워크 작업을 구분해 기록해야 재현 가능한 트러블슈팅이 됩니다.",
+        "코드에 남는 연결 설정과 AWS 콘솔의 네트워크 설정을 구분해 점검할 수 있도록 정리했습니다.",
     },
     {
       id: "cicd-ssh-timeout",
       title: "CI/CD SSH Timeout — 대안 검토",
       problem:
         "GitHub Actions 배포 단계에서 EC2 SSH 연결 시간 초과가 발생했습니다.",
+      solution:
+        "Runner의 접속 경로와 EC2 접근 정책을 점검했습니다. 고정된 접근 경로가 필요한 경우 self-hosted Runner 또는 SSM 전환을 검토했습니다.",
       steps: [
         {
           label: "원인",
@@ -164,7 +170,7 @@ export const awsDeploy: Project = {
         },
       ],
       takeaway:
-        "SSM은 검토한 대안이며 현재 구현된 방식은 아닙니다. 장애 로그를 추가로 확보하기 전에는 Runner IP를 확정 원인으로 단정하지 않습니다.",
+        "현재 배포는 GitHub-hosted Runner의 SSH 방식입니다. 당시 로그가 없어 Timeout 원인을 단정하지 않았습니다.",
     },
   ],
 

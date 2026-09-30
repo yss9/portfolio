@@ -28,6 +28,8 @@ export type Troubleshooting = {
   title: string;
   /** the one-line problem statement */
   problem: string;
+  /** Brief, reader-facing explanation of the chosen fix. */
+  solution?: string;
   steps: Step[];
   code?: CodeBlock[];
   takeaway: string;

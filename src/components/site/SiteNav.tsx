@@ -9,9 +9,9 @@ import { cx } from "@/components/ui/primitives";
 
 const sections = [
   { href: "/#about", label: "About" },
+  { href: "/#projects", label: "Projects" },
   { href: "/#stack", label: "Tech Stack" },
   { href: "/#ai-assisted", label: "AI Process" },
-  { href: "/#projects", label: "Projects" },
   { href: "/#principles", label: "Principles" },
 ];
 

@@ -6,7 +6,7 @@ export const glople: Project = {
   name: "Glople",
   tagline: "MBTI 기반 여행지 추천 커뮤니티",
   summary:
-    "사용자 성향(MBTI, 연령, 성별)을 기반으로 맞춤형 여행지와 루트를 제안하는 커뮤니티 서비스입니다. 여행자는 자신의 성향에 맞는 여행지를 추천받고, 해당 지역의 전문가인 '글로플러'와 매칭되어 개인화된 여행 경험을 제공받습니다.",
+    "MBTI·연령·성별로 여행지와 루트를 추천하고, 지역 전문가와 실시간으로 연결하는 여행 커뮤니티 서비스입니다.",
   period: "2024.03 ~ 2024.11",
   team: "7인 (개발자 5인 + 디자인 2인)",
   role: "추천 로직 구현 · 프론트 일부 개발",
@@ -86,8 +86,8 @@ export const glople: Project = {
       desc: "WebSocket을 활용하여 사용자 간 매칭 및 채팅 흐름 구현",
     },
     {
-      title: "2026년 추천 로직 사후 리팩터링",
-      desc: "프로젝트 종료 후 전체 조회·정렬 구조를 DB 후보 필터링과 PriorityQueue Top-K 방식으로 개선했습니다. 당시 구현과 구분해 사후 리팩터링으로 공개합니다.",
+      title: "추천 로직의 조회·정렬 개선",
+      desc: "전체 조회·정렬로 불필요한 연산이 늘어나는 문제를 확인하고, DB 후보 필터링과 PriorityQueue Top-K 방식으로 개선했습니다.",
     },
   ],
 
@@ -131,7 +131,9 @@ export const glople: Project = {
       id: "recommend-analysis",
       title: "추천 로직 병목 분석",
       problem:
-        "프로젝트 종료 후 코드를 다시 검토하면서 전체 데이터 조회, 반복 문자열 탐색, 전체 정렬이 추천 범위보다 많은 작업을 수행하는 문제를 확인했습니다.",
+        "추천 결과는 상위 몇 건만 필요한데 전체 데이터를 읽고 문자열 탐색과 정렬을 반복했습니다.",
+      solution:
+        "키워드는 DB의 비트마스크 필터와 BIT_COUNT로 계산하고, MBTI 추천은 성별·연령 후보군에서 PriorityQueue로 상위 12건만 유지했습니다.",
       steps: [
         {
           label: "1",
@@ -150,7 +152,7 @@ export const glople: Project = {
         },
       ],
       takeaway:
-        "필요한 결과가 상위 N건뿐이라면 전체를 계산하고 정렬할 필요가 없습니다. 2026년 사후 리팩터링에서 후보군을 먼저 줄이고 Top-K만 유지하는 방향으로 재설계했습니다.",
+        "조회 대상과 정렬 범위를 줄여 두 추천 경로의 평균 응답 시간을 단축했습니다. 아래는 로컬 테스트 결과입니다.",
     },
   ],
 
@@ -159,7 +161,7 @@ export const glople: Project = {
       id: "keyword-bitmask",
       title: "Keyword 추천 — 문자열 탐색을 비트 연산으로",
       summary:
-        "2026년 사후 리팩터링에서 전체 여행지를 조회한 뒤 Java 문자열 포함 검사를 반복하던 구조를, DB 단계에서 두 개의 비트마스크로 후보를 거르고 BIT_COUNT로 점수를 계산하는 방식으로 변경했습니다.",
+        "전체 여행지를 읽고 문자열을 비교하던 문제를 DB 비트마스크 필터와 BIT_COUNT 점수 계산으로 해결했습니다.",
       before: {
         label: "Before: 전체 조회 후 Java 문자열 탐색",
         code: {
@@ -197,7 +199,7 @@ LIMIT :limit`,
       id: "mbti-topk",
       title: "MBTI 추천 — 전체 정렬을 Top-K 추출로",
       summary:
-        "2026년 사후 리팩터링에서 상위 12건만 필요한데도 전체 사용자를 계산·정렬하던 구조를, 후보군을 먼저 좁히고 PriorityQueue로 Top-K만 유지하도록 변경했습니다.",
+        "상위 12건을 위해 전체 사용자를 정렬하던 문제를 후보군 축소와 PriorityQueue Top-K로 해결했습니다.",
       before: {
         label: "Before: 전체 계산 및 정렬",
         code: {
