@@ -23,7 +23,7 @@ export const potner: Project = {
 
   links: [
     { label: "GitHub", href: "https://github.com/yss9/potner", kind: "github" },
-    { label: "시연 영상", href: "https://www.youtube.com/watch?v=JgmYadg7w9M", kind: "video" },
+    { label: "영상포트폴리오", href: "https://www.youtube.com/watch?v=JgmYadg7w9M", kind: "video" },
   ],
 
   preview: {
