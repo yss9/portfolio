@@ -125,16 +125,22 @@ export default async function ProjectPage({
           )}>
             {project.screenshots.slice(0, 4).map((screen, index) => (
               <figure key={screen.src} className={cx("overflow-hidden bg-white", project.slug === "potner" && "rounded-xl border border-line")}>
-                <div className={cx("relative overflow-hidden bg-white", project.slug === "potner" ? "aspect-[9/19]" : "aspect-[16/10]")}>
+                <a
+                  href={screen.src}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label={`${project.name} 화면 ${index + 1} 크게 보기`}
+                  className={cx("relative block overflow-hidden bg-white", project.slug === "potner" ? "aspect-[9/19]" : "aspect-[16/10]")}
+                >
                   <Image
                     src={screen.src}
                     alt={screen.alt}
                     fill
                     sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className={project.slug === "potner" ? "object-contain" : "object-cover object-top"}
+                    className={project.slug === "potner" || screen.fit === "contain" ? "object-contain" : "object-cover object-top"}
                     priority={index === 0}
                   />
-                </div>
+                </a>
                 <figcaption className="border-t border-line px-4 py-3 text-sm leading-6 text-ink-dim">
                   <span className="mr-2 font-mono text-xs font-semibold text-[var(--accent)]">{String(index + 1).padStart(2, "0")}</span>
                   {screen.caption}

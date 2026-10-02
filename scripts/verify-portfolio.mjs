@@ -51,12 +51,14 @@ for (const item of cases) {
     overflow: document.documentElement.scrollWidth > window.innerWidth,
     brokenImages: [...document.images].filter((image) => !image.complete || image.naturalWidth === 0).map((image) => image.src),
     projectLinks: document.querySelectorAll('a[href^="/projects/"]').length,
+    screenshotCount: document.querySelectorAll("#screens figure").length,
     sectionIds: [...document.querySelectorAll("main section[id]")].map((section) => section.id),
     projectGitHubLinks: [...document.querySelectorAll('.project-detail > header a[href*="github.com"]')].map((link) => link.href),
   }));
   const sectionOrderOk = item.path !== "/" || state.sectionIds.at(-1) === "projects";
   const projectLinksOk = !["/projects/potner", "/projects/saeroi"].includes(item.path) || state.projectGitHubLinks.length === 0;
-  const ok = response?.status() === 200 && !state.overflow && state.brokenImages.length === 0 && errors.length === 0 && sectionOrderOk && projectLinksOk;
+  const saeroiScreensOk = item.path !== "/projects/saeroi" || state.screenshotCount === 4;
+  const ok = response?.status() === 200 && !state.overflow && state.brokenImages.length === 0 && errors.length === 0 && sectionOrderOk && projectLinksOk && saeroiScreensOk;
   failed ||= !ok;
   console.log(JSON.stringify({ case: item.name, status: response?.status(), ...state, errors, ok }));
   await page.close();

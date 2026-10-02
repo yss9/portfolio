@@ -22,10 +22,34 @@ export const saeroi: Project = {
   stackFlat: ["Spring Boot", "React", "MySQL", "LLM Tool Use", "Hyperledger Besu"],
   links: [],
   preview: {
-    src: "/projects/saeroi/process.svg",
-    alt: "새로이의 소재 거래·가공·생산·판매 흐름과 각 단계의 브랜드 AI 어시스턴트 연결을 설명하는 도식",
-    kind: "diagram",
+    src: "/projects/saeroi/home.png",
+    alt: "새로이 서비스의 SAEROI 로고와 폐소재 순환 메시지가 표시된 메인 화면",
+    kind: "screen",
   },
+  screenshots: [
+    {
+      src: "/projects/saeroi/home.png",
+      alt: "짙은 남색 배경에 SAEROI 로고와 WASTE IS NOT THE END 문구가 표시된 서비스 메인 화면",
+      caption: "서비스 첫 화면 — 버려진 소재의 다음 쓰임을 연결하는 새로이",
+    },
+    {
+      src: "/projects/saeroi/shop.png",
+      alt: "새로이 쇼핑몰에서 업사이클링 재킷, 수납함, 원피스 등의 상품이 목록으로 표시된 화면",
+      caption: "제품 판매 화면 — 순환 소재로 만든 상품을 탐색하는 쇼핑몰",
+    },
+    {
+      src: "/projects/saeroi/brand-workspace.png",
+      alt: "브랜드 업무 화면에 소재 검색·구매, 가공 요청, 제품 생산 메뉴와 사업자 정보 및 업무용 지갑 상태가 표시된 모습",
+      caption: "브랜드 업무 공간 — 소재 거래부터 가공·생산까지 연결되는 관리 화면",
+      fit: "contain",
+    },
+    {
+      src: "/projects/saeroi/assistant-approval.png",
+      alt: "AI 어시스턴트가 소재 구매 대화와 지갑 서명 확인 카드를 함께 보여주는 화면",
+      caption: "AI 어시스턴트 — 소재 구매 안내에서 사용자 결제·서명 확인으로 이어지는 시연 영상 캡처",
+      fit: "contain",
+    },
+  ],
   highlights: ["Material–Brand 거래", "31개 업무 도구", "승인 후 상태 재검증"],
   features: [
     {

@@ -84,6 +84,8 @@ export type ProjectScreenshot = {
   src: string;
   alt: string;
   caption: string;
+  /** Preserve the full screenshot when a cropped preview would hide the UI. */
+  fit?: "contain";
 };
 
 export type ImplementationStory = {
