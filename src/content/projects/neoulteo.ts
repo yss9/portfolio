@@ -2,7 +2,7 @@ import type { Project } from "../types";
 
 export const neoulteo: Project = {
   slug: "neoulteo",
-  no: "02",
+  no: "03",
   name: "Neoulteo",
   tagline: "공공 관광 데이터 기반 여행 계획 플랫폼",
   summary:
@@ -10,6 +10,7 @@ export const neoulteo: Project = {
   period: "2026.05 ~ 2026.06",
   team: "2인 팀",
   role: "백엔드 중심 · AI 연동 · 프론트 일부",
+  focus: "관광지 DB와 배치 데이터를 답변 근거로 연결해 여행 도우미의 최신성을 관리했습니다.",
   teamShort: "2인 팀 · BE/AI/FE",
 
   stack: [

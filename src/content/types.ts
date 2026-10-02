@@ -103,6 +103,8 @@ export type Project = {
   period: string;
   team: string;
   role: string;
+  /** One verified contribution or design decision for the project card. */
+  focus: string;
   /** short label for the card grid, e.g. "1인 개발 · FE/BE" */
   teamShort: string;
   stack: StackGroup[];
@@ -124,7 +126,7 @@ export type Project = {
   performance: PerfCase[];
   demo: DemoScreen[];
   /** Screenshot captured from the project's real frontend source. */
-  preview: { src: string; alt: string };
+  preview: { src: string; alt: string; kind?: "screen" | "diagram" };
   /** Real service screens shown on the project detail page. */
   screenshots?: ProjectScreenshot[];
   /** Optional architecture diagram shown below the system layers. */

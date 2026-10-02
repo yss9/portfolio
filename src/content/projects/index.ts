@@ -6,8 +6,10 @@ import { neoulteo } from "./neoulteo";
 import { mofy } from "./mofy";
 import { potner } from "./potner";
 import { awsDeploy } from "./aws-deploy";
+import { saeroi } from "./saeroi";
 
 export const projects: Project[] = [
+  saeroi,
   potner,
   neoulteo,
   saybridge,

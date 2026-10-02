@@ -2,7 +2,7 @@ import type { Project } from "../types";
 
 export const potner: Project = {
   slug: "potner",
-  no: "01",
+  no: "02",
   name: "PotneR",
   tagline: "식물 생육 환경을 스스로 돌보는 이동형 스마트 화분",
   summary:
@@ -10,6 +10,7 @@ export const potner: Project = {
   period: "2026.07 ~ 2026.08",
   team: "6인 팀",
   role: "Flutter App · Backend · Infra",
+  focus: "MQTT 메시지 중복·순서 역전에 대비해 자동 케어 명령의 상태를 추적했습니다.",
   teamShort: "6인 팀 · App/BE/Infra",
 
   stack: [

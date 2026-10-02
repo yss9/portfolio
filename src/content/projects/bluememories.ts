@@ -2,7 +2,7 @@ import type { Project } from "../types";
 
 export const bluememories: Project = {
   slug: "bluememories",
-  no: "05",
+  no: "06",
   name: "BlueMemories",
   tagline: "AI 감정 기록 및 멘탈케어 커뮤니티",
   summary:
@@ -10,6 +10,7 @@ export const bluememories: Project = {
   period: "2024.07 ~ 2024.09",
   team: "2인 (개발자 1인 + 디자인 1인)",
   role: "기획 및 백엔드/프론트엔드 개발 총괄",
+  focus: "일기·커뮤니티를 개발하고 AI 응답 검증과 실패 시 기본값을 사후 개선했습니다.",
   teamShort: "2인 팀 · 개발 총괄",
 
   stack: [

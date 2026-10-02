@@ -2,7 +2,7 @@ import type { Project } from "../types";
 
 export const glople: Project = {
   slug: "glople",
-  no: "04",
+  no: "05",
   name: "Glople",
   tagline: "MBTI 기반 여행지 추천 커뮤니티",
   summary:
@@ -10,6 +10,7 @@ export const glople: Project = {
   period: "2024.03 ~ 2024.11",
   team: "7인 (개발자 5인 + 디자인 2인)",
   role: "추천 로직 구현 · 프론트 일부 개발",
+  focus: "사용자 성향과 선택 키워드로 여행지·경로를 추천하는 로직을 구현했습니다.",
   teamShort: "7인 팀 · 추천/FE",
 
   stack: [

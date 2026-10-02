@@ -24,6 +24,7 @@
   --color-p-mofy: #db2777;
   --color-p-potner: #4a7043;
   --color-p-aws: #d97706;
+  --color-p-saeroi: #176b4a;
   --font-sans: var(--font-inter), "Pretendard", "Noto Sans KR", ui-sans-serif,
     system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo,
@@ -37,6 +38,7 @@
 [data-accent="mofy"] { --accent: var(--color-p-mofy); }
 [data-accent="potner"] { --accent: var(--color-p-potner); }
 [data-accent="aws-deploy"] { --accent: var(--color-p-aws); }
+[data-accent="saeroi"] { --accent: var(--color-p-saeroi); }
 
 :root {
   --accent: var(--color-signal);

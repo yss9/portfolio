@@ -2,7 +2,7 @@ import type { Project } from "../types";
 
 export const mofy: Project = {
   slug: "mofy",
-  no: "06",
+  no: "07",
   name: "MOFY",
   tagline: "색상 팔레트 추출과 메시지를 제공하는 패션 커뮤니티",
   summary:
@@ -10,6 +10,7 @@ export const mofy: Project = {
   period: "2023.09 ~ 2023.11",
   team: "팀 프로젝트",
   role: "사용자 메시지 기능 공동 구현",
+  focus: "사용자 간 메시지 작성·조회 기능의 API와 React 화면을 팀원과 공동 구현했습니다.",
   teamShort: "팀 프로젝트 · 메시지",
 
   stack: [

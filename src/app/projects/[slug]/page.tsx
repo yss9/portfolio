@@ -48,6 +48,7 @@ export default async function ProjectPage({
           <div className="mt-7 flex flex-wrap items-center gap-2 font-mono text-xs font-semibold text-[var(--accent)]">
             <span className="rounded border border-[var(--accent)]/25 bg-white px-2.5 py-1">PROJECT {project.no}</span>
             <span className="rounded border border-line bg-white px-2.5 py-1 text-muted">{project.period}</span>
+            <span className="rounded border border-line bg-white px-2.5 py-1 text-muted">{project.team}</span>
           </div>
           <h1 className="mt-5 text-4xl font-bold tracking-[-0.035em] text-ink sm:text-6xl">{project.name}</h1>
           <p className="mt-3 text-lg font-semibold text-[var(--accent)]">{project.tagline}</p>
@@ -58,6 +59,9 @@ export default async function ProjectPage({
               <p className="font-mono text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">담당 역할</p>
               <p className="mt-2 text-lg font-semibold leading-7 text-ink">{project.role}</p>
               <p className="mt-1 text-sm text-muted">{project.team}</p>
+              <p className="mt-4 border-t border-line pt-4 text-[15px] leading-7 text-ink-dim">
+                <span className="mr-2 font-semibold text-[var(--accent)]">핵심 판단</span>{project.focus}
+              </p>
             </div>
             <div className="precision-card rounded-xl p-5">
               <p className="font-mono text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">핵심 기여</p>
@@ -152,12 +156,13 @@ export default async function ProjectPage({
               sizes="(min-width: 1024px) 1200px, 100vw"
               className="h-auto w-full"
             />
-            <figcaption className="border-t border-line px-4 py-3 text-right">
+            <figcaption className="flex flex-wrap items-center justify-between gap-2 border-t border-line px-4 py-3 text-sm text-ink-dim">
+              <span>{project.preview.kind === "diagram" ? "실제 서비스 화면이 아닌 구조 도식입니다." : "프로젝트의 시스템 구성도입니다."}</span>
               <a
                 href={project.architectureImage.src}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="text-sm font-semibold text-[var(--accent)] hover:underline"
+                className="font-semibold text-[var(--accent)] hover:underline"
               >
                 구성도 크게 보기 ↗
               </a>

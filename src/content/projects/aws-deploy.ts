@@ -2,7 +2,7 @@ import type { Project } from "../types";
 
 export const awsDeploy: Project = {
   slug: "aws-deploy",
-  no: "07",
+  no: "08",
   name: "AWS Deploy",
   tagline: "풀스택 애플리케이션 배포 자동화 파이프라인",
   summary:
@@ -10,6 +10,7 @@ export const awsDeploy: Project = {
   period: "2025.09",
   team: "1인 구축",
   role: "인프라 설계 및 배포 자동화 구축",
+  focus: "정적 화면과 API 배포 경로를 분리하고 GitHub Actions로 자동화했습니다.",
   teamShort: "1인 구축 · 인프라",
 
   stack: [
@@ -28,6 +29,7 @@ export const awsDeploy: Project = {
     // No UI to screenshot — this project is infrastructure, so the card shows
     // the troubleshooting write-up instead of a fabricated app screen.
     src: "/shots/aws-deploy-troubleshooting.png",
+    kind: "diagram",
     alt:
       "AWS Deploy 문제 해결 — Mixed Content 차단의 원인(프로토콜 불일치)과 해결(ALB + ACM 인증서 연결)을 단계별로 정리한 화면",
   },

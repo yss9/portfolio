@@ -2,7 +2,7 @@ import type { Project } from "../types";
 
 export const saybridge: Project = {
   slug: "saybridge",
-  no: "03",
+  no: "04",
   name: "SayBridge",
   tagline: "화상채팅 기반 외국어 교육 플랫폼",
   summary:
@@ -10,6 +10,7 @@ export const saybridge: Project = {
   period: "2025.01 ~ 2025.05",
   team: "1인 개발",
   role: "프론트엔드 및 백엔드 개발",
+  focus: "WebRTC 연결 순서를 정리하고 과제 조회의 반복 쿼리를 배치 조회로 바꿨습니다.",
   teamShort: "1인 개발 · FE/BE",
 
   stack: [

@@ -8,11 +8,10 @@ import { profile } from "@/content/profile";
 import { cx } from "@/components/ui/primitives";
 
 const sections = [
-  { href: "/#about", label: "About" },
-  { href: "/#projects", label: "Projects" },
-  { href: "/#stack", label: "Tech Stack" },
-  { href: "/#ai-assisted", label: "AI Process" },
-  { href: "/#principles", label: "Principles" },
+  { href: "/#projects", label: "프로젝트" },
+  { href: "/#about", label: "소개" },
+  { href: "/#stack", label: "기술" },
+  { href: "/#principles", label: "개발 방식" },
 ];
 
 export function SiteNav() {
@@ -80,7 +79,7 @@ export function SiteNav() {
             download
             className="rounded-md bg-signal px-3 py-1.5 font-mono text-xs font-semibold text-white transition-colors hover:bg-signal-dim"
           >
-            Resume ↓
+            PDF 포트폴리오 ↓
           </a>
         </div>
 
