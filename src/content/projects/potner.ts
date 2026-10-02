@@ -23,7 +23,6 @@ export const potner: Project = {
   stackFlat: ["Flutter", "Spring Boot", "MySQL", "MQTT", "Raspberry Pi", "ROS 2", "Docker"],
 
   links: [
-    { label: "GitHub", href: "https://github.com/yss9/potner", kind: "github" },
     { label: "영상포트폴리오", href: "https://www.youtube.com/watch?v=JgmYadg7w9M", kind: "video" },
   ],
 

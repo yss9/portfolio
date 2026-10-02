@@ -71,8 +71,6 @@ export default function Home() {
         </div>
       </section>
 
-      <ProjectsSection />
-
       <Section id="about" eyebrow="// BACKGROUND & PROFILE" title="기본 정보와 개발 방식">
         <div className="grid gap-5 lg:grid-cols-[1.08fr_0.92fr]">
           <article className="precision-card rounded-xl p-6 sm:p-8">
@@ -147,6 +145,7 @@ export default function Home() {
         </div>
       </Section>
 
+      <ProjectsSection />
     </>
   );
 }

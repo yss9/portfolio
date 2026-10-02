@@ -51,8 +51,12 @@ for (const item of cases) {
     overflow: document.documentElement.scrollWidth > window.innerWidth,
     brokenImages: [...document.images].filter((image) => !image.complete || image.naturalWidth === 0).map((image) => image.src),
     projectLinks: document.querySelectorAll('a[href^="/projects/"]').length,
+    sectionIds: [...document.querySelectorAll("main section[id]")].map((section) => section.id),
+    projectGitHubLinks: [...document.querySelectorAll('.project-detail > header a[href*="github.com"]')].map((link) => link.href),
   }));
-  const ok = response?.status() === 200 && !state.overflow && state.brokenImages.length === 0 && errors.length === 0;
+  const sectionOrderOk = item.path !== "/" || state.sectionIds.at(-1) === "projects";
+  const projectLinksOk = !["/projects/potner", "/projects/saeroi"].includes(item.path) || state.projectGitHubLinks.length === 0;
+  const ok = response?.status() === 200 && !state.overflow && state.brokenImages.length === 0 && errors.length === 0 && sectionOrderOk && projectLinksOk;
   failed ||= !ok;
   console.log(JSON.stringify({ case: item.name, status: response?.status(), ...state, errors, ok }));
   await page.close();
@@ -64,10 +68,11 @@ const menu = mobileNavPage.getByRole("button", { name: "메뉴 열기" });
 await menu.click();
 const menuOpened = await menu.getAttribute("aria-expanded") === "true";
 await mobileNavPage.locator("#mobile-nav").getByRole("link", { name: "프로젝트", exact: true }).click();
-const mobileNavOk = menuOpened && new URL(mobileNavPage.url()).hash === "#projects" &&
-  await menu.getAttribute("aria-expanded") === "false";
+await mobileNavPage.waitForURL(/#projects$/, { timeout: 10000 }).catch(() => {});
+const menuClosed = await menu.getAttribute("aria-expanded") === "false";
+const mobileNavOk = menuOpened && new URL(mobileNavPage.url()).hash === "#projects" && menuClosed;
 failed ||= !mobileNavOk;
-console.log(JSON.stringify({ case: "mobile-navigation", ok: mobileNavOk }));
+console.log(JSON.stringify({ case: "mobile-navigation", menuOpened, menuClosed, url: mobileNavPage.url(), ok: mobileNavOk }));
 const pdfResponse = await mobileNavPage.request.get(`${base}/seo-youngseok-portfolio.pdf`);
 const pdfOk = pdfResponse.status() === 200 && pdfResponse.headers()["content-type"]?.includes("pdf");
 failed ||= !pdfOk;
