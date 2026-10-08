@@ -104,6 +104,8 @@ export type Project = {
   summary: string;
   period: string;
   team: string;
+  /** Confirmed project award; omit when no award is recorded. */
+  award?: string;
   role: string;
   /** One verified contribution or design decision for the project card. */
   focus: string;

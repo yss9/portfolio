@@ -4,14 +4,14 @@ export const profile = {
   name: "서영석",
   role: "Backend Developer",
   headline:
-    "서비스의 상태와 데이터 흐름을 추적하고, 변경이 안전하게 반영되도록 설계하는 백엔드 개발자입니다.",
+    "안녕하세요. 백엔드 개발자 서영석입니다. 웹 서비스부터 실시간 통신, IoT까지 다양한 프로젝트를 경험했습니다. 백엔드를 중심으로 화면과 배포까지 연결하며 서비스를 만들어 왔습니다. 개발 과정에서는 AI를 조사·설계·구현에 활용하고, 결과를 직접 확인합니다.",
   email: "yse2196@gmail.com",
   phone: "010-5054-5065",
   github: "https://github.com/yss9",
   githubLabel: "github.com/yss9",
 
   intro: [
-    "PotneR에서는 중복·지연될 수 있는 MQTT 응답을 명령 상태와 연결했고, 새로이에서는 모델의 제안과 실제 결제·서명 실행을 분리했습니다.",
+    "SayBridge의 화상 연결에서는 비동기 실행 순서를, PotneR의 자동 급수에서는 중복·지연 응답을 다뤘습니다. 새로이에서는 이 경험을 거래 상태와 AI의 승인형 실행 설계로 이어갔습니다.",
     "문제가 생기면 로그와 데이터, 실행 순서를 따라 원인을 확인합니다. 바꾼 내용은 테스트나 같은 조건의 측정으로 검증하고, 남은 한계도 함께 기록합니다.",
   ],
 
@@ -26,7 +26,7 @@ export const profile = {
     },
     {
       title: "검증 조건과 한계까지 기록",
-      desc: "SayBridge의 조회 개선은 동일한 JMeter 조건에서 비교했고, 정량 측정이 없는 개선은 코드와 예외 테스트로 검증 범위를 구분합니다.",
+      desc: "Glople의 추천 개선은 동일한 로컬 JMeter 조건에서 비교했습니다. PotneR의 명령 처리에서는 중복·지연·실패 응답을 테스트로 확인했습니다.",
     },
   ],
 
@@ -34,8 +34,51 @@ export const profile = {
     { label: "학력", value: "영남대학교 컴퓨터공학과 졸업" },
     { label: "전공 평점", value: "3.88 / 4.5" },
     { label: "자격증", value: "정보처리기사" },
-    { label: "교육", value: "삼성청년SW·AI아카데미(SSAFY) 참여 (2026.01 ~ )" },
-    { label: "수상", value: "PotneR · SSAFY 프로젝트 우수상" },
+    { label: "교육", value: "삼성청년SW·AI아카데미 참여 (2026.01 ~ 현재)" },
+    {
+      label: "수상",
+      value: "삼성청년 SW/AI 프로젝트 우수상 2회 (SAEROI · PotneR)",
+    },
+  ],
+};
+
+export const aiWorkflow = {
+  intro:
+    "기획·기술 조사·UI 설계·코드 구현에 맞는 AI 도구를 선택합니다. 생성된 결과는 구조와 보안, 예외 처리, 실제 실행 결과를 기준으로 검토합니다.",
+  tools: [
+    "Claude",
+    "Claude Code",
+    "Gemini",
+    "Gemini Deep Research",
+    "ChatGPT",
+    "Codex",
+    "Stitch",
+  ],
+  steps: [
+    {
+      name: "RESEARCH",
+      title: "기술과 공식 문서 조사",
+      body: "Gemini Deep Research로 필요한 기술과 선택지를 조사합니다. 조사 내용을 바탕으로 공식 문서에서 동작 방식과 적용 조건을 확인합니다.",
+      tools: ["Gemini Deep Research"],
+    },
+    {
+      name: "DESIGN",
+      title: "요구사항과 구조 검토",
+      body: "ChatGPT와 Claude로 요구사항과 아키텍처를 검토합니다. Stitch로 UI를 시각화하며 화면과 기능의 연결을 구체화합니다.",
+      tools: ["ChatGPT", "Claude", "Stitch"],
+    },
+    {
+      name: "BUILD",
+      title: "코드 분석·구현·리팩터링",
+      body: "Claude Code와 Codex로 기존 코드의 맥락을 분석하고 구현·리팩터링을 진행합니다. 변경 내용을 읽고 서비스 구조에 맞는지 검토합니다.",
+      tools: ["Claude Code", "Codex"],
+    },
+    {
+      name: "VERIFY",
+      title: "실행 결과 직접 검증",
+      body: "테스트·빌드·로그·보안 검사로 실행 결과를 확인합니다. 예외 처리와 의도한 동작을 직접 검증한 뒤 변경을 반영합니다.",
+      tools: ["테스트", "빌드", "로그", "보안 검사"],
+    },
   ],
 };
 

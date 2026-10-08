@@ -2,149 +2,115 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { projects } from "@/content/projects";
-import { profile } from "@/content/profile";
-import { cx } from "@/components/ui/primitives";
+import { useEffect, useRef, useState } from "react";
 
 const sections = [
-  { href: "/#about", label: "소개" },
-  { href: "/#stack", label: "기술" },
-  { href: "/#principles", label: "개발 방식" },
-  { href: "/#projects", label: "프로젝트" },
+  { href: "/#about", label: "소개", number: "01" },
+  { href: "/#ai-assisted", label: "AI 활용", number: "02" },
+  { href: "/#projects", label: "프로젝트", number: "03" },
+  { href: "/#contact", label: "연락", number: "04" },
 ];
 
 export function SiteNav() {
   const pathname = usePathname();
-  // The mobile sheet is keyed to the route it was opened on, so navigating
-  // closes it without needing an effect to reset the flag.
   const [openPath, setOpenPath] = useState<string | null>(null);
   const open = openPath === pathname;
-  const [scrolled, setScrolled] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpenPath(null);
+        toggleRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   return (
-    <header
-      className={cx(
-        "sticky top-0 z-50 border-b transition-colors duration-200",
-        scrolled
-          ? "border-line bg-white/90 shadow-sm backdrop-blur-md"
-          : "border-line bg-white"
-      )}
-    >
-      <nav className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-5 sm:px-8">
-        <Link
-          href="/"
-          className="group flex shrink-0 items-center gap-2.5"
-          aria-label="홈으로"
-        >
-          <span className="flex items-center gap-1" aria-hidden="true">
-            <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            <span className="h-2 w-2 rounded-full bg-signal" />
+    <header className="site-header">
+      <nav
+        className="site-container flex h-20 items-center justify-between gap-6"
+        aria-label="주 메뉴"
+      >
+        <Link href="/" className="brand" aria-label="서영석 포트폴리오 홈">
+          <span className="brand-mark" aria-hidden="true">
+            ys<span>.</span>
           </span>
-          <span className="font-mono text-[13px] font-bold tracking-tight text-ink">
-            YS.DEV
-          </span>
-          <span className="hidden font-mono text-xs text-faint sm:inline">
-            / backend
+          <span className="brand-name">
+            서영석<span>Backend Developer</span>
           </span>
         </Link>
-
-        <div className="ml-auto hidden items-center gap-1 md:flex">
-          {sections.map((s) => (
-            <Link
-              key={s.href}
-              href={s.href}
-            className="rounded-md px-2.5 py-1.5 text-sm text-muted transition-colors hover:bg-surface-2 hover:text-signal"
-            >
-              {s.label}
+        <div className="hidden items-center gap-8 md:flex">
+          {sections.map((section) => (
+            <Link key={section.href} href={section.href} className="nav-link">
+              <span>{section.number}</span>
+              {section.label}
             </Link>
           ))}
           <a
-            href={profile.github}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="ml-2 rounded-md border border-line bg-white px-3 py-1.5 font-mono text-xs font-semibold text-ink-dim transition-colors hover:border-line-strong hover:text-ink"
-          >
-            GitHub ↗
-          </a>
-          <a
             href="/seo-youngseok-portfolio.pdf"
             download
-            className="rounded-md bg-signal px-3 py-1.5 font-mono text-xs font-semibold text-white transition-colors hover:bg-signal-dim"
+            className="button button-small button-outline"
           >
-            PDF 포트폴리오 ↓
+            포트폴리오 PDF <span aria-hidden="true">↓</span>
           </a>
         </div>
-
         <button
+          ref={toggleRef}
           type="button"
           onClick={() => setOpenPath(open ? null : pathname)}
           aria-expanded={open}
           aria-controls="mobile-nav"
-          className="ml-auto grid h-9 w-9 place-items-center rounded-md border border-line bg-white text-ink-dim md:hidden"
+          aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
+          className="menu-toggle md:hidden"
         >
-          <span className="sr-only">메뉴 열기</span>
-          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-            {open ? (
-              <path
-                d="M3 3l10 10M13 3L3 13"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            ) : (
-              <path
-                d="M2 4.5h12M2 8h12M2 11.5h12"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            )}
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d={open ? "M5 5l14 14M19 5L5 19" : "M4 8h16M4 16h16"}
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
           </svg>
         </button>
       </nav>
-
       {open && (
-        <div
+        <nav
           id="mobile-nav"
-          className="border-t border-line bg-white px-5 py-4 shadow-lg md:hidden"
+          aria-label="모바일 메뉴"
+          className="mobile-nav md:hidden"
         >
-          <div className="grid gap-1">
-            {sections.map((s) => (
-              <Link
-                key={s.href}
-                href={s.href}
-                onClick={() => setOpenPath(null)}
-                className="rounded-md px-3 py-2 text-base text-ink-dim hover:bg-surface-2"
-              >
-                {s.label}
-              </Link>
-            ))}
-          </div>
-          <div className="mt-3 border-t border-line pt-3">
-            <p className="px-3 pb-1.5 font-mono text-xs uppercase tracking-wider text-faint">
-              Projects
-            </p>
-            {projects.map((p) => (
-              <Link
-                key={p.slug}
-                href={`/projects/${p.slug}`}
-                onClick={() => setOpenPath(null)}
-                className="flex items-center gap-2.5 rounded-md px-3 py-2 text-base text-ink-dim hover:bg-surface-2"
-              >
-                <span className="font-mono text-xs text-faint">{p.no}</span>
-                {p.name}
-              </Link>
-            ))}
-          </div>
-        </div>
+          {sections.map((section) => (
+            <Link
+              key={section.href}
+              href={section.href}
+              onClick={() => setOpenPath(null)}
+              className="nav-link"
+            >
+              <span>{section.number}</span>
+              {section.label}
+              <span aria-hidden="true" className="ml-auto">
+                ↗
+              </span>
+            </Link>
+          ))}
+          <a
+            href="/seo-youngseok-portfolio.pdf"
+            download
+            className="button button-outline mt-4"
+            onClick={() => setOpenPath(null)}
+          >
+            포트폴리오 PDF ↓
+          </a>
+        </nav>
       )}
     </header>
   );

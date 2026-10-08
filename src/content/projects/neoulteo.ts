@@ -162,7 +162,7 @@ export const neoulteo: Project = {
       problem:
         "공공 관광 데이터는 수시로 갱신되지만 매 요청마다 외부 API를 호출하면 응답 지연과 호출 한도 문제가 생깁니다. 배치로 미리 동기화하는 구조를 택했습니다.",
       solution:
-        "Spring Batch로 데이터를 수집하고 기존 DB와 비교했습니다. ON DUPLICATE KEY UPDATE로 변경된 관광지만 반영했습니다.",
+        "Spring Batch로 데이터를 수집하고 기존 DB와 비교·집계했습니다. 전체 수집 항목을 ON DUPLICATE KEY UPDATE로 upsert해 갱신했습니다.",
       steps: [
         { label: "1", title: "수집", body: "Spring Batch로 콘텐츠 타입별 관광지 데이터를 수집합니다." },
         { label: "2", title: "비교", body: "기존 DB 데이터와 API 응답을 비교해 신규·수정·유지 항목을 분류하고 집계합니다." },

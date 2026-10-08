@@ -67,7 +67,7 @@ export const glople: Project = {
     height: 719,
   },
 
-  highlights: ["Bitmask 기반 후보 필터링", "PriorityQueue Top-K", "WebSocket 실시간 채팅"],
+  highlights: ["Bitmask 기반 후보 필터링", "PriorityQueue Top-K", "동일 조건 로컬 응답 시간 비교"],
 
   features: [
     {
@@ -80,10 +80,12 @@ export const glople: Project = {
     },
     {
       title: "AI 대화형 챗봇",
+      category: "팀 전체 기능",
       desc: "OpenAI API 연동을 통한 자연어 기반 여행지 질문 및 추천 답변 생성",
     },
     {
       title: "실시간 매칭 / 채팅",
+      category: "팀 전체 기능",
       desc: "WebSocket을 활용하여 사용자 간 매칭 및 채팅 흐름 구현",
     },
     {

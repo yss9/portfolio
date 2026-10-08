@@ -9,6 +9,7 @@ export const potner: Project = {
     "센서 상태를 기반으로 로봇의 급수·환기·일조량 관리를 자동화하고, Flutter 앱에서 식물의 상태와 성장 기록을 확인하는 IoT 서비스입니다.",
   period: "2026.07 ~ 2026.08",
   team: "6인 팀",
+  award: "삼성청년 SW/AI 프로젝트 우수상",
   role: "Flutter App · Backend · Infra",
   focus: "MQTT 메시지 중복·순서 역전에 대비해 자동 케어 명령의 상태를 추적했습니다.",
   teamShort: "6인 팀 · App/BE/Infra",
@@ -61,7 +62,7 @@ export const potner: Project = {
     height: 905,
   },
 
-  highlights: ["SSAFY 공통 프로젝트 우수상", "App · Backend · Infra 담당", "Jenkins CI/CD · 자동 롤백"],
+  highlights: ["삼성청년 SW/AI 프로젝트 우수상", "App · Backend · Infra 담당", "Jenkins CI/CD · 자동 롤백"],
 
   features: [
     {
