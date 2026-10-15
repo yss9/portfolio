@@ -45,6 +45,7 @@ const diagram = {
     },
     {
       id: "message", x: 695, y: 600, w: 345, h: 250, tone: "orange", title: "메시지", badge: "담당 (공동 구현)", highlight: true,
+      subtitle: "community 앱 · chat / message_box / message_detail",
       logos: ["glyph:message-square"], logoSize: 44, layout: "side",
       bullets: ["쪽지 보내기", "받은 · 보낸 쪽지함", "쪽지 상세 조회"],
     },

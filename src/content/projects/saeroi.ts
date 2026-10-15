@@ -126,7 +126,7 @@ export const saeroi: Project = {
   ],
   architectureImage: {
     src: "/projects/saeroi/architecture.png",
-    alt: "새로이의 MetaMask 지갑과 사용자, SSAFY EC2 Docker Compose 안의 Jenkins·Nginx·React·Spring Boot·MySQL·MinIO·FastAPI OCR 서버, 외부 Hyperledger Besu·SSAFY GMS·Kakao API를 잇는 시스템 아키텍처",
+    alt: "새로이의 MetaMask 지갑과 사용자, SSAFY EC2 Docker Compose 안의 Jenkins·Nginx·React·Spring Boot·MySQL·파일 저장소(Docker 볼륨, 설정 시 MinIO)·FastAPI OCR 서버, 외부 Hyperledger Besu·SSAFY GMS·Kakao API를 잇는 시스템 아키텍처",
     width: 1800,
     height: 990,
   },

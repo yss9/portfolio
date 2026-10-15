@@ -121,13 +121,13 @@ export const neoulteo: Project = {
     {
       id: "external",
       label: "TourAPI · Kakao Map · FastAPI/ChromaDB",
-      role: "공공 관광 데이터 수집과 지도 렌더링을 담당하며, FastAPI·ChromaDB는 Spring RAG와 분리된 실험 endpoint로 구성",
+      role: "공공 관광 데이터 수집과 지도 렌더링을 담당합니다. FastAPI·ChromaDB는 Spring RAG와 분리된 실험 서버로, 챗봇에서 Spring AI를 끄거나 PDF를 올릴 때 프런트가 직접 호출합니다",
       band: "external",
     },
   ],
   architectureImage: {
     src: "/projects/neoulteo/architecture.png",
-    alt: "너울터의 Vue 프런트엔드와 카카오맵, 도메인 API·Spring AI·Spring Batch로 나뉜 Spring Boot 서버, MySQL과 파일 저장, TMAP·SSAFY GMS·TourAPI 외부 연동, 실험용 FastAPI 서버를 보여 주는 시스템 아키텍처",
+    alt: "너울터의 Vue 프런트엔드와 카카오맵, 도메인 API·Spring AI·Spring Batch로 나뉜 Spring Boot 서버, MySQL과 파일 저장, TMAP·SSAFY GMS·TourAPI 외부 연동, 챗봇이 직접 호출하는 실험용 FastAPI 서버를 보여 주는 시스템 아키텍처",
     width: 1800,
     height: 990,
   },
@@ -244,7 +244,7 @@ ctx.putLong(TourBatchContextKeys.REPORT_ID, report.getId());`,
         {
           label: "4",
           title: "리포트",
-          body: "비교 결과를 PDF 리포트로 생성하고, GMS OpenAI로 변경 내역을 요약합니다.",
+          body: "GMS OpenAI로 변경 내역을 요약한 뒤, 비교 결과와 요약을 PDF 리포트로 만듭니다.",
         },
       ],
       takeaway:
