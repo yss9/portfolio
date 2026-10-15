@@ -128,7 +128,75 @@ export const neoulteo: Project = {
   architectureIntent:
     "공공 데이터는 배치로 미리 동기화하고, 애플리케이션이 질문에 필요한 도구와 DB 기반 RAG 문맥을 조합해 AI가 실제 관광지 데이터를 근거로 답하도록 구성했습니다.",
 
-  troubleshooting: [],
+  troubleshooting: [
+    {
+      id: "tour-batch-full-run",
+      title: "TourAPI 전체 동기화 배치 안정화",
+      problem:
+        "관광지 전체를 한 번에 동기화하는 배치가 끝까지 안정적으로 돌지 않았습니다. 이미 인코딩된 서비스 키가 요청 URL을 만들 때 한 번 더 인코딩됐고, 일부 값은 문자열 \"null\"로 와 그대로 저장됐습니다. 수집한 전체 목록은 Spring Batch가 메타데이터 테이블에 직렬화해 저장하는 ExecutionContext에 담겨 있었고, 외부 호출에는 타임아웃이 없었으며 호출 한도에 걸리면 그때까지 받은 데이터도 함께 버려졌습니다.",
+      solution:
+        "URL은 이미 인코딩된 값으로 만들고 문자열 \"null\"은 빈 값으로 정리했습니다. Step 사이에 넘기던 전체 목록과 비교 결과는 런타임 컨텍스트로 옮겨 ExecutionContext에는 리포트 ID·PDF 경로 같은 작은 값만 남겼습니다. 외부 호출에는 연결·응답 타임아웃을 두고, 호출 한도에 걸리면 이미 받은 데이터로 이어서 처리하게 했습니다.",
+      steps: [
+        {
+          label: "1",
+          title: "서비스 키와 null 값 정리",
+          body: "공공데이터포털의 인코딩된 키가 UriComponentsBuilder에서 다시 인코딩돼 값이 달라졌습니다. build(true)로 이미 인코딩된 값임을 지정하고, 문자열 \"null\"은 빈 값으로 바꿨습니다.",
+        },
+        {
+          label: "2",
+          title: "Step 간 대용량 데이터 분리",
+          body: "수집 목록과 비교 결과를 ExecutionContext 대신 런타임 컨텍스트 빈으로 넘기고, 실행을 시작할 때마다 비웁니다. 메타데이터 테이블에는 리포트 ID·PDF 경로 같은 작은 값만 저장됩니다.",
+        },
+        {
+          label: "3",
+          title: "외부 호출 타임아웃",
+          body: "TourAPI는 연결 10초·응답 30초, GMS 요약은 연결 5초·응답 15초로 제한해 응답이 없을 때 배치가 멈춰 있지 않게 했습니다.",
+        },
+        {
+          label: "4",
+          title: "호출 한도 대응",
+          body: "429 응답이 오면 이미 받은 페이지까지로 비교·저장을 이어 갑니다. 저장은 ON DUPLICATE KEY UPDATE upsert만 하므로 일부만 받아도 기존 관광지는 지워지지 않고, 첫 페이지부터 막히면 실패로 끝냅니다.",
+        },
+      ],
+      code: [
+        {
+          filename: "TourApiClient.java",
+          language: "java",
+          code: `try {
+    json = restClient.get()
+            .uri(buildAreaBasedUri(pageNo, targetContentTypeId))
+            .accept(MediaType.APPLICATION_JSON)
+            .retrieve()
+            .body(String.class);
+} catch (HttpClientErrorException.TooManyRequests e) {
+    if (!allItems.isEmpty()) {
+        System.out.println("[TourBatch] TourAPI quota exceeded. Continue with partial items. fetched="
+                + allItems.size());
+        break;
+    }
+    throw e;
+}
+// ...
+return builder.build(true).toUri();`,
+        },
+        {
+          filename: "TourSaveTasklet.java",
+          language: "java",
+          code: `List<TourAttractionDto> items = runtimeContext.getTourItems();
+// ...
+TourBatchComparisonResult comparison = tourAttractionCompareService.compare(items, dbItems);
+int saved = tourBatchDao.saveAttractions(items);
+// ...
+runtimeContext.setComparisonResult(comparison);
+ctx.putLong(TourBatchContextKeys.REPORT_ID, report.getId());`,
+        },
+      ],
+      takeaway:
+        "전체 수집이 끝까지 실행되도록 정리한 뒤, 같은 배치로 관광지 전체 콘텐츠 타입 동기화까지 확장했습니다.",
+    },
+  ],
+  troubleshootingNote:
+    "런타임 컨텍스트는 서버 메모리에 있어 한 서버에서 한 번에 하나의 배치 실행을 전제로 합니다. 중단된 Step을 이어서 재시작하려면 수집 결과를 별도 저장소에 두는 방식이 필요합니다.",
 
   designNotes: [
     {

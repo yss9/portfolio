@@ -67,29 +67,15 @@ export default async function ProjectPage({
   const { prev, next } = projectNeighbours(slug);
   const demoClips = clips[slug] ?? [];
   const cases = project.troubleshooting;
-  const designCases = project.designNotes ?? [];
+  // MOFY's design notes describe the team's service, not the author's own
+  // problem solving, so they sit with the system architecture instead.
+  const teamDesign = slug === "mofy";
+  const designCases = teamDesign ? [] : (project.designNotes ?? []);
+  const teamDesignCases = teamDesign ? (project.designNotes ?? []) : [];
   const contributions = project.features.filter(
     (feature) => feature.category !== "팀 전체 기능",
   );
-  const hasProblemSolving =
-    cases.length > 0 ||
-    designCases.length > 0 ||
-    Boolean(project.implementationStory);
-
-  const firstCase = cases[0] ?? designCases[0];
-  const brief = editorial
-    ? {
-        problem: editorial.problem,
-        solution: editorial.solution,
-        result: editorial.result,
-      }
-    : firstCase
-      ? {
-          problem: firstCase.problem,
-          solution: solutionOf(firstCase),
-          result: firstCase.takeaway,
-        }
-      : null;
+  const hasProblemSolving = cases.length > 0 || designCases.length > 0;
 
   const screens: ProjectScreenshot[] = [...(project.screenshots ?? [])];
   if (slug === "mofy" || slug === "saybridge") {
@@ -103,6 +89,9 @@ export default async function ProjectPage({
       caption: "키워드 선택 — 여행 취향을 입력하고 맞춤 추천을 시작",
     });
   }
+  // A project without screens (AWS Deploy) shows its diagram up top instead,
+  // so the architecture section does not repeat it.
+  const architectureOnTop = screens.length === 0 && Boolean(project.architectureImage);
   if (screens.length === 0 && project.architectureImage) {
     screens.push({
       ...project.architectureImage,
@@ -111,18 +100,26 @@ export default async function ProjectPage({
   }
 
   const sections = [
-    { id: "overview", label: "프로젝트 개요" },
-    { id: "contribution", label: "제가 맡은 부분" },
+    { id: "background", label: "기획 배경" },
+    { id: "architecture", label: "시스템 아키텍처" },
+    { id: "contribution", label: "구현 기능" },
     ...(hasProblemSolving
-      ? [{ id: "problem-solving", label: "문제 해결" }]
+      ? [{ id: "problem-solving", label: "트러블슈팅" }]
       : []),
     ...(project.performance.length
-      ? [{ id: "performance", label: "성능 검증" }]
+      ? [{ id: "performance", label: "성능 개선" }]
       : []),
-    { id: "tech-decisions", label: "기술 선택" },
-    { id: "architecture", label: "시스템 구성" },
-    { id: "learning", label: "배운 점" },
+    { id: "tech-decisions", label: "기술 선택 이유" },
+    { id: "learning", label: "회고" },
   ];
+  const section = (id: string) => {
+    const index = sections.findIndex((item) => item.id === id);
+    return {
+      id,
+      no: String(index + 1).padStart(2, "0"),
+      title: sections[index].label,
+    };
+  };
 
   return (
     <div className="project-detail">
@@ -131,73 +128,82 @@ export default async function ProjectPage({
           ← 전체 프로젝트
         </Link>
         <div className="detail-head">
-          <div>
-            <p className="eyebrow">
-              PROJECT {project.no}
-              {editorial ? ` · ${editorial.category}` : ""}
+          <p className="eyebrow">
+            PROJECT {project.no}
+            {editorial ? ` · ${editorial.category}` : ""}
+          </p>
+          <h1>{project.name}</h1>
+          <p className="detail-tagline">{project.tagline}</p>
+          {project.award && (
+            <p className="award-badge">
+              <AwardIcon />
+              {project.award}
             </p>
-            <h1>{project.name}</h1>
-            <p className="detail-tagline">{project.tagline}</p>
-            {project.award && (
-              <p className="award-badge">
-                <AwardIcon />
-                {project.award}
-              </p>
-            )}
-          </div>
-          <p className="detail-focus">{project.focus}</p>
-        </div>
-        <dl className="detail-meta">
-          <div>
-            <dt>진행 기간</dt>
-            <dd>{project.period}</dd>
-          </div>
-          <div>
-            <dt>팀 구성</dt>
-            <dd>{project.team}</dd>
-          </div>
-          <div>
-            <dt>제 담당</dt>
-            <dd>{project.role}</dd>
-          </div>
-          {project.links.length > 0 && (
-            <div>
-              <dt>링크</dt>
-              <dd className="detail-links">
-                {project.links.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="button button-small button-outline"
-                  >
-                    {link.label}{" "}
-                    <span aria-hidden="true">
-                      {link.kind === "video" ? "▷" : "↗"}
-                    </span>
-                  </a>
-                ))}
-              </dd>
-            </div>
           )}
-        </dl>
-        {brief && (
-          <dl className="detail-brief" aria-label="핵심 요약">
+        </div>
+
+        <section className="project-info" aria-labelledby="project-info-title">
+          <div className="project-info-main">
+            <h2 id="project-info-title" className="project-info-label">
+              프로젝트 개요
+            </h2>
+            <p className="project-info-summary">{project.summary}</p>
+            <h3 className="project-info-label">주요 구현</h3>
+            <p className="project-info-focus">{project.focus}</p>
+          </div>
+          <dl className="project-info-meta">
             <div>
-              <dt>문제</dt>
-              <dd>{brief.problem}</dd>
+              <dt>진행 기간</dt>
+              <dd>{project.period}</dd>
             </div>
             <div>
-              <dt>해결</dt>
-              <dd>{brief.solution}</dd>
+              <dt>팀 구성</dt>
+              <dd>{project.team}</dd>
             </div>
             <div>
-              <dt>결과</dt>
-              <dd>{brief.result}</dd>
+              <dt>담당 역할</dt>
+              <dd>{project.role}</dd>
             </div>
+            {project.links.length > 0 && (
+              <div>
+                <dt>링크</dt>
+                <dd className="detail-links">
+                  {project.links.map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="button button-small button-outline"
+                    >
+                      {link.label}{" "}
+                      <span aria-hidden="true">
+                        {link.kind === "video" ? "▷" : "↗"}
+                      </span>
+                    </a>
+                  ))}
+                </dd>
+              </div>
+            )}
           </dl>
-        )}
+          <div className="project-info-stack">
+            <h3 className="project-info-label">기술 스택</h3>
+            <dl>
+              {project.stack.map((group) => (
+                <div key={group.group}>
+                  <dt>{group.group}</dt>
+                  <dd className="tag-list">
+                    {group.items.map((item) => (
+                      <span key={item} className="tag">
+                        {item}
+                      </span>
+                    ))}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
       </header>
 
       {/* Projects with demo loops show those instead of the still screenshots. */}
@@ -215,8 +221,7 @@ export default async function ProjectPage({
       <div className="detail-layout site-container">
         <DetailToc sections={sections} />
         <div className="detail-body">
-          <DetailSection id="overview" eyebrow="개요" title="어떤 서비스인가요?">
-            <p className="prose-lg">{project.summary}</p>
+          <DetailSection {...section("background")}>
             {story.blockchain && (
               <aside
                 className="context-card"
@@ -254,10 +259,58 @@ export default async function ProjectPage({
             </dl>
           </DetailSection>
 
+          <DetailSection {...section("architecture")}>
+            {project.architectureImage && !architectureOnTop && (
+              <figure className="architecture-figure">
+                <a
+                  href={project.architectureImage.src}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label="시스템 아키텍처 원본 새 창으로 보기"
+                >
+                  <Image
+                    src={project.architectureImage.src}
+                    alt={project.architectureImage.alt}
+                    width={project.architectureImage.width}
+                    height={project.architectureImage.height}
+                    sizes="(min-width: 1200px) 860px, 95vw"
+                    className="h-auto w-full"
+                  />
+                </a>
+                <figcaption>
+                  <span>{project.name} 시스템 아키텍처</span>
+                  <span>이미지를 누르면 크게 볼 수 있습니다</span>
+                </figcaption>
+              </figure>
+            )}
+            <p className="architecture-intent">{project.architectureIntent}</p>
+            <h3 className="sub-title mt-8">구성 요소별 역할</h3>
+            <ul className="node-list">
+              {project.architecture.map((node) => (
+                <li key={node.id}>
+                  <h4>{node.label}</h4>
+                  <p>{node.role}</p>
+                </li>
+              ))}
+            </ul>
+            {teamDesignCases.length > 0 && (
+              <div className="case-group mt-10">
+                <div className="callout mb-5">
+                  <p className="callout-title">팀 서비스의 설계 참고</p>
+                  <p>
+                    아래 두 사례는 서비스 전체의 구조 설명입니다. 제 담당은
+                    구현 기능에 표시한 메시지 기능 공동 구현입니다.
+                  </p>
+                </div>
+                {teamDesignCases.map((item) => (
+                  <CaseCard key={item.id} item={item} kind="팀 서비스 설계" />
+                ))}
+              </div>
+            )}
+          </DetailSection>
+
           <DetailSection
-            id="contribution"
-            eyebrow="기여"
-            title="제가 맡은 부분"
+            {...section("contribution")}
             lead="전체 서비스 안에서 직접 구현하거나 공동으로 맡은 기능입니다."
           >
             <ul className="contribution-list">
@@ -282,10 +335,8 @@ export default async function ProjectPage({
 
           {hasProblemSolving && (
             <DetailSection
-              id="problem-solving"
-              eyebrow="문제 해결"
-              title="문제를 풀어낸 과정"
-              lead="문제와 해결, 확인한 결과를 먼저 적고, 실제 코드와 테스트를 근거로 붙였습니다."
+              {...section("problem-solving")}
+              lead="문제와 해결, 확인한 결과를 적고 실제 코드와 테스트를 근거로 붙였습니다."
             >
               {proof?.flow && (
                 <FlowDiagram
@@ -294,36 +345,6 @@ export default async function ProjectPage({
                   guards={proof.flow.guards}
                 />
               )}
-
-              {project.implementationStory && (
-                <div className="case-group mt-10">
-                  <h3 className="sub-title">
-                    중복 응답에도 급수가 반복되지 않도록
-                  </h3>
-                  <p className="mt-3 text-[15.5px] leading-[1.8] text-ink-dim">
-                    {project.implementationStory.introduction[1]}
-                  </p>
-                  <ol className="decision-grid">
-                    {project.implementationStory.decisions.map(
-                      (decision, index) => (
-                        <li key={decision.title} className="decision">
-                          <p className="kicker">설계 판단 0{index + 1}</p>
-                          <h4>{decision.title}</h4>
-                          <p>{decision.body}</p>
-                        </li>
-                      ),
-                    )}
-                  </ol>
-                  {proof?.cases.implementation && (
-                    <Evidence {...proof.cases.implementation} />
-                  )}
-                  <div className="verification">
-                    <h4>확인한 결과</h4>
-                    <p>{project.implementationStory.verification}</p>
-                  </div>
-                </div>
-              )}
-
               {cases.length > 0 && (
                 <div className={proof?.flow ? "case-group mt-10" : "case-group"}>
                   {cases.map((item) => (
@@ -337,21 +358,8 @@ export default async function ProjectPage({
               )}
               {designCases.length > 0 && (
                 <div className="case-group">
-                  {slug === "mofy" && (
-                    <div className="callout mb-5">
-                      <p className="callout-title">팀 서비스의 설계 참고</p>
-                      <p>
-                        아래 두 사례는 서비스 전체의 구조 설명입니다. 제 담당은
-                        위에 표시한 메시지 기능 공동 구현입니다.
-                      </p>
-                    </div>
-                  )}
                   {designCases.map((item) => (
-                    <CaseCard
-                      key={item.id}
-                      item={item}
-                      kind={slug === "mofy" ? "팀 서비스 설계" : "설계 판단"}
-                    />
+                    <CaseCard key={item.id} item={item} kind="설계 판단" />
                   ))}
                 </div>
               )}
@@ -366,9 +374,7 @@ export default async function ProjectPage({
 
           {project.performance.length > 0 && (
             <DetailSection
-              id="performance"
-              eyebrow="성능 검증"
-              title="개선 전과 후"
+              {...section("performance")}
               lead="같은 조건에서 비교한 로컬 측정입니다. 측정 조건을 결과와 함께 적었습니다."
             >
               {project.performance.map((item) => (
@@ -400,9 +406,7 @@ export default async function ProjectPage({
           )}
 
           <DetailSection
-            id="tech-decisions"
-            eyebrow="기술 선택"
-            title="왜 이 기술인가요?"
+            {...section("tech-decisions")}
             lead="기술 이름보다 해결하려던 작업과 적용 이유를 적었습니다."
           >
             <div className="tech-choices">
@@ -416,70 +420,9 @@ export default async function ProjectPage({
                 </article>
               ))}
             </div>
-            <dl className="stack-summary" aria-label="프로젝트 전체 사용 기술">
-              {project.stack.map((group) => (
-                <div key={group.group}>
-                  <dt>{group.group}</dt>
-                  <dd className="tag-list">
-                    {group.items.map((item) => (
-                      <span key={item} className="tag">
-                        {item}
-                      </span>
-                    ))}
-                  </dd>
-                </div>
-              ))}
-            </dl>
           </DetailSection>
 
-          <DetailSection
-            id="architecture"
-            eyebrow="시스템 구성"
-            title="흐름을 연결한 구조"
-          >
-            {project.architectureImage && (
-              <figure className="architecture-figure">
-                <a
-                  href={project.architectureImage.src}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  aria-label="시스템 구성도 원본 새 창으로 보기"
-                >
-                  <Image
-                    src={project.architectureImage.src}
-                    alt={project.architectureImage.alt}
-                    width={project.architectureImage.width}
-                    height={project.architectureImage.height}
-                    sizes="(min-width: 1200px) 860px, 95vw"
-                    className="h-auto w-full"
-                  />
-                </a>
-                <figcaption>
-                  <span>프로젝트 전체 시스템 구성</span>
-                  <span>이미지를 누르면 크게 볼 수 있습니다</span>
-                </figcaption>
-              </figure>
-            )}
-            <p className="architecture-intent text-[16px] leading-[1.8] text-ink-dim">
-              {project.architectureIntent}
-            </p>
-            <details
-              className="case-expand mt-6"
-              open={!project.architectureImage}
-            >
-              <summary>구성 요소별 역할 보기</summary>
-              <ul className="node-list">
-                {project.architecture.map((node) => (
-                  <li key={node.id}>
-                    <h3>{node.label}</h3>
-                    <p>{node.role}</p>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          </DetailSection>
-
-          <DetailSection id="learning" eyebrow="배운 점" title="경험이 남긴 기준">
+          <DetailSection {...section("learning")}>
             <blockquote className="learning">{story.learning}</blockquote>
           </DetailSection>
         </div>
@@ -519,13 +462,13 @@ export default async function ProjectPage({
 
 function DetailSection({
   id,
-  eyebrow,
+  no,
   title,
   lead,
   children,
 }: {
   id: string;
-  eyebrow: string;
+  no: string;
   title: string;
   lead?: string;
   children: ReactNode;
@@ -533,7 +476,7 @@ function DetailSection({
   return (
     <section id={id} className="detail-section" aria-labelledby={`${id}-title`}>
       <header className="detail-section-head">
-        <p className="eyebrow">{eyebrow}</p>
+        <p className="eyebrow">{no}</p>
         <h2 id={`${id}-title`}>{title}</h2>
         {lead && <p className="detail-section-lead">{lead}</p>}
       </header>

@@ -7,8 +7,8 @@ export const profile = {
     "중복·지연 응답과 오래된 상태에도 정확하게 동작하는 서버를 설계하는 백엔드 개발자 서영석입니다. 승인형 AI 어시스턴트(새로이)와 IoT 자동 급수(PotneR)로 SSAFY 우수상을 두 번 받았습니다.",
   positioning: {
     kicker: "Backend Developer",
-    title: ["결제·AI·IoT 서버를", "만드는 백엔드 개발자", "서영석입니다."],
-    lead: "Spring Boot로 거래와 결제, 승인형 AI 에이전트, IoT 장치 명령을 처리하는 서버를 만들어 왔습니다. 중복되거나 늦게 온 응답, 오래된 상태가 잘못된 실행으로 이어지지 않도록 실행 직전에 서버가 상태를 다시 확인하게 설계합니다.",
+    title: ["믿기 전에 확인하는", "백엔드 개발자", "서영석입니다."],
+    lead: "Spring Boot로 AI 에이전트·IoT·거래 서버를 만들어 왔습니다. 새로이에서는 결제가 끝난 뒤에도 AI가 결제 전 상태로 답하는 오류를 찾아 매 요청마다 서버 상태를 다시 읽게 바꿨고, PotneR에서는 중복 재전송·늦은 회신·명령 실패 같은 경우를 단위 테스트로 확인해 급수가 두 번 실행되지 않게 했습니다. 정상 흐름에서 끝내지 않고 경계 사례까지 직접 확인합니다.",
   },
   /** What kind of backend work the user does, each backed by a project page. */
   devAreas: [

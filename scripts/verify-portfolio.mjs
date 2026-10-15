@@ -63,8 +63,11 @@ for (const item of cases) {
   const expectedRepo = { "/projects/saeroi": "https://github.com/yss9/saeroi", "/projects/potner": "https://github.com/yss9/potner" }[item.path];
   const projectLinksOk = !expectedRepo || (state.projectGitHubLinks.length === 1 && state.projectGitHubLinks[0] === expectedRepo);
   // Pages with demo loops replace the still screenshot gallery with them.
-  const saeroiScreensOk = item.path !== "/projects/saeroi" || state.screenshotCount === 0;
-  const demoClipsOk = !["/projects/potner", "/projects/saeroi"].includes(item.path) || state.demoClips.length >= 4;
+  // Every project except the AWS infra one shows demo loops instead of stills.
+  const isProject = item.path.startsWith("/projects/");
+  const wantsClips = isProject && item.path !== "/projects/aws-deploy";
+  const saeroiScreensOk = !wantsClips || state.screenshotCount === 0;
+  const demoClipsOk = !wantsClips || state.demoClips.length >= 4;
   const ok = response?.status() === 200 && !state.overflow && state.brokenImages.length === 0 && errors.length === 0 && sectionOrderOk && projectLinksOk && saeroiScreensOk && demoClipsOk && state.pdfLinks === 0;
   failed ||= !ok;
   console.log(JSON.stringify({ case: item.name, status: response?.status(), ...state, errors, ok }));

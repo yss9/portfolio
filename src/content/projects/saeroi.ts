@@ -126,12 +126,6 @@ export const saeroi: Project = {
   ],
   architectureIntent:
     "MySQL은 업무 데이터와 현재 상태를 관리하고, Hyperledger Besu는 주문·인계·생산 등의 블록체인 기록을 맡습니다. 블록체인 작업은 사용자 지갑 서명과 온체인 결과 확인을 거쳐 서버 상태에 반영합니다. AI는 기존 업무를 제안하고, 서버는 사용자 권한과 최신 상태를 확인해 실행 흐름을 연결합니다.",
-  architectureImage: {
-    src: "/projects/saeroi/process.svg",
-    alt: "소재 거래·가공·생산·판매 흐름, Hyperledger Besu 블록체인 기록과 지갑 서명, 승인형 AI 어시스턴트의 연결 구조",
-    width: 1200,
-    height: 750,
-  },
   troubleshooting: [
     {
       id: "stale-model-state",

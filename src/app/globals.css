@@ -751,117 +751,6 @@ kbd {
 }
 
 /* ------------------------------------------------------------------ */
-/* Home · measured impact                                              */
-/* ------------------------------------------------------------------ */
-
-.impact-grid {
-  display: grid;
-  align-items: center;
-  gap: 48px;
-}
-@media (min-width: 1024px) {
-  .impact-grid {
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: 72px;
-  }
-}
-.impact-grid .section-head {
-  margin-bottom: 0;
-}
-.impact-grid .section-head h2 em {
-  font-style: normal;
-  color: #ff8a4c;
-}
-.impact-cases {
-  display: grid;
-  gap: 14px;
-}
-.impact-case {
-  border: 1px solid var(--color-night-line);
-  border-radius: 18px;
-  background: var(--color-night-2);
-  padding: 22px 24px 24px;
-}
-.impact-case-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-}
-.impact-case h3 {
-  font-size: 17px;
-  font-weight: 700;
-  line-height: 1.5;
-}
-.impact-case-head p {
-  margin-top: 2px;
-  font-size: 14px;
-  color: var(--color-night-muted);
-}
-.impact-delta {
-  flex: none;
-  font-size: clamp(30px, 3vw, 38px);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.1;
-  color: #ff8a4c;
-  font-variant-numeric: tabular-nums;
-}
-.impact-bars {
-  display: grid;
-  gap: 10px;
-  margin-top: 20px;
-}
-.impact-bar {
-  display: grid;
-  grid-template-columns: 52px minmax(0, 1fr) 64px;
-  align-items: center;
-  gap: 12px;
-  font-size: 13px;
-  color: var(--color-night-muted);
-}
-.impact-bar-track {
-  display: block;
-  height: 10px;
-  overflow: hidden;
-  border-radius: 99px;
-  background: #24272b;
-}
-.impact-bar-fill {
-  display: block;
-  width: var(--w);
-  height: 100%;
-  border-radius: inherit;
-  background: #50545b;
-}
-.impact-bar.is-after .impact-bar-fill {
-  background: var(--color-signal);
-}
-.impact-bar-value {
-  text-align: right;
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
-.impact-bar.is-after .impact-bar-value {
-  font-weight: 700;
-  color: #fff;
-}
-.impact-p95 {
-  margin-top: 14px;
-  font-size: 13px;
-  color: var(--color-night-muted);
-}
-.impact-note {
-  margin-top: 4px;
-  font-size: 13.5px;
-  line-height: 1.7;
-  color: var(--color-night-muted);
-}
-.section-dark .text-link {
-  color: var(--color-night-ink);
-}
-
-/* ------------------------------------------------------------------ */
 /* Home · more projects                                                */
 /* ------------------------------------------------------------------ */
 
@@ -1161,46 +1050,26 @@ kbd {
 
 .site-footer {
   background: var(--color-night);
-  padding-top: clamp(80px, 10vw, 128px);
+  padding-top: clamp(48px, 6vw, 72px);
   color: var(--color-night-ink);
 }
-.contact-grid {
+.contact-row {
   display: grid;
-  gap: 40px;
+  gap: 14px;
+  justify-items: start;
 }
-@media (min-width: 1024px) {
-  .contact-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: end;
-    gap: 64px;
+@media (min-width: 900px) {
+  .contact-row {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 32px;
   }
 }
-.site-footer h2 {
-  margin-top: 16px;
-  font-size: clamp(34px, 4.8vw, 58px);
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  line-height: 1.15;
-}
-.site-footer h2 em {
-  font-style: normal;
-  color: #ff8a4c;
-}
-.contact-lead {
-  max-width: 28em;
-  margin-top: 20px;
-  font-size: 17px;
-  line-height: 1.75;
-  color: var(--color-night-muted);
-}
 .contact-email {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  border-bottom: 1px solid var(--color-night-line);
-  padding-bottom: 20px;
-  font-size: clamp(22px, 3vw, 38px);
+  gap: 12px;
+  font-size: clamp(20px, 2.4vw, 30px);
   font-weight: 750;
   letter-spacing: -0.03em;
   transition: color 0.2s ease;
@@ -1212,7 +1081,6 @@ kbd {
   display: flex;
   flex-wrap: wrap;
   gap: 12px 28px;
-  margin-top: 20px;
 }
 .contact-links a {
   font-size: 15px;
@@ -1227,7 +1095,7 @@ kbd {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 12px 24px;
-  margin-top: clamp(64px, 8vw, 104px);
+  margin-top: clamp(36px, 5vw, 56px);
   border-top: 1px solid var(--color-night-line);
   padding: 24px 0 32px;
   font-size: 13px;
@@ -1254,16 +1122,7 @@ kbd {
   color: var(--color-ink);
 }
 .detail-head {
-  display: grid;
-  gap: 28px;
   margin-top: clamp(28px, 4vw, 44px);
-}
-@media (min-width: 1024px) {
-  .detail-head {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-    align-items: end;
-    gap: 64px;
-  }
 }
 .detail-head h1 {
   margin-top: 14px;
@@ -1281,34 +1140,70 @@ kbd {
 .detail-head .award-badge {
   margin-top: 20px;
 }
-.detail-focus {
-  border-left: 3px solid var(--color-signal);
-  padding-left: 20px;
-  font-size: clamp(17px, 1.5vw, 19px);
+
+/* Project info card: overview, period, team, role, links, stack */
+.project-info {
+  display: grid;
+  margin-top: clamp(28px, 4vw, 44px);
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: 18px;
+  background: var(--color-surface);
+}
+@media (min-width: 1024px) {
+  .project-info {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  }
+}
+.project-info-main,
+.project-info-meta,
+.project-info-stack {
+  padding: clamp(22px, 3vw, 32px);
+}
+.project-info-label {
+  font-size: 13px;
+  font-weight: 750;
+  color: var(--color-muted);
+}
+.project-info-summary {
+  margin-top: 10px;
+  font-size: clamp(16.5px, 1.4vw, 18px);
   font-weight: 550;
+  line-height: 1.75;
+  color: var(--color-ink);
+}
+.project-info-main .project-info-label + .project-info-focus {
+  margin-top: 10px;
+}
+.project-info-main h3.project-info-label {
+  margin-top: 24px;
+}
+.project-info-focus {
+  border-left: 3px solid var(--color-signal);
+  padding-left: 16px;
+  font-size: 15.5px;
   line-height: 1.75;
   color: var(--color-ink-dim);
 }
-.detail-meta {
+.project-info-meta {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
-  gap: 1px;
-  margin-top: clamp(32px, 5vw, 48px);
-  overflow: hidden;
-  border: 1px solid var(--color-line);
-  border-radius: 16px;
-  background: var(--color-line);
+  align-content: start;
+  gap: 18px;
+  border-top: 1px solid var(--color-line);
+  background: var(--color-surface-2);
 }
-.detail-meta > div {
-  background: var(--color-surface);
-  padding: 18px 22px;
+@media (min-width: 1024px) {
+  .project-info-meta {
+    border-top: 0;
+    border-left: 1px solid var(--color-line);
+  }
 }
-.detail-meta dt {
+.project-info-meta dt {
   font-size: 13px;
   font-weight: 650;
   color: var(--color-muted);
 }
-.detail-meta dd {
+.project-info-meta dd {
   margin-top: 4px;
   font-size: 15.5px;
   font-weight: 650;
@@ -1318,39 +1213,41 @@ kbd {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 4px;
+  margin-top: 8px;
 }
-.detail-brief {
-  display: grid;
-  gap: 1px;
-  margin-top: 16px;
-  overflow: hidden;
-  border: 1px solid var(--color-line);
-  border-radius: 16px;
-  background: var(--color-line);
+.project-info-stack {
+  border-top: 1px solid var(--color-line);
 }
-@media (min-width: 900px) {
-  .detail-brief {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+@media (min-width: 1024px) {
+  .project-info-stack {
+    grid-column: 1 / -1;
   }
 }
-.detail-brief > div {
-  background: var(--color-surface);
-  padding: 22px 24px 24px;
+.project-info-stack dl {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
 }
-.detail-brief dt {
-  font-size: 13px;
-  font-weight: 750;
+@media (min-width: 768px) {
+  .project-info-stack dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 32px;
+  }
+}
+.project-info-stack dl > div {
+  display: grid;
+  gap: 6px 16px;
+}
+@media (min-width: 640px) {
+  .project-info-stack dl > div {
+    grid-template-columns: 120px minmax(0, 1fr);
+    align-items: baseline;
+  }
+}
+.project-info-stack dt {
+  font-size: 13.5px;
+  font-weight: 700;
   color: var(--color-ink);
-}
-.detail-brief > div:last-child dt {
-  color: var(--color-signal-dim);
-}
-.detail-brief dd {
-  margin-top: 8px;
-  font-size: 15.5px;
-  line-height: 1.7;
-  color: var(--color-ink-dim);
 }
 
 /* ------------------------------------------------------------------ */
@@ -1608,11 +1505,6 @@ kbd {
   font-size: 16px;
   line-height: 1.7;
   color: var(--color-muted);
-}
-.prose-lg {
-  font-size: clamp(17px, 1.5vw, 19px);
-  line-height: 1.85;
-  color: var(--color-ink-dim);
 }
 .sub-title {
   font-size: 19px;
@@ -1978,35 +1870,6 @@ kbd {
   line-height: 1.7;
   color: var(--color-muted);
 }
-.decision-grid {
-  display: grid;
-  gap: 12px;
-  margin-top: 28px;
-}
-@media (min-width: 768px) {
-  .decision-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-.decision {
-  border: 1px solid var(--color-line);
-  border-radius: 16px;
-  background: var(--color-surface);
-  padding: 20px 22px 22px;
-}
-.decision h4 {
-  margin-top: 6px;
-  font-size: 16.5px;
-  font-weight: 720;
-  line-height: 1.5;
-}
-.decision p {
-  margin-top: 8px;
-  font-size: 14.5px;
-  line-height: 1.75;
-  color: var(--color-muted);
-}
-
 /* Evidence: code + tests */
 .evidence {
   margin-top: 28px;
@@ -2170,24 +2033,6 @@ kbd {
   font-size: 12.5px;
   color: var(--color-muted);
 }
-.verification {
-  margin-top: 24px;
-  border-left: 3px solid var(--color-signal);
-  border-radius: 0 14px 14px 0;
-  background: #fffaf6;
-  padding: 18px 22px;
-}
-.verification h4 {
-  font-size: 15px;
-  font-weight: 750;
-}
-.verification p {
-  margin-top: 6px;
-  font-size: 15px;
-  line-height: 1.75;
-  color: var(--color-ink-dim);
-}
-
 /* Performance */
 .perf-case + .perf-case {
   margin-top: 48px;
@@ -2257,27 +2102,6 @@ kbd {
   line-height: 1.75;
   color: var(--color-muted);
 }
-.stack-summary {
-  display: grid;
-  gap: 10px;
-  margin-top: 28px;
-}
-.stack-summary > div {
-  display: grid;
-  gap: 8px 20px;
-}
-@media (min-width: 768px) {
-  .stack-summary > div {
-    grid-template-columns: 140px minmax(0, 1fr);
-    align-items: center;
-  }
-}
-.stack-summary dt {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: var(--color-muted);
-}
-
 /* Architecture */
 .architecture-figure {
   margin: 0;
@@ -2302,6 +2126,9 @@ kbd {
 }
 .architecture-intent {
   margin-top: 24px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--color-ink-dim);
 }
 .node-list {
   display: grid;
@@ -2322,7 +2149,7 @@ kbd {
     grid-template-columns: 220px minmax(0, 1fr);
   }
 }
-.node-list h3 {
+.node-list h4 {
   font-size: 15px;
   font-weight: 700;
 }

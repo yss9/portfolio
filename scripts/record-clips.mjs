@@ -13,7 +13,7 @@
  */
 import { chromium } from "playwright-core";
 import { spawnSync } from "node:child_process";
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { link, mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -139,38 +139,51 @@ function ffmpeg(args) {
   }
 }
 
+const FPS = 30;
+const frameName = (prefix, index) => `${prefix}${String(index).padStart(5, "0")}.jpg`;
+
 async function encode({ frames, end }, name, outWidth) {
   if (frames.length === 0) throw new Error(`${name}: no frames captured`);
   const dir = await mkdtemp(join(tmpdir(), "clip-"));
-  const list = [];
   for (let i = 0; i < frames.length; i++) {
-    const file = join(dir, `f${String(i).padStart(5, "0")}.jpg`);
-    await writeFile(file, Buffer.from(frames[i].data, "base64"));
-    const next = i + 1 < frames.length ? frames[i + 1].t : end;
-    list.push(`file '${file}'`, `duration ${Math.max(0.02, next - frames[i].t).toFixed(4)}`);
+    await writeFile(join(dir, frameName("f", i)), Buffer.from(frames[i].data, "base64"));
   }
-  list.push(`file '${join(dir, `f${String(frames.length - 1).padStart(5, "0")}.jpg`)}'`);
-  await writeFile(join(dir, "list.txt"), list.join("\n"));
+  // The screencast sends frames irregularly (bursts while things move, nothing
+  // while the page is still). Resample them onto a fixed 30 fps timeline so the
+  // MP4 plays in real time and ends exactly where the recording ended.
+  const start = frames[0].t;
+  const count = Math.max(1, Math.round((end - start) * FPS));
+  let current = 0;
+  for (let k = 0; k < count; k++) {
+    const t = start + k / FPS;
+    while (current + 1 < frames.length && frames[current + 1].t <= t) current++;
+    await link(join(dir, frameName("f", current)), join(dir, frameName("s", k)));
+  }
 
   const mp4 = join(outDir, `${name}.mp4`);
   const poster = join(outDir, `${name}.jpg`);
   ffmpeg([
-    "-y", "-f", "concat", "-safe", "0", "-i", join(dir, "list.txt"),
-    "-vf", `fps=30,scale=${outWidth}:-2:flags=lanczos,format=yuv420p`,
+    "-y", "-framerate", String(FPS), "-i", join(dir, "s%05d.jpg"),
+    "-vf", `scale=${outWidth}:-2:flags=lanczos,format=yuv420p`,
     "-c:v", "libx264", "-preset", "slow", "-crf", "23",
     "-movflags", "+faststart", "-an", mp4,
   ]);
   ffmpeg([
-    "-y", "-i", join(dir, "f00000.jpg"),
+    "-y", "-i", join(dir, frameName("f", 0)),
     "-vf", `scale=${outWidth}:-2:flags=lanczos`, "-q:v", "4", poster,
   ]);
   await rm(dir, { recursive: true, force: true });
-  const duration = end - frames[0].t;
-  return { mp4, poster, duration, frames: frames.length };
+  return { mp4, poster, duration: count / FPS, frames: frames.length };
 }
 
 await scenario.start?.();
-const browser = await chromium.launch({ executablePath: CHROME, headless: true });
+// Headless Chrome ignores the context's deviceScaleFactor for screencast
+// frames, so force it at launch to capture at full (2x) resolution.
+const browser = await chromium.launch({
+  executablePath: CHROME,
+  headless: true,
+  args: [`--force-device-scale-factor=${scenario.scale ?? 2}`],
+});
 try {
   for (const clip of scenario.clips) {
     if (only.length && !only.includes(clip.id)) continue;

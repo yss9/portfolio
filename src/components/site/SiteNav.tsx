@@ -8,7 +8,6 @@ import { profile } from "@/content/profile";
 const sections = [
   { href: "/#about", label: "소개" },
   { href: "/#projects", label: "프로젝트" },
-  { href: "/#impact", label: "성능 개선" },
   { href: "/#approach", label: "일하는 방식" },
   { href: "/#contact", label: "연락" },
 ];

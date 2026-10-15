@@ -1,35 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { CSSProperties } from "react";
 import { aiWorkflow, profile, techStack } from "@/content/profile";
 import { projects, getProject } from "@/content/projects";
 import { featuredSlugs, showcase } from "@/content/showcase";
-import type { Metric } from "@/content/types";
 import { AwardIcon } from "@/components/ui/primitives";
 import { LoopVideo } from "@/components/project/LoopVideo";
 import { clips } from "@/content/clips";
-
-const impactProject = getProject("glople")!;
-
-function avgMetric(metrics: Metric[]) {
-  return metrics.find((metric) => metric.label === "Avg Response Time");
-}
-
-function numeric(value: string) {
-  return Number.parseFloat(value.replace(/[^\d.]/g, ""));
-}
 
 export default function Home() {
   const otherProjects = projects.filter(
     (project) => !featuredSlugs.some((slug) => slug === project.slug),
   );
-  const impactCases = [...impactProject.performance].sort(
-    (a, b) =>
-      numeric(avgMetric(b.metrics)?.delta ?? "0") -
-      numeric(avgMetric(a.metrics)?.delta ?? "0"),
-  );
-  const topCase = impactCases[0];
-  const topAvg = avgMetric(topCase.metrics)!;
 
   return (
     <>
@@ -295,88 +276,6 @@ export default function Home() {
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      <section
-        id="impact"
-        className="section section-dark"
-        aria-labelledby="impact-title"
-      >
-        <div className="site-container impact-grid">
-          <header className="section-head">
-            <p className="eyebrow">측정한 개선 · {impactProject.name}</p>
-            <h2 id="impact-title">
-              전체 정렬을 Top-K로 바꿔
-              <br />
-              응답 시간 <em>{topAvg.delta?.replace(/\.\d+%$/, "%")}</em>
-            </h2>
-            <p className="section-lead">
-              {impactProject.troubleshooting[0]?.problem}{" "}
-              {impactProject.troubleshooting[0]?.solution}
-            </p>
-            <p className="impact-note">{topCase.condition}</p>
-            <div>
-              <Link
-                href="/projects/glople#performance"
-                className="text-link"
-              >
-                측정 조건과 코드 보기 <span aria-hidden="true">→</span>
-              </Link>
-            </div>
-          </header>
-          <div className="impact-cases">
-            {impactCases.map((item) => {
-              const avg = avgMetric(item.metrics);
-              const p95 = item.metrics.find((m) => m.label === "p95 Latency");
-              if (!avg) return null;
-              const [name, approach] = item.title.split(" — ");
-              const ratio = (numeric(avg.after) / numeric(avg.before)) * 100;
-              return (
-                <article key={item.id} className="impact-case">
-                  <div className="impact-case-head">
-                    <div>
-                      <h3>{name}</h3>
-                      <p>{approach}</p>
-                    </div>
-                    <span className="impact-delta">{avg.delta}</span>
-                  </div>
-                  <div
-                    className="impact-bars"
-                    role="img"
-                    aria-label={`평균 응답 시간 ${avg.before}에서 ${avg.after}로 감소`}
-                  >
-                    <div className="impact-bar">
-                      <span>Before</span>
-                      <span className="impact-bar-track">
-                        <span
-                          className="impact-bar-fill"
-                          style={{ "--w": "100%" } as CSSProperties}
-                        />
-                      </span>
-                      <span className="impact-bar-value">{avg.before}</span>
-                    </div>
-                    <div className="impact-bar is-after">
-                      <span>After</span>
-                      <span className="impact-bar-track">
-                        <span
-                          className="impact-bar-fill"
-                          style={{ "--w": `${ratio}%` } as CSSProperties}
-                        />
-                      </span>
-                      <span className="impact-bar-value">{avg.after}</span>
-                    </div>
-                  </div>
-                  {p95 && (
-                    <p className="impact-p95">
-                      평균 응답 시간 기준 · p95 {p95.before} → {p95.after} (
-                      {p95.delta})
-                    </p>
-                  )}
-                </article>
-              );
-            })}
-          </div>
         </div>
       </section>
 

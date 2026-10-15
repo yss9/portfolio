@@ -159,43 +159,40 @@ export const potner: Project = {
   architectureIntent:
     "앱의 요청과 IoT 장치의 비동기 동작을 Spring Boot의 명령 이력으로 연결해, 작업 중복·타임아웃·결과 반영을 한 흐름에서 추적하도록 구성했습니다.",
 
-  troubleshooting: [],
-
-  implementationStory: {
-    introduction: [
-      "스마트 화분 관리 서비스 PotneR를 개발하며 가장 도전적이었던 경험은 토양 수분 부족을 감지해 로봇이 스스로 급수 스테이션으로 이동하고, 급수·송풍한 뒤 대기 장소로 복귀하는 자동 케어 시스템을 구현한 것입니다. 저는 Spring Boot 백엔드를 중심으로 MQTT 센서 수집, 이상 상태 판정, 장치 명령 발행 및 결과 처리, Flutter 앱 연동까지 담당했습니다.",
-      "서버의 요청이 실제 하드웨어 동작으로 이어지는 만큼, MQTT QoS 1의 중복 전달과 네트워크 지연·순서 역전이 센서 중복 저장이나 급수 중복 실행 같은 장치 오작동으로 이어지지 않도록 설계했습니다.",
-    ],
-    decisions: [
-      {
-        title: "센서 데이터의 멱등성과 유효성 확보",
-        body: "메시지 UUID 고유 키와 INSERT IGNORE로 중복 저장을 막았습니다. 장치 ID·단위·측정 시각을 검증하고 최근 값의 중앙값으로 센서 노이즈를 줄였습니다.",
-      },
-      {
-        title: "자동 급수를 이벤트 기반 체인으로 설계",
-        body: "수분 부족부터 이동·급수·송풍·복귀까지 완료된 명령을 기준으로 다음 단계를 이어 갑니다. 명령을 DB에 저장하고 커밋 이후 MQTT로 발행해 빠른 장치 응답과의 경쟁 상태를 막았습니다.",
-      },
-      {
-        title: "명령 결과의 식별 정보와 순서 검증",
-        body: "회신은 requestId·장치 ID·명령 종류로 대조하고, QoS 1 재전송은 messageId로 걸러냅니다. 같은 종류의 대기 명령은 재발행을 막고, 촬영·햇빛 이동·주기 환기는 Busy Guard로 다른 체인이 로봇을 쓰는 동안 양보시켰습니다.",
-      },
-      {
-        title: "부분 실패에서는 안전하게 체인 중단",
-        body: "결과만 유실됐을 때 재시도하면 물이 두 번 공급될 수 있습니다. 실패 시 자동 급수를 중단하고 사용자 알림과 명령 이력으로 원인을 확인하도록 했습니다.",
-      },
-    ],
-    verification: "급수량 미설정·물 부족·중복 재전송·늦은 회신·장치 불일치·명령 실패를 단위 테스트로 확인했습니다. 같은 상태 전이 구조를 광량 확보, 자동 송풍, 성장 사진 촬영에도 적용했습니다.",
-    codeReferences: [
-      { label: "자동 급수 이벤트 체인", file: "AutoWateringOrchestrator.java", line: 81 },
-      { label: "DB 커밋 후 MQTT 발행", file: "DeviceCommandPublishListener.java", line: 31 },
-      { label: "중복 명령 차단", file: "DeviceCommandService.java", line: 100 },
-      { label: "명령 결과 검증", file: "DeviceCommandResultService.java", line: 27 },
-      { label: "MQTT 센서 메시지 검증", file: "SensorTelemetryMessageProcessor.java", line: 23 },
-      { label: "센서 중복 저장 방지", file: "SensorReadingService.java", line: 19 },
-      { label: "자동 작업 Busy Guard", file: "RobotBusyGuard.java", line: 20 },
-      { label: "예외 상황 단위 테스트", file: "AutoWateringOrchestratorTest.java", line: 27 },
-    ],
-  },
+  troubleshooting: [
+    {
+      id: "implementation",
+      title: "중복·지연 응답에도 급수가 반복되지 않도록",
+      problem:
+        "MQTT QoS 1은 같은 메시지를 다시 보낼 수 있고, 네트워크 지연으로 회신 순서가 바뀔 수 있습니다. 그대로 반영하면 센서 값이 중복 저장되거나, 결과만 유실된 급수를 재시도해 물이 두 번 공급될 수 있었습니다.",
+      solution:
+        "명령을 DB에 저장하고 커밋이 끝난 뒤에만 MQTT로 발행했습니다. 회신은 requestId·장치 ID·명령 종류로 대조하고 QoS 1 재전송은 messageId로 걸러냈으며, 부분 실패 시에는 자동 급수를 멈추고 명령 이력과 알림으로 원인을 남겼습니다.",
+      steps: [
+        {
+          label: "1",
+          title: "센서 데이터의 멱등성과 유효성 확보",
+          body: "메시지 UUID 고유 키와 INSERT IGNORE로 중복 저장을 막았습니다. 장치 ID·단위·측정 시각을 검증하고 최근 값의 중앙값으로 센서 노이즈를 줄였습니다.",
+        },
+        {
+          label: "2",
+          title: "자동 급수를 이벤트 기반 체인으로 설계",
+          body: "수분 부족부터 이동·급수·송풍·복귀까지 완료된 명령을 기준으로 다음 단계를 이어 갑니다. 명령을 DB에 저장하고 커밋 이후 MQTT로 발행해 빠른 장치 응답과의 경쟁 상태를 막았습니다.",
+        },
+        {
+          label: "3",
+          title: "명령 결과의 식별 정보와 순서 검증",
+          body: "회신은 requestId·장치 ID·명령 종류로 대조하고, QoS 1 재전송은 messageId로 걸러냅니다. 같은 종류의 대기 명령은 재발행을 막고, 촬영·햇빛 이동·주기 환기는 Busy Guard로 다른 체인이 로봇을 쓰는 동안 양보시켰습니다.",
+        },
+        {
+          label: "4",
+          title: "부분 실패에서는 안전하게 체인 중단",
+          body: "결과만 유실됐을 때 재시도하면 물이 두 번 공급될 수 있습니다. 실패 시 자동 급수를 중단하고 사용자 알림과 명령 이력으로 원인을 확인하도록 했습니다.",
+        },
+      ],
+      takeaway:
+        "급수량 미설정·물 부족·중복 재전송·늦은 회신·장치 불일치·명령 실패를 단위 테스트로 확인했습니다. 같은 상태 전이 구조를 광량 확보, 자동 송풍, 성장 사진 촬영에도 적용했습니다.",
+    },
+  ],
 
   performance: [],
   demo: [],
