@@ -57,7 +57,9 @@ for (const item of cases) {
     projectGitHubLinks: [...document.querySelectorAll('.project-detail > header a[href*="github.com"]')].map((link) => link.href),
   }));
   const sectionOrderOk = item.path !== "/" || state.sectionIds.indexOf("projects") < state.sectionIds.indexOf("about");
-  const projectLinksOk = !["/projects/potner", "/projects/saeroi"].includes(item.path) || state.projectGitHubLinks.length === 0;
+  // 새로이와 PotneR는 팀 저장소를 개인 GitHub로 옮긴 뒤 각 저장소로 연결한다.
+  const expectedRepo = { "/projects/saeroi": "https://github.com/yss9/saeroi", "/projects/potner": "https://github.com/yss9/potner" }[item.path];
+  const projectLinksOk = !expectedRepo || (state.projectGitHubLinks.length === 1 && state.projectGitHubLinks[0] === expectedRepo);
   const saeroiScreensOk = item.path !== "/projects/saeroi" || state.screenshotCount === 4;
   const demoClipsOk = !["/projects/potner", "/projects/saeroi"].includes(item.path) || state.demoClips.length >= 4;
   const ok = response?.status() === 200 && !state.overflow && state.brokenImages.length === 0 && errors.length === 0 && sectionOrderOk && projectLinksOk && saeroiScreensOk && demoClipsOk;

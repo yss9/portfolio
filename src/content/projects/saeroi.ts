@@ -30,7 +30,9 @@ export const saeroi: Project = {
     "LLM Tool Use",
     "Hyperledger Besu",
   ],
-  links: [],
+  links: [
+    { label: "GitHub", href: "https://github.com/yss9/saeroi", kind: "github" },
+  ],
   preview: {
     src: "/projects/saeroi/home.png",
     alt: "새로이 서비스의 SAEROI 로고와 폐소재 순환 메시지가 표시된 메인 화면",
