@@ -53,16 +53,19 @@ for (const item of cases) {
     projectLinks: document.querySelectorAll('a[href^="/projects/"]').length,
     screenshotCount: document.querySelectorAll("#screens figure").length,
     demoClips: [...document.querySelectorAll("#demo video")].map((video) => video.getAttribute("src")),
+    pdfLinks: document.querySelectorAll('a[href$=".pdf"]').length,
     sectionIds: [...document.querySelectorAll("main section[id]")].map((section) => section.id),
     projectGitHubLinks: [...document.querySelectorAll('.project-detail > header a[href*="github.com"]')].map((link) => link.href),
   }));
-  const sectionOrderOk = item.path !== "/" || state.sectionIds.indexOf("projects") < state.sectionIds.indexOf("about");
+  // The introduction leads the home page, followed by the projects.
+  const sectionOrderOk = item.path !== "/" || (state.sectionIds[0] === "about" && state.sectionIds.indexOf("about") < state.sectionIds.indexOf("projects"));
   // 새로이와 PotneR는 팀 저장소를 개인 GitHub로 옮긴 뒤 각 저장소로 연결한다.
   const expectedRepo = { "/projects/saeroi": "https://github.com/yss9/saeroi", "/projects/potner": "https://github.com/yss9/potner" }[item.path];
   const projectLinksOk = !expectedRepo || (state.projectGitHubLinks.length === 1 && state.projectGitHubLinks[0] === expectedRepo);
-  const saeroiScreensOk = item.path !== "/projects/saeroi" || state.screenshotCount === 4;
+  // Pages with demo loops replace the still screenshot gallery with them.
+  const saeroiScreensOk = item.path !== "/projects/saeroi" || state.screenshotCount === 0;
   const demoClipsOk = !["/projects/potner", "/projects/saeroi"].includes(item.path) || state.demoClips.length >= 4;
-  const ok = response?.status() === 200 && !state.overflow && state.brokenImages.length === 0 && errors.length === 0 && sectionOrderOk && projectLinksOk && saeroiScreensOk && demoClipsOk;
+  const ok = response?.status() === 200 && !state.overflow && state.brokenImages.length === 0 && errors.length === 0 && sectionOrderOk && projectLinksOk && saeroiScreensOk && demoClipsOk && state.pdfLinks === 0;
   failed ||= !ok;
   console.log(JSON.stringify({ case: item.name, status: response?.status(), ...state, errors, ok }));
   await page.close();
@@ -80,10 +83,11 @@ const menuClosed = await menu.getAttribute("aria-expanded") === "false";
 const mobileNavOk = menuOpened && new URL(mobileNavPage.url()).hash === "#projects" && menuClosed;
 failed ||= !mobileNavOk;
 console.log(JSON.stringify({ case: "mobile-navigation", menuOpened, menuClosed, url: mobileNavPage.url(), ok: mobileNavOk }));
+// The portfolio PDF was taken down; make sure it is no longer served.
 const pdfResponse = await mobileNavPage.request.get(`${base}/seo-youngseok-portfolio.pdf`);
-const pdfOk = pdfResponse.status() === 200 && pdfResponse.headers()["content-type"]?.includes("pdf");
+const pdfOk = pdfResponse.status() === 404;
 failed ||= !pdfOk;
-console.log(JSON.stringify({ case: "pdf-download", status: pdfResponse.status(), ok: pdfOk }));
+console.log(JSON.stringify({ case: "pdf-removed", status: pdfResponse.status(), ok: pdfOk }));
 await mobileNavPage.close();
 
 await browser.close();

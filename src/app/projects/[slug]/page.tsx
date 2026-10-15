@@ -65,6 +65,7 @@ export default async function ProjectPage({
   const editorial = getShowcase(slug);
   const proof = evidence[slug];
   const { prev, next } = projectNeighbours(slug);
+  const demoClips = clips[slug] ?? [];
   const cases = project.troubleshooting;
   const designCases = project.designNotes ?? [];
   const contributions = project.features.filter(
@@ -199,14 +200,17 @@ export default async function ProjectPage({
         )}
       </header>
 
-      <DemoClips name={project.name} clips={clips[slug] ?? []} />
-
-      <ProjectGallery
-        name={project.name}
-        screens={screens}
-        phone={slug === "potner"}
-        diagram={slug === "aws-deploy"}
-      />
+      {/* Projects with demo loops show those instead of the still screenshots. */}
+      {demoClips.length > 0 ? (
+        <DemoClips name={project.name} clips={demoClips} />
+      ) : (
+        <ProjectGallery
+          name={project.name}
+          screens={screens}
+          phone={slug === "potner"}
+          diagram={slug === "aws-deploy"}
+        />
+      )}
 
       <div className="detail-layout site-container">
         <DetailToc sections={sections} />

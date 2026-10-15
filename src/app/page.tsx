@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { aiWorkflow, profile, techStack } from "@/content/profile";
 import { projects, getProject } from "@/content/projects";
-import { featuredSlugs, showcase, stateFlows } from "@/content/showcase";
+import { featuredSlugs, showcase } from "@/content/showcase";
 import type { Metric } from "@/content/types";
 import { AwardIcon } from "@/components/ui/primitives";
 import { LoopVideo } from "@/components/project/LoopVideo";
@@ -33,25 +33,22 @@ export default function Home() {
 
   return (
     <>
-      <section className="hero" aria-labelledby="hero-title">
+      <section id="about" className="intro" aria-labelledby="about-title">
         <div className="site-container">
-          <div className="hero-grid">
+          <div className="intro-grid">
             <div>
               <p className="hero-kicker">
                 <span className="status-dot" aria-hidden="true" />
                 {profile.positioning.kicker}
               </p>
-              <h1 id="hero-title">
+              <h1 id="about-title">
                 {profile.positioning.title[0]}
                 <br />
-                <em>{profile.positioning.title[1]}</em>
+                {profile.positioning.title[1]}
+                <br />
+                <em>{profile.positioning.title[2]}</em>
               </h1>
-              <p className="hero-lead">
-                {profile.positioning.lead} SSAFY에서{" "}
-                <strong>승인형 AI 어시스턴트(새로이)</strong>와{" "}
-                <strong>IoT 자동 급수(PotneR)</strong>를 만들어 우수상을 두 번
-                받았습니다.
-              </p>
+              <p className="hero-lead">{profile.positioning.lead}</p>
               <div className="hero-actions">
                 <Link href="#projects" className="button button-primary">
                   프로젝트 보기 <span aria-hidden="true">↓</span>
@@ -64,86 +61,78 @@ export default function Home() {
                 >
                   GitHub <span aria-hidden="true">↗</span>
                 </a>
-                <a
-                  href="/seo-youngseok-portfolio.pdf"
-                  download
-                  className="button button-outline"
-                >
-                  포트폴리오 PDF <span aria-hidden="true">↓</span>
+                <a href={`mailto:${profile.email}`} className="button button-outline">
+                  이메일 보내기 <span aria-hidden="true">→</span>
                 </a>
               </div>
             </div>
 
-            <figure className="state-card" aria-labelledby="state-card-title">
-              <figcaption className="state-card-head">
-                <span id="state-card-title">STATE GUARDS</span>
-                <span>실행 전에 서버가 확인하는 지점</span>
-              </figcaption>
-              {stateFlows.map((flow, flowIndex) => (
-                <div
-                  key={flow.slug}
-                  className="state-flow"
-                  style={
-                    { "--flow-delay": `${flowIndex * 3.5}s` } as CSSProperties
-                  }
-                >
-                  <p className="state-flow-title">
-                    {flow.title}
-                    <span>{flow.project}</span>
-                  </p>
-                  <ol className="state-steps">
-                    {flow.steps.map((step, index) => (
-                      <li key={step.label}>
-                        <span
-                          className="state-step"
-                          data-guard={"guard" in step ? "" : undefined}
-                          style={{ "--i": index } as CSSProperties}
-                        >
-                          {step.label}
-                        </span>
-                      </li>
-                    ))}
-                  </ol>
-                  <p className="state-guard">{flow.guard}</p>
+            <aside className="profile-card" aria-labelledby="profile-card-title">
+              <h2 id="profile-card-title">학력 · 수상 · 자격</h2>
+              <dl className="facts">
+                <div>
+                  <dt>학력</dt>
+                  <dd>
+                    {profile.education.school} {profile.education.major}
+                    <span>전공 평점 {profile.education.gpa}</span>
+                  </dd>
                 </div>
-              ))}
-            </figure>
+                <div>
+                  <dt>수상</dt>
+                  <dd>
+                    {profile.awards.map((award) => (
+                      <Link
+                        key={award.slug}
+                        href={`/projects/${award.slug}`}
+                        className="block"
+                      >
+                        {award.title}
+                        <span>{award.project}</span>
+                      </Link>
+                    ))}
+                  </dd>
+                </div>
+                {profile.facts.map((fact) => (
+                  <div key={fact.label}>
+                    <dt>{fact.label}</dt>
+                    <dd>{fact.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </aside>
           </div>
 
-          <div className="proof-strip">
-            <Link
-              href="/projects/glople#performance"
-              className="proof-item"
-            >
-              <span className="proof-value">
-                {topAvg.delta?.replace(/\.\d+%$/, "")}
-                <small>%</small>
-              </span>
-              <span className="proof-label">추천 API 평균 응답 시간</span>
-              <span className="proof-note">
-                Glople · {topAvg.before} → {topAvg.after}, 로컬 JMeter 동일 조건{" "}
-                <span aria-hidden="true">↗</span>
-              </span>
-            </Link>
-            <Link href="#projects" className="proof-item">
-              <span className="proof-value">
-                2<small>회</small>
-              </span>
-              <span className="proof-label">SSAFY 프로젝트 우수상</span>
-              <span className="proof-note">
-                공통 프로젝트 PotneR · 특화 프로젝트 새로이
-              </span>
-            </Link>
-            <Link href="/projects/saeroi#contribution" className="proof-item">
-              <span className="proof-value">
-                31<small>개</small>
-              </span>
-              <span className="proof-label">AI 업무 도구 연결</span>
-              <span className="proof-note">
-                새로이 · 쓰기 도구 17개는 승인 카드로만 실행{" "}
-                <span aria-hidden="true">↗</span>
-              </span>
-            </Link>
+          <div className="dev-areas">
+            <div className="sub-head">
+              <h2 className="sub-head-title">주로 하는 개발</h2>
+              <p>분야마다 실제로 만든 프로젝트로 이어집니다.</p>
+            </div>
+            <ul className="dev-grid">
+              {profile.devAreas.map((area) => (
+                <li key={area.title} className="dev-card">
+                  <p className="dev-card-label">{area.label}</p>
+                  <h3>{area.title}</h3>
+                  <p className="dev-card-desc">{area.desc}</p>
+                  <p className="dev-metric">{area.metric}</p>
+                  <div className="dev-card-foot">
+                    <ul className="tag-list" aria-label="주요 기술">
+                      {area.tags.map((tag) => (
+                        <li key={tag} className="tag">
+                          {tag}
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="dev-links">
+                      {area.projects.map((item) => (
+                        <Link key={item.slug} href={`/projects/${item.slug}`}>
+                          {item.name} <span aria-hidden="true">→</span>
+                        </Link>
+                      ))}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
@@ -391,11 +380,15 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="about" className="section" aria-labelledby="about-title">
+      <section
+        id="approach"
+        className="section"
+        aria-labelledby="approach-title"
+      >
         <div className="site-container">
           <header className="section-head">
-            <p className="eyebrow">소개</p>
-            <h2 id="about-title">
+            <p className="eyebrow">일하는 방식</p>
+            <h2 id="approach-title">
               문제를 재현하고,
               <br />
               고친 근거를 남깁니다.
@@ -406,35 +399,6 @@ export default function Home() {
               {profile.intro.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
-              <dl className="facts">
-                <div>
-                  <dt>학력</dt>
-                  <dd>
-                    {profile.education.school} {profile.education.major}
-                    <span>전공 평점 {profile.education.gpa}</span>
-                  </dd>
-                </div>
-                <div>
-                  <dt>수상</dt>
-                  <dd>
-                    {profile.awards.map((award) => (
-                      <Link
-                        key={award.slug}
-                        href={`/projects/${award.slug}`}
-                        className="block"
-                      >
-                        {award.title} · {award.project}
-                      </Link>
-                    ))}
-                  </dd>
-                </div>
-                {profile.facts.map((fact) => (
-                  <div key={fact.label}>
-                    <dt>{fact.label}</dt>
-                    <dd>{fact.value}</dd>
-                  </div>
-                ))}
-              </dl>
             </div>
             <div className="principles">
               {profile.principles.map((principle, index) => (

@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { profile } from "@/content/profile";
 
 const sections = [
+  { href: "/#about", label: "소개" },
   { href: "/#projects", label: "프로젝트" },
   { href: "/#impact", label: "성능 개선" },
-  { href: "/#about", label: "소개" },
+  { href: "/#approach", label: "일하는 방식" },
   { href: "/#contact", label: "연락" },
 ];
 
@@ -46,11 +48,12 @@ export function SiteNav() {
             </Link>
           ))}
           <a
-            href="/seo-youngseok-portfolio.pdf"
-            download
+            href={profile.github}
+            target="_blank"
+            rel="noreferrer noopener"
             className="button button-small button-primary"
           >
-            PDF 받기 <span aria-hidden="true">↓</span>
+            GitHub <span aria-hidden="true">↗</span>
           </a>
         </div>
         <button
@@ -97,12 +100,13 @@ export function SiteNav() {
             </Link>
           ))}
           <a
-            href="/seo-youngseok-portfolio.pdf"
-            download
+            href={profile.github}
+            target="_blank"
+            rel="noreferrer noopener"
             className="button button-primary mt-4"
             onClick={() => setOpenPath(null)}
           >
-            포트폴리오 PDF ↓
+            GitHub ↗
           </a>
         </nav>
       )}

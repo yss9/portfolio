@@ -30,9 +30,6 @@ export function SiteFooter() {
               >
                 GitHub ↗
               </a>
-              <a href="/seo-youngseok-portfolio.pdf" download>
-                포트폴리오 PDF ↓
-              </a>
               <a href={`tel:${profile.phone}`}>{profile.phone}</a>
             </div>
           </div>

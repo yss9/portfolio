@@ -6,10 +6,48 @@ export const profile = {
   headline:
     "중복·지연 응답과 오래된 상태에도 정확하게 동작하는 서버를 설계하는 백엔드 개발자 서영석입니다. 승인형 AI 어시스턴트(새로이)와 IoT 자동 급수(PotneR)로 SSAFY 우수상을 두 번 받았습니다.",
   positioning: {
-    kicker: "백엔드 개발자 서영석",
-    title: ["요청이 꼬여도,", "상태는 정확하게."],
-    lead: "중복되거나 늦게 도착한 응답, 오래된 대화 정보가 잘못된 실행으로 이어지지 않도록 서버의 상태 전이를 설계합니다.",
+    kicker: "Backend Developer",
+    title: ["결제·AI·IoT 서버를", "만드는 백엔드 개발자", "서영석입니다."],
+    lead: "Spring Boot로 거래와 결제, 승인형 AI 에이전트, IoT 장치 명령을 처리하는 서버를 만들어 왔습니다. 중복되거나 늦게 온 응답, 오래된 상태가 잘못된 실행으로 이어지지 않도록 실행 직전에 서버가 상태를 다시 확인하게 설계합니다.",
   },
+  /** What kind of backend work the user does, each backed by a project page. */
+  devAreas: [
+    {
+      label: "AI Agent",
+      title: "승인형 AI 에이전트 서버",
+      desc: "LLM이 기존 업무 기능을 도구로 호출하게 연결하고, 결제·생산 확정처럼 상태를 바꾸는 작업은 사람이 확인 카드를 승인한 뒤에만 실행되도록 서버에서 통제했습니다.",
+      metric: "업무 도구 31개 · 쓰기 17개는 승인 후 실행",
+      tags: ["Spring Boot", "LLM Tool Use", "React"],
+      projects: [{ name: "새로이", slug: "saeroi" }],
+    },
+    {
+      label: "IoT · Messaging",
+      title: "IoT 장치 명령과 센서 수집",
+      desc: "MQTT로 센서 값을 받고 로봇에 명령을 보냅니다. 명령은 DB 커밋 후에만 발행하고 회신을 requestId·장치·명령 종류로 대조해, 재전송이나 늦은 회신에도 급수가 중복되지 않게 했습니다.",
+      metric: "중복·지연·실패 응답 단위 테스트",
+      tags: ["Spring Boot", "MQTT", "Flutter"],
+      projects: [{ name: "PotneR", slug: "potner" }],
+    },
+    {
+      label: "Commerce · Blockchain",
+      title: "거래·결제와 지갑 서명 연동",
+      desc: "공급업체 소재의 판매·구매 API와 카카오페이 결제, 결제 이탈 거래 정리를 팀원과 함께 구현하고, 사용자 지갑의 서명 결과를 서버의 거래 상태에 연결했습니다.",
+      metric: "Material–Brand 소재 거래 공동 구현",
+      tags: ["JPA", "QueryDSL", "ethers.js"],
+      projects: [{ name: "새로이", slug: "saeroi" }],
+    },
+    {
+      label: "Data · Performance",
+      title: "데이터 동기화와 성능 개선",
+      desc: "Spring Batch로 공공 관광 데이터를 미리 동기화해 검색과 AI 답변의 근거로 쓰고, 추천 API의 전체 정렬을 Top-K 추출로 바꿔 응답 시간을 줄였습니다.",
+      metric: "추천 API 평균 응답 -74% (로컬 JMeter)",
+      tags: ["Spring Batch", "MySQL", "JMeter"],
+      projects: [
+        { name: "너울터", slug: "neoulteo" },
+        { name: "Glople", slug: "glople" },
+      ],
+    },
+  ],
   email: "yse2196@gmail.com",
   phone: "010-5054-5065",
   github: "https://github.com/yss9",

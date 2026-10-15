@@ -33,6 +33,6 @@ export const clips: Record<string, DemoClip[]> = {
     clip("potner", "potner-home", "통합 홈", "식물의 행복 상태와 네 가지 환경 센서 값", "phone"),
     clip("potner", "potner-environment", "환경 분석", "센서 이력을 항목과 기간별로 바꿔 보기", "phone"),
     clip("potner", "potner-diary", "식물 일기", "돌봄 기록으로 생성한 일기와 상태 리포트", "phone"),
-    clip("potner", "potner-timelapse", "성장 비교 · 타임랩스", "두 날짜의 사진 비교와 타임랩스 재생", "phone"),
+    clip("potner", "potner-timelapse", "성장 비교 · 타임랩스", "1일차와 30일차를 비교하고 30일치 사진을 하루씩 재생", "phone"),
   ],
 };

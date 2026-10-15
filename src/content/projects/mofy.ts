@@ -14,7 +14,7 @@ export const mofy: Project = {
   teamShort: "팀 프로젝트 · 메시지",
 
   stack: [
-    { group: "Frontend", items: ["React", "styled-components", "Ant Design", "Axios"] },
+    { group: "Frontend", items: ["Next.js (React)", "Emotion", "Ant Design", "Axios"] },
     { group: "Backend", items: ["Django REST Framework", "Python 3.9+", "SimpleJWT"] },
     { group: "Data", items: ["SQLite", "Media Storage"] },
     { group: "AI / Data", items: ["Rembg", "Pillow", "Extcolors", "Scikit-learn (TF-IDF)"] },

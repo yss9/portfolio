@@ -63,8 +63,8 @@ export const bluememories: Project = {
 
   features: [
     {
-      title: "일기 CRUD 구현",
-      desc: "일기 작성, 조회, 수정, 삭제를 위한 안정적인 REST API 및 사용자 인터페이스 구현",
+      title: "일기 작성·조회 구현",
+      desc: "일기 작성과 날짜·월별·사용자별 조회, 제목·내용 검색 REST API 및 사용자 인터페이스 구현",
     },
     {
       title: "AI 감정 분석 연동",
@@ -145,7 +145,7 @@ export const bluememories: Project = {
         {
           label: "TO-BE",
           title: "JSON 계약 + DTO 검증 구조",
-          body: "songs[], searchKeywords[] 형태의 JSON 응답으로 고정하고, ObjectMapper로 RecommendationResponseDto에 파싱했습니다. songs 2개, searchKeywords 2개를 필수 조건으로 두어 필드 누락·개수 불일치를 서버에서 감지합니다.",
+          body: "songs[], searchKeywords[] 형태의 JSON 응답으로 고정하고, ObjectMapper로 AiRecommendationResponse에 파싱했습니다. songs 2개, searchKeywords 2개를 필수 조건으로 두어 필드 누락·개수 불일치를 서버에서 감지합니다.",
         },
         {
           label: "예외",
@@ -158,10 +158,7 @@ export const bluememories: Project = {
           filename: "RecommendationResponse.json",
           language: "json",
           code: `{
-  "songs": [
-    { "title": "밤편지", "artist": "아이유" },
-    { "title": "Through the Night", "artist": "IU" }
-  ],
+  "songs": ["밤편지 아이유", "Through the Night IU"],
   "searchKeywords": ["잔잔한 새벽 플레이리스트", "마음이 편해지는 영상"]
 }`,
         },

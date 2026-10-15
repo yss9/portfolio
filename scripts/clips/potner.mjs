@@ -67,20 +67,32 @@ const ago = (ms) => new Date(NOW - ms).toISOString();
 /** KST calendar date n days before the recording, as YYYY-MM-DD. */
 const day = (n) => new Date(NOW - n * DAY + 9 * HOUR).toISOString().slice(0, 10);
 
-const hero = () => readFileSync(join(APP_DIR, "assets/images/home/stitch_rose_hero.jpg"));
-const closeup = () => readFileSync(join(APP_DIR, "assets/images/home/stitch_rose_photo.jpg"));
+/**
+ * Day 1 → day 30 photos of one seedling from the same angle (demo images supplied by
+ * the owner). GROWTH_DIR holds day-01.jpg … day-30.jpg.
+ */
+const GROWTH_DIR =
+  process.env.POTNER_GROWTH_DIR ?? join(HERE, "../../../.capture/growth-photos/hd");
+const DAYS = 30;
+const pad = (n) => String(n).padStart(2, "0");
+const growthPhoto = (n) => readFileSync(join(GROWTH_DIR, `day-${pad(n)}.jpg`));
+const photoUrls = (n) => ({
+  thumbnailUrl: `/media/plant-roji/day-${pad(n)}/thumbnail.jpg`,
+  originalUrl: `/media/plant-roji/day-${pad(n)}/original.jpg`,
+  playbackUrl: `/media/plant-roji/day-${pad(n)}/playback.jpg`,
+});
 
 const plant = {
   plantId: "plant-roji",
   name: "로지",
-  speciesName: "칼란디바",
-  categoryName: "다육식물",
-  lifeStageName: "개화기",
-  createdAt: "2026-05-18",
-  adoptedDate: "2026-05-18",
+  speciesName: "고추",
+  categoryName: "채소",
+  lifeStageName: "생장기",
+  createdAt: day(DAYS - 1),
+  adoptedDate: day(DAYS - 1),
   representativePhoto: {
-    thumbnailUrl: "/media/plant-roji/hero/thumbnail.jpg",
-    originalUrl: "/media/plant-roji/hero/original.jpg",
+    thumbnailUrl: photoUrls(DAYS).thumbnailUrl,
+    originalUrl: photoUrls(DAYS).originalUrl,
   },
 };
 
@@ -91,38 +103,31 @@ const sensors = [
   { sensorType: "HUMIDITY", unit: "PERCENT", value: 58.2, measuredAt: ago(2 * MIN), status: "NORMAL" },
 ];
 
-const photos = [
-  ["photo-0901", day(8), "hero"],
-  ["photo-0902", day(7), "hero"],
-  ["photo-0903", day(6), "closeup"],
-  ["photo-0904", day(5), "hero"],
-  ["photo-0905", day(4), "closeup"],
-  ["photo-0906", day(3), "hero"],
-  ["photo-0907", day(2), "closeup"],
-  ["photo-0908", day(1), "hero"],
-  ["photo-0909", day(0), "closeup"],
-].map(([photoId, photoDate, variant], index) => ({
-  photoId,
-  photoDate,
-  thumbnailUrl: `/media/plant-roji/${variant}/thumbnail.jpg`,
-  originalUrl: `/media/plant-roji/${variant}/original.jpg`,
-  playbackUrl: `/media/plant-roji/${variant}/playback.jpg`,
-  capturedAt: `${photoDate}T00:${String(10 + index).padStart(2, "0")}:00Z`,
-}));
+// One photo per day: day 1 was taken DAYS-1 days before the recording, day 30 today.
+const photos = Array.from({ length: DAYS }, (_, index) => {
+  const n = index + 1;
+  const photoDate = day(DAYS - n);
+  return {
+    photoId: `photo-day-${pad(n)}`,
+    photoDate,
+    ...photoUrls(n),
+    capturedAt: `${photoDate}T00:${pad(10 + (index % 40))}:00Z`,
+  };
+});
 
 const diaries = [
-  ["diary-0903", day(6), "조용히 햇살을 모은 날"],
-  ["diary-0904", day(5), "바람이 살짝 간질였어요"],
-  ["diary-0905", day(4), "물을 마시고 한 뼘 더"],
-  ["diary-0906", day(3), "오늘도 잎이 반짝반짝"],
-  ["diary-0907", day(2), "분홍빛 꽃잎이 열린 아침"],
-  ["diary-0908", day(1), "따뜻한 창가에서 보낸 하루"],
-  ["diary-0909", day(0), "새 꽃봉오리를 발견했어요"],
-].map(([diaryId, diaryDate, title], index) => ({
-  diaryId,
-  diaryDate,
+  [24, "본잎이 한 쌍 더 펼쳐졌어요"],
+  [25, "줄기가 조금 단단해졌어요"],
+  [26, "햇빛 자리로 이사한 날"],
+  [27, "물을 마시고 쑥쑥"],
+  [28, "잎끝까지 반짝반짝"],
+  [29, "새 잎이 살짝 고개를 내밀었어요"],
+  [30, "한 달 동안 이만큼 자랐어요"],
+].map(([n, title]) => ({
+  diaryId: `diary-day-${pad(n)}`,
+  diaryDate: day(DAYS - n),
   title,
-  thumbnailUrl: photos[index + 2]?.thumbnailUrl ?? photos.at(-1).thumbnailUrl,
+  thumbnailUrl: photoUrls(n).thumbnailUrl,
 }));
 
 const growthProfile = {
@@ -161,9 +166,9 @@ export async function handle(route, unmatched) {
   const request = route.request();
   const url = new URL(request.url());
 
-  if (url.pathname.startsWith("/media/plant-roji/")) {
-    const body = url.pathname.includes("closeup") ? closeup() : hero();
-    return route.fulfill({ status: 200, contentType: "image/jpeg", body });
+  const media = url.pathname.match(/^\/media\/plant-roji\/day-(\d+)\//);
+  if (media) {
+    return route.fulfill({ status: 200, contentType: "image/jpeg", body: growthPhoto(Number(media[1])) });
   }
   if (!url.pathname.startsWith("/api/v1/")) return route.continue();
 
@@ -197,15 +202,15 @@ export async function handle(route, unmatched) {
     return json(route, { robot: { currentState: "IDLE", stateChangedAt: ago(3 * MIN), batteryPercent: 86, batteryMeasuredAt: ago(3 * MIN) }, devices: [] });
   }
   if (path === "plants/plant-roji/diaries") return json(route, { diaries });
-  if (/^plants\/plant-roji\/diaries\/diary-\d+$/.test(path)) {
+  if (/^plants\/plant-roji\/diaries\/diary-day-\d+$/.test(path)) {
     const diaryId = path.split("/").at(-1);
     const summary = diaries.find((item) => item.diaryId === diaryId) ?? diaries.at(-1);
     return json(route, {
       diaryId: summary.diaryId,
       diaryDate: summary.diaryDate,
       title: summary.title,
-      content: "아침 햇살이 잎 끝에 내려앉자 몸이 천천히 따뜻해졌어. 흙은 촉촉했고 공기도 편안해서 마음껏 숨을 쉬었지. 오후에는 부드러운 바람을 쐬며 새로 올라온 꽃봉오리를 가만히 바라봤어. 오늘도 곁을 지켜줘서 고마워. 내일은 분홍빛 꽃잎을 조금 더 활짝 보여 줄게!",
-      photo: { originalUrl: "/media/plant-roji/closeup/original.jpg", thumbnailUrl: "/media/plant-roji/closeup/thumbnail.jpg" },
+      content: "흙 속에서 처음 눈을 뜬 지 벌써 한 달이 됐어. 처음엔 떡잎 두 장뿐이었는데, 이제는 본잎이 여러 장 펼쳐졌지. 오늘도 아침 햇살을 듬뿍 받고, 오후에는 스테이션에서 시원한 바람을 쐬었어. 물도 알맞게 마셔서 잎끝까지 촉촉해. 내일은 또 어떤 잎이 나올지 나도 기대돼!",
+      photo: { originalUrl: photoUrls(Number(summary.diaryId.slice(-2))).originalUrl, thumbnailUrl: photoUrls(Number(summary.diaryId.slice(-2))).thumbnailUrl },
     });
   }
   if (path === "plants/plant-roji/status-report") {
@@ -225,17 +230,17 @@ export async function handle(route, unmatched) {
     return json(route, {
       plantId: plant.plantId,
       name: plant.name,
-      species: { speciesId: "species-kalanchoe", name: plant.speciesName },
-      category: { categoryId: "category-succulent", name: plant.categoryName },
-      lifeStage: { lifeStageId: "stage-flowering", code: "FLOWERING", name: "개화기", description: "꽃이 피고 오래 유지되는 시기예요." },
+      species: { speciesId: "species-pepper", name: plant.speciesName },
+      category: { categoryId: "category-vegetable", name: plant.categoryName },
+      lifeStage: { lifeStageId: "stage-vegetative", code: "VEGETATIVE", name: "생장기", description: "본잎이 늘어나며 줄기와 잎이 자라는 시기예요." },
       adoptedDate: plant.adoptedDate,
       representativePhoto: plant.representativePhoto,
       persona: {
-        characterName: "칼란디바",
-        flowerMeaning: "설렘",
-        tags: ["감정풍부", "표현력", "활기"],
-        personality: "감정 표현이 풍부해요. 사소한 변화도 크게 느끼고 설렘을 숨기지 않아요.",
-        coreValue: "함께 나누는 설렘",
+        characterName: "고추 모종",
+        flowerMeaning: "열정",
+        tags: ["호기심", "부지런함", "씩씩함"],
+        personality: "하루하루 자라는 게 즐거운 씩씩한 새싹이에요. 햇빛과 물에 솔직하게 반응해요.",
+        coreValue: "매일 조금씩 자라기",
       },
     });
   }
@@ -246,12 +251,7 @@ export async function handle(route, unmatched) {
     ];
     return json(route, { alerts, unreadCount: 2, page: 0, size: 100, totalElements: 2, totalPages: 1 });
   }
-  if (path === "blooms") {
-    return json(route, { blooms: [
-      { bloomId: "bloom-1", plantId: plant.plantId, plantName: plant.name, bloomDate: day(2), source: "VISION", read: true, note: "첫 번째 꽃이 피었어요" },
-      { bloomId: "bloom-2", plantId: plant.plantId, plantName: plant.name, bloomDate: day(0), source: "VISION", read: false, note: "두 번째 꽃봉오리가 열렸어요" },
-    ] });
-  }
+  if (path === "blooms") return json(route, { blooms: [] });
   if (path === "robots") {
     return json(route, { robots: [{ robotId: "robot-1", deviceUid: "potner-rover-01", name: "포트너 로봇", connectionStatus: "ONLINE", lastSeenAt: ago(MIN), batteryPercent: 86, firmwareVersion: "1.4.2", assignedPlantId: plant.plantId, assignedPlantName: plant.name, devices: [
       { deviceUid: "potner-pi-01", deviceType: "RASPBERRY_PI", connectionStatus: "ONLINE", lastSeenAt: ago(MIN) },
@@ -403,14 +403,14 @@ const scenario = {
       async prepare(page) {
         await login(page);
         // Visit the detail once so every glyph it uses is already loaded.
-        await open(page, "/growth/diary/plant-roji/diary-0909");
+        await open(page, "/growth/diary/plant-roji/diary-day-30");
         await open(page, "/growth");
         await park(page, 320, 640);
       },
       async run(page, h) {
         await h.clickOn(page, flt(page, "식물 일기", { exact: false }), 14);
         await page.waitForTimeout(1100);
-        await h.clickOn(page, flt(page, "새 꽃봉오리를 발견했어요", { exact: false }), 14);
+        await h.clickOn(page, flt(page, "한 달 동안 이만큼 자랐어요", { exact: false }), 14);
         await page.waitForTimeout(900);
         for (let i = 0; i < 8; i++) {
           await page.mouse.wheel(0, 70);
@@ -429,10 +429,12 @@ const scenario = {
         await park(page, 320, 620);
       },
       async run(page, h) {
-        await page.waitForTimeout(500);
+        await page.waitForTimeout(900);
         await h.clickOn(page, flt(page, "타임랩스 보기"), 14);
-        await page.waitForTimeout(3000);
+        // 30 days at the default 2x speed (400ms per day) plus the opening transition
+        await page.waitForTimeout(13200);
       },
+      hold: 300,
     },
     {
       id: "potner-alerts",

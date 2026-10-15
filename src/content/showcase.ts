@@ -32,35 +32,3 @@ export function getShowcase(slug: string) {
     ? showcase[slug as FeaturedSlug]
     : undefined;
 }
-
-/** State flows drawn in the home hero. Each step is a documented behaviour. */
-export const stateFlows = [
-  {
-    project: "새로이",
-    slug: "saeroi",
-    title: "승인형 AI 실행",
-    steps: [
-      { label: "쓰기 도구" },
-      { label: "확인 카드" },
-      { label: "사용자 승인" },
-      { label: "재검증", guard: true },
-      { label: "실행" },
-    ],
-    guard:
-      "만료됐거나 이미 처리된 카드는 실행하지 않고, 같은 대상의 카드가 열려 있으면 새로 만들지 않습니다.",
-  },
-  {
-    project: "PotneR",
-    slug: "potner",
-    title: "자동 급수 명령 처리",
-    steps: [
-      { label: "명령 저장" },
-      { label: "커밋 후 발행" },
-      { label: "장치 회신" },
-      { label: "회신 대조", guard: true },
-      { label: "다음 단계" },
-    ],
-    guard:
-      "이동 → 급수 → 송풍 → 복귀의 각 단계가 이 순서를 따르고, 같은 messageId의 재전송은 반영하지 않습니다.",
-  },
-] as const;
