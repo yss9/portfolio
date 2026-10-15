@@ -100,7 +100,7 @@ export default async function ProjectPage({
   }
 
   const sections = [
-    { id: "background", label: "기획 배경" },
+    { id: "background", label: "서비스 소개" },
     { id: "architecture", label: "시스템 아키텍처" },
     { id: "contribution", label: "구현 기능" },
     ...(hasProblemSolving
@@ -222,9 +222,32 @@ export default async function ProjectPage({
         <DetailToc sections={sections} />
         <div className="detail-body">
           <DetailSection {...section("background")}>
+            <dl className="overview-grid">
+              <div>
+                <dt>서비스 배경</dt>
+                <dd>{story.background}</dd>
+              </div>
+              <div>
+                <dt>서비스 목표</dt>
+                <dd>{story.goal}</dd>
+              </div>
+              <div className="is-wide">
+                <dt>대상 사용자</dt>
+                <dd>{story.audience}</dd>
+              </div>
+            </dl>
+            <h3 className="sub-title mt-10">주요 기능</h3>
+            <ul className="service-features">
+              {story.features.map((feature) => (
+                <li key={feature.title}>
+                  <h4>{feature.title}</h4>
+                  <p>{feature.desc}</p>
+                </li>
+              ))}
+            </ul>
             {story.blockchain && (
               <aside
-                className="context-card"
+                className="context-card mt-10"
                 aria-labelledby="blockchain-context-title"
               >
                 <p className="kicker">새로이의 블록체인</p>
@@ -243,20 +266,6 @@ export default async function ProjectPage({
                 <p className="context-note">{story.blockchain.scopeNote}</p>
               </aside>
             )}
-            <dl className="overview-grid">
-              <div>
-                <dt>배경과 필요</dt>
-                <dd>{story.background}</dd>
-              </div>
-              <div>
-                <dt>설계 목표</dt>
-                <dd>{story.goal}</dd>
-              </div>
-              <div className="is-wide">
-                <dt>대상 사용자</dt>
-                <dd>{story.audience}</dd>
-              </div>
-            </dl>
           </DetailSection>
 
           <DetailSection {...section("architecture")}>
