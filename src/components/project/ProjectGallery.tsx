@@ -1,9 +1,70 @@
-"use client";
-
 import Image from "next/image";
-import { useState } from "react";
 import type { ProjectScreenshot } from "@/content/types";
 
+function Screen({
+  screen,
+  index,
+  lead = false,
+  phone = false,
+  diagram = false,
+}: {
+  screen: ProjectScreenshot;
+  index: number;
+  lead?: boolean;
+  phone?: boolean;
+  diagram?: boolean;
+}) {
+  const [title, detail] = screen.caption.split(" — ");
+  const contain = diagram || screen.fit === "contain";
+  return (
+    <figure className={lead ? "screen-figure is-lead" : "screen-figure"}>
+      <a
+        href={screen.src}
+        target="_blank"
+        rel="noreferrer noopener"
+        aria-label={`${title} 원본 이미지 새 창으로 보기`}
+      >
+        <div className="screen-image">
+          {diagram ? (
+            <Image
+              src={screen.src}
+              alt={screen.alt}
+              width={1600}
+              height={900}
+              sizes="(min-width: 1280px) 1200px, 95vw"
+              className="h-auto w-full"
+            />
+          ) : (
+            <Image
+              src={screen.src}
+              alt={screen.alt}
+              fill
+              loading={index < 2 ? "eager" : "lazy"}
+              sizes={
+                phone
+                  ? "(min-width: 768px) 280px, 46vw"
+                  : lead
+                    ? "(min-width: 1280px) 1200px, 95vw"
+                    : "(min-width: 1024px) 400px, 90vw"
+              }
+              className={
+                contain ? "object-contain" : "object-cover object-top"
+              }
+            />
+          )}
+        </div>
+      </a>
+      <figcaption>
+        <strong>
+          {String(index + 1).padStart(2, "0")} · {title}
+        </strong>
+        {detail}
+      </figcaption>
+    </figure>
+  );
+}
+
+/** Every screen is rendered up front as its own figure; no client state. */
 export function ProjectGallery({
   name,
   screens,
@@ -15,110 +76,39 @@ export function ProjectGallery({
   phone?: boolean;
   diagram?: boolean;
 }) {
-  const [selected, setSelected] = useState(0);
-  const screen = screens[selected];
-  const companion =
-    screens.length > 1 ? screens[(selected + 1) % screens.length] : undefined;
-  if (!screen) return null;
+  if (screens.length === 0) return null;
+  const [lead, ...rest] = screens;
 
   return (
     <section
       id="screens"
-      className="project-gallery"
+      className="screens"
       aria-label={`${name} ${diagram ? "배포 구조" : "서비스 화면"}`}
     >
-      <div className="gallery-heading">
-        <span>
-          {name} <span aria-hidden="true">/</span>{" "}
-          {diagram ? "SYSTEM OVERVIEW" : "SERVICE SCREENS"}
-        </span>
-        <span>
-          {String(selected + 1).padStart(2, "0")} /{" "}
-          {String(screens.length).padStart(2, "0")}
-        </span>
-      </div>
-      <div className="gallery-stage" data-phone={phone} data-diagram={diagram}>
-        <div className="gallery-frame">
-          {!phone && !diagram && (
-            <div className="gallery-browser-bar" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </div>
-          )}
-          <div className="gallery-image">
-            <Image
-              key={screen.src}
-              src={screen.src}
-              alt={screen.alt}
-              fill
-              sizes={
-                phone
-                  ? "(min-width: 768px) 280px, 44vw"
-                  : "(min-width: 1280px) 1100px, 90vw"
-              }
-              loading="eager"
-              className="object-contain"
-            />
-          </div>
+      <div className="site-container">
+        <div className="screens-head">
+          <span>{diagram ? "배포 구조" : "실제 서비스 화면"}</span>
+          <span>이미지를 누르면 원본을 볼 수 있습니다</span>
         </div>
-        {phone && companion && (
-          <div className="gallery-frame gallery-companion">
-            <div className="gallery-image">
-              <Image
-                src={companion.src}
-                alt={companion.alt}
-                fill
-                sizes="(min-width: 768px) 250px, 38vw"
-                className="object-contain"
-              />
-            </div>
+        {phone ? (
+          <div className="screens-grid is-phone">
+            {screens.map((screen, index) => (
+              <Screen key={screen.src} screen={screen} index={index} phone />
+            ))}
+          </div>
+        ) : (
+          <div className={diagram ? "screens-grid is-diagram" : "screens-grid"}>
+            <Screen screen={lead} index={0} lead diagram={diagram} />
+            {rest.length > 0 && (
+              <div className="screens-rest">
+                {rest.map((screen, index) => (
+                  <Screen key={screen.src} screen={screen} index={index + 1} />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
-      <div className="gallery-caption" aria-live="polite">
-        <p>{screen.caption}</p>
-        <a
-          href={screen.src}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="text-link"
-        >
-          원본 크게 보기 ↗
-        </a>
-      </div>
-      {screens.length > 1 && (
-        <div
-          className="gallery-selector"
-          role="group"
-          aria-label="프로젝트 화면 선택"
-        >
-          {screens.map((item, index) => (
-            <button
-              key={item.src}
-              type="button"
-              aria-label={`${index + 1}. ${item.caption.split(" — ")[0]}`}
-              aria-pressed={selected === index}
-              onClick={() => setSelected(index)}
-              className="gallery-thumbnail"
-            >
-              <span className="gallery-thumbnail-image">
-                <Image
-                  src={item.src}
-                  alt=""
-                  fill
-                  sizes="120px"
-                  className="object-contain"
-                />
-              </span>
-              <span className="gallery-thumbnail-label">
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                {item.caption.split(" — ")[0]}
-              </span>
-            </button>
-          ))}
-        </div>
-      )}
     </section>
   );
 }

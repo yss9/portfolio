@@ -143,3 +143,45 @@ export type Project = {
   /** headline numbers surfaced on the home card */
   highlights: string[];
 };
+
+/** Verbatim excerpt from a project repository, shown on the detail page. */
+export type CodeExcerpt = {
+  title: string;
+  /** repository and ref the excerpt was copied from */
+  repo: string;
+  /** repo-relative path */
+  file: string;
+  /** e.g. "L50–65" or "L9–13, L31–33" */
+  lines: string;
+  language: CodeBlock["language"];
+  caption: string;
+  code: string;
+};
+
+export type TestGroup = {
+  file: string;
+  /** `name` is the test method; `desc` explains it for readers. */
+  cases: { name: string; desc: string }[];
+};
+
+export type ProjectEvidence = {
+  flow?: {
+    title: string;
+    steps: { label: string; detail?: string; guard?: boolean }[];
+    guards: string[];
+  };
+  /** keyed by troubleshooting id, or "implementation" for implementationStory */
+  cases: Record<string, { code: CodeExcerpt[]; tests: TestGroup[] }>;
+};
+
+/** A 3–5 s silent loop recorded from the project's real frontend with demo data. */
+export type DemoClip = {
+  id: string;
+  /** public path to the MP4 */
+  src: string;
+  /** public path to the first-frame poster */
+  poster: string;
+  title: string;
+  caption: string;
+  device: "desktop" | "phone";
+};

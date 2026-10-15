@@ -52,13 +52,15 @@ for (const item of cases) {
     brokenImages: [...document.images].filter((image) => !image.complete || image.naturalWidth === 0).map((image) => image.src),
     projectLinks: document.querySelectorAll('a[href^="/projects/"]').length,
     screenshotCount: document.querySelectorAll("#screens figure").length,
+    demoClips: [...document.querySelectorAll("#demo video")].map((video) => video.getAttribute("src")),
     sectionIds: [...document.querySelectorAll("main section[id]")].map((section) => section.id),
     projectGitHubLinks: [...document.querySelectorAll('.project-detail > header a[href*="github.com"]')].map((link) => link.href),
   }));
-  const sectionOrderOk = item.path !== "/" || state.sectionIds.at(-1) === "projects";
+  const sectionOrderOk = item.path !== "/" || state.sectionIds.indexOf("projects") < state.sectionIds.indexOf("about");
   const projectLinksOk = !["/projects/potner", "/projects/saeroi"].includes(item.path) || state.projectGitHubLinks.length === 0;
   const saeroiScreensOk = item.path !== "/projects/saeroi" || state.screenshotCount === 4;
-  const ok = response?.status() === 200 && !state.overflow && state.brokenImages.length === 0 && errors.length === 0 && sectionOrderOk && projectLinksOk && saeroiScreensOk;
+  const demoClipsOk = !["/projects/potner", "/projects/saeroi"].includes(item.path) || state.demoClips.length >= 4;
+  const ok = response?.status() === 200 && !state.overflow && state.brokenImages.length === 0 && errors.length === 0 && sectionOrderOk && projectLinksOk && saeroiScreensOk && demoClipsOk;
   failed ||= !ok;
   console.log(JSON.stringify({ case: item.name, status: response?.status(), ...state, errors, ok }));
   await page.close();
@@ -66,10 +68,11 @@ for (const item of cases) {
 
 const mobileNavPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
 await mobileNavPage.goto(base, { waitUntil: "networkidle" });
-const menu = mobileNavPage.getByRole("button", { name: "메뉴 열기" });
+// The label flips to "메뉴 닫기" once open, so find the toggle by what it controls.
+const menu = mobileNavPage.locator('button[aria-controls="mobile-nav"]');
 await menu.click();
 const menuOpened = await menu.getAttribute("aria-expanded") === "true";
-await mobileNavPage.locator("#mobile-nav").getByRole("link", { name: "프로젝트", exact: true }).click();
+await mobileNavPage.locator("#mobile-nav").locator('a[href="/#projects"]').click();
 await mobileNavPage.waitForURL(/#projects$/, { timeout: 10000 }).catch(() => {});
 const menuClosed = await menu.getAttribute("aria-expanded") === "false";
 const mobileNavOk = menuOpened && new URL(mobileNavPage.url()).hash === "#projects" && menuClosed;

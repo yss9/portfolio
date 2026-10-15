@@ -116,42 +116,102 @@ export function MetaRow({ label, value }: { label: string; value: ReactNode }) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Icons                                                               */
+/* ------------------------------------------------------------------ */
+
+export function AwardIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4ZM7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Code                                                                */
 /* ------------------------------------------------------------------ */
 
+const KEYWORDS = new Set([
+  "public", "private", "protected", "final", "static", "void", "return",
+  "if", "else", "for", "while", "new", "class", "record", "throw", "throws",
+  "try", "catch", "var", "boolean", "int", "long", "import", "package",
+  "this", "null", "true", "false", "interface", "extends", "implements",
+  "SELECT", "FROM", "WHERE", "ORDER", "BY", "LIMIT", "INSERT", "IGNORE",
+  "INTO", "VALUES", "AND", "OR", "DESC", "ASC", "UPDATE", "SET",
+]);
+
+const TOKEN =
+  /(\/\/.*$|^\s*(?:\/\*\*|\*\/|\*(?=\s|$)).*$|--\s.*$|#\s.*$)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|(@[A-Za-z]\w*)|\b([A-Za-z_]\w*)\b/g;
+
+/** Line-level highlighter: comments, strings, annotations and keywords only. */
+function highlight(line: string, lineIndex: number) {
+  const out: ReactNode[] = [];
+  let last = 0;
+  for (const match of line.matchAll(TOKEN)) {
+    const [text, comment, str, annotation, word] = match;
+    const at = match.index ?? 0;
+    let cls: string | undefined;
+    if (comment) cls = "tok-comment";
+    else if (str) cls = "tok-string";
+    else if (annotation) cls = "tok-annotation";
+    else if (word && KEYWORDS.has(word)) cls = "tok-keyword";
+    if (!cls) continue;
+    if (at > last) out.push(line.slice(last, at));
+    out.push(
+      <span key={`${lineIndex}-${at}`} className={cls}>
+        {text}
+      </span>,
+    );
+    last = at + text.length;
+  }
+  if (last < line.length) out.push(line.slice(last));
+  return out;
+}
+
 export function CodeCard({
   filename,
+  fileTitle,
   language,
   code,
+  caption,
+  meta,
   className,
 }: {
   filename?: string;
+  /** full path, shown on hover when `filename` is shortened */
+  fileTitle?: string;
   language?: string;
   code: string;
+  caption?: ReactNode;
+  meta?: string;
   className?: string;
 }) {
+  const lines = code.split("\n");
   return (
-    <figure
-      className={cx(
-        "min-w-0 overflow-hidden rounded-lg border border-slate-800 bg-[#0f172a] shadow-sm",
-        className
-      )}
-    >
+    <figure className={cx("code-card", className)}>
       {(filename || language) && (
-        <figcaption className="flex items-center justify-between gap-3 border-b border-slate-700 bg-slate-900 px-3 py-2">
-          <span className="truncate font-mono text-xs text-slate-300">
+        <figcaption>
+          <span className="code-card-file" title={fileTitle}>
             {filename ?? ""}
           </span>
-          {language && (
-            <span className="shrink-0 font-mono text-xs uppercase tracking-wider text-slate-500">
-              {language}
-            </span>
-          )}
+          <span className="code-card-meta">{meta ?? language}</span>
         </figcaption>
       )}
-      <pre className="scroll-thin overflow-x-auto px-4 py-3.5">
-        <code className="font-mono text-[13px] leading-[1.7] text-slate-200">
-          {code}
+      {caption && <p className="code-card-caption">{caption}</p>}
+      <pre>
+        <code>
+          {lines.map((line, index) => (
+            <span key={index}>
+              {highlight(line, index)}
+              {index < lines.length - 1 ? "\n" : null}
+            </span>
+          ))}
         </code>
       </pre>
     </figure>

@@ -78,10 +78,8 @@ export function MetricPanel({
 }) {
   if (metrics.length === 0) {
     return (
-      <div className="precision-card rounded-xl p-5 sm:p-6">
-        <h4 className="font-mono text-xs uppercase tracking-[0.16em] text-faint">
-          Verification
-        </h4>
+      <div className="precision-card rounded-2xl p-5 sm:p-6">
+        <h4 className="text-sm font-bold text-ink">검증</h4>
         <p className="mt-3 font-mono text-[13px] leading-6 text-faint">
           {condition ?? "정량 측정 자료가 없어 코드 구조의 Before/After만 설명합니다."}
         </p>
@@ -90,14 +88,10 @@ export function MetricPanel({
   }
 
   return (
-    <div className="precision-card rounded-xl p-5 sm:p-6">
+    <div className="precision-card rounded-2xl p-5 sm:p-6">
       <div className="flex items-center justify-between gap-3 border-b border-line pb-3">
-        <h4 className="font-mono text-xs uppercase tracking-[0.16em] text-faint">
-          Measured Result
-        </h4>
-        <span className="font-mono text-xs uppercase tracking-wider text-faint">
-          before → after
-        </span>
+        <h4 className="text-sm font-bold text-ink">측정 결과</h4>
+        <span className="font-mono text-xs text-faint">before → after</span>
       </div>
       <div className="divide-y divide-line/70">
         {metrics.map((m) => (
@@ -105,7 +99,7 @@ export function MetricPanel({
         ))}
       </div>
       {condition && (
-        <p className="mt-4 border-t border-line pt-3 font-mono text-[13px] leading-6 text-faint">
+        <p className="mt-4 border-t border-line pt-3 text-[13.5px] leading-6 text-muted">
           {condition}
         </p>
       )}

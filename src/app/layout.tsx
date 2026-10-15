@@ -1,15 +1,10 @@
-import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { JetBrains_Mono } from "next/font/google";
 import { profile } from "@/content/profile";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 const jetBrains = JetBrains_Mono({
   subsets: ["latin"],
@@ -30,16 +25,17 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#fafaf8",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ko" className={`${inter.variable} ${jetBrains.variable}`}>
+    <html lang="ko" className={jetBrains.variable}>
       <body className="min-h-screen antialiased">
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-signal focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
-        >
+        <a href="#main" className="skip-link">
           본문으로 건너뛰기
         </a>
         <SiteNav />

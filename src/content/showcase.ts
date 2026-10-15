@@ -1,36 +1,66 @@
 /** Summaries based on documented project contributions, not team-wide claims. */
 export const showcase = {
   saeroi: {
-    category: "BLOCKCHAIN · AI AGENT",
-    title: "폐소재의 다음 쓰임을,\n확인 가능한 거래로.",
-    description:
-      "폐소재의 거래·가공·생산을 연결하는 블록체인 기반 업사이클링 플랫폼입니다. 지갑 서명으로 승인한 온체인 결과를 서버의 거래 상태와 연결하고, 브랜드 담당자의 업무를 AI 어시스턴트로 안내했습니다.",
-    evidence: "삼성청년 SW/AI 프로젝트 우수상 · 31개 업무 도구 연결",
-    visualLabel: "SAEROI / BRAND WORKSPACE",
+    category: "블록체인 · AI Agent",
+    headline: "AI가 제안하고, 서버가 승인 시점에 다시 확인합니다",
+    problem:
+      "대화 이력만 믿으면 AI가 이미 끝난 결제나 오래된 정보로 구매·생산 작업을 제안할 수 있었습니다.",
+    solution:
+      "상태를 바꾸는 쓰기 도구 17개는 확인 카드로만 실행하고, 승인 순간 대화 소유자·유효기간과 이미 처리된 일인지를 서버가 다시 확인합니다.",
+    result:
+      "AI 업무 도구 31개를 연결하면서도, 모델이 결제·지갑 서명·생산 확정을 직접 실행할 수 없는 구조를 만들었습니다.",
+    visualLabel: "AI 어시스턴트 · 생산 확정 승인",
   },
   potner: {
-    category: "IoT · EVENT-DRIVEN SYSTEM",
-    title: "메시지 하나가\n실제 움직임이 되기까지.",
-    description:
-      "센서의 수분 부족 감지부터 로봇의 이동·급수·복귀까지 연결했습니다. 중복되거나 늦게 도착한 응답은 명령 이력과 식별 정보를 확인한 뒤 반영합니다.",
-    evidence: "삼성청년 SW/AI 프로젝트 우수상",
-    visualLabel: "PotneR / PLANT CARE",
-  },
-  saybridge: {
-    category: "REALTIME · SOLO PROJECT",
-    title: "첫 연결부터\n수업이 시작되도록.",
-    description:
-      "수업 탐색부터 화상 통화·채팅·과제 제출까지 직접 개발했습니다. 영상이 표시되지 않던 문제를 미디어 준비와 협상 순서를 추적해 개선했습니다.",
-    evidence: "1인 개발 · WebRTC 초기 협상 순서 안정화",
-    visualLabel: "SayBridge / LIVE CLASSROOM",
+    category: "IoT · 이벤트 기반 시스템",
+    headline: "중복·지연 응답에도 급수는 한 번만",
+    problem:
+      "MQTT QoS 1의 재전송, 늦게 도착한 회신, 몇 ms 만에 오는 장치 응답이 센서 중복 저장이나 급수 중복 실행으로 이어질 수 있었습니다.",
+    solution:
+      "명령은 DB 커밋 후에만 발행하고, 회신은 requestId·장치·명령 종류로 대조합니다. 재전송은 messageId로 거르고, 타임아웃 뒤 늦게 온 회신은 실제 결과로 반영합니다.",
+    result:
+      "중복 재전송·늦은 회신·장치 불일치·명령 실패를 단위 테스트로 확인했고, 실패하면 재시도 대신 체인을 멈춰 물이 두 번 나가지 않게 했습니다.",
+    visualLabel: "Flutter 앱 · 홈과 환경 분석",
   },
 } as const;
 
 export type FeaturedSlug = keyof typeof showcase;
-export const featuredSlugs: FeaturedSlug[] = ["saeroi", "potner", "saybridge"];
+export const featuredSlugs: FeaturedSlug[] = ["saeroi", "potner"];
 
 export function getShowcase(slug: string) {
   return Object.prototype.hasOwnProperty.call(showcase, slug)
     ? showcase[slug as FeaturedSlug]
     : undefined;
 }
+
+/** State flows drawn in the home hero. Each step is a documented behaviour. */
+export const stateFlows = [
+  {
+    project: "새로이",
+    slug: "saeroi",
+    title: "승인형 AI 실행",
+    steps: [
+      { label: "쓰기 도구" },
+      { label: "확인 카드" },
+      { label: "사용자 승인" },
+      { label: "재검증", guard: true },
+      { label: "실행" },
+    ],
+    guard:
+      "만료됐거나 이미 처리된 카드는 실행하지 않고, 같은 대상의 카드가 열려 있으면 새로 만들지 않습니다.",
+  },
+  {
+    project: "PotneR",
+    slug: "potner",
+    title: "자동 급수 명령 처리",
+    steps: [
+      { label: "명령 저장" },
+      { label: "커밋 후 발행" },
+      { label: "장치 회신" },
+      { label: "회신 대조", guard: true },
+      { label: "다음 단계" },
+    ],
+    guard:
+      "이동 → 급수 → 송풍 → 복귀의 각 단계가 이 순서를 따르고, 같은 messageId의 재전송은 반영하지 않습니다.",
+  },
+] as const;

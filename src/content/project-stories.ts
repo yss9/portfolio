@@ -55,7 +55,7 @@ export const projectStories: Record<string, ProjectStory> = {
       },
       {
         technology: "LLM Tool Use",
-        purpose: "31개 도메인 기능을 대화형 업무 도구로 연결",
+        purpose: "기존 도메인 기능을 31개 대화형 업무 도구로 연결",
         reason:
           "기존 거래·생산 기능을 다시 구현하지 않고 모델의 제안을 기존 도메인 서비스의 실행 흐름에 연결했습니다.",
       },

@@ -1,120 +1,433 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { aiWorkflow, profile, techStack } from "@/content/profile";
 import { projects, getProject } from "@/content/projects";
-import { featuredSlugs, showcase } from "@/content/showcase";
+import { featuredSlugs, showcase, stateFlows } from "@/content/showcase";
+import type { Metric } from "@/content/types";
+import { AwardIcon } from "@/components/ui/primitives";
+import { LoopVideo } from "@/components/project/LoopVideo";
+import { clips } from "@/content/clips";
+
+const impactProject = getProject("glople")!;
+
+function avgMetric(metrics: Metric[]) {
+  return metrics.find((metric) => metric.label === "Avg Response Time");
+}
+
+function numeric(value: string) {
+  return Number.parseFloat(value.replace(/[^\d.]/g, ""));
+}
 
 export default function Home() {
   const otherProjects = projects.filter(
     (project) => !featuredSlugs.some((slug) => slug === project.slug),
   );
+  const impactCases = [...impactProject.performance].sort(
+    (a, b) =>
+      numeric(avgMetric(b.metrics)?.delta ?? "0") -
+      numeric(avgMetric(a.metrics)?.delta ?? "0"),
+  );
+  const topCase = impactCases[0];
+  const topAvg = avgMetric(topCase.metrics)!;
 
   return (
     <>
-      <section className="hero site-container" aria-labelledby="hero-title">
-        <div className="hero-copy rise">
-          <p className="section-label">
-            <span className="status-dot" />
-            YOUNGSEOK SEO · PORTFOLIO
-          </p>
-          <h1 id="hero-title">
-            <span className="hero-line">안녕하세요.</span>
-            <span className="hero-line">
-              백엔드 개발자 <span className="hero-highlight">서영석</span>입니다
-              <span className="text-signal">.</span>
-            </span>
-          </h1>
-          <p className="hero-description">
-            웹 서비스부터 실시간 통신, IoT까지 다양한 프로젝트를 경험했습니다.
-            <br className="hidden sm:block" /> 백엔드를 중심으로 화면과 배포까지
-            연결하며 서비스를 만들어 왔습니다.
-          </p>
-          <p className="hero-ai-description">
-            개발 과정에서는 AI를 조사·설계·구현에 활용하고, 결과를 직접
-            확인합니다.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-5">
-            <Link href="#projects" className="button button-primary">
-              프로젝트 바로가기 <span aria-hidden="true">↓</span>
-            </Link>
-            <a
-              href={profile.github}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="text-link"
+      <section className="hero" aria-labelledby="hero-title">
+        <div className="site-container">
+          <div className="hero-grid">
+            <div>
+              <p className="hero-kicker">
+                <span className="status-dot" aria-hidden="true" />
+                {profile.positioning.kicker}
+              </p>
+              <h1 id="hero-title">
+                {profile.positioning.title[0]}
+                <br />
+                <em>{profile.positioning.title[1]}</em>
+              </h1>
+              <p className="hero-lead">
+                {profile.positioning.lead} SSAFY에서{" "}
+                <strong>승인형 AI 어시스턴트(새로이)</strong>와{" "}
+                <strong>IoT 자동 급수(PotneR)</strong>를 만들어 우수상을 두 번
+                받았습니다.
+              </p>
+              <div className="hero-actions">
+                <Link href="#projects" className="button button-primary">
+                  프로젝트 보기 <span aria-hidden="true">↓</span>
+                </Link>
+                <a
+                  href={profile.github}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="button button-outline"
+                >
+                  GitHub <span aria-hidden="true">↗</span>
+                </a>
+                <a
+                  href="/seo-youngseok-portfolio.pdf"
+                  download
+                  className="button button-outline"
+                >
+                  포트폴리오 PDF <span aria-hidden="true">↓</span>
+                </a>
+              </div>
+            </div>
+
+            <figure className="state-card" aria-labelledby="state-card-title">
+              <figcaption className="state-card-head">
+                <span id="state-card-title">STATE GUARDS</span>
+                <span>실행 전에 서버가 확인하는 지점</span>
+              </figcaption>
+              {stateFlows.map((flow, flowIndex) => (
+                <div
+                  key={flow.slug}
+                  className="state-flow"
+                  style={
+                    { "--flow-delay": `${flowIndex * 3.5}s` } as CSSProperties
+                  }
+                >
+                  <p className="state-flow-title">
+                    {flow.title}
+                    <span>{flow.project}</span>
+                  </p>
+                  <ol className="state-steps">
+                    {flow.steps.map((step, index) => (
+                      <li key={step.label}>
+                        <span
+                          className="state-step"
+                          data-guard={"guard" in step ? "" : undefined}
+                          style={{ "--i": index } as CSSProperties}
+                        >
+                          {step.label}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                  <p className="state-guard">{flow.guard}</p>
+                </div>
+              ))}
+            </figure>
+          </div>
+
+          <div className="proof-strip">
+            <Link
+              href="/projects/glople#performance"
+              className="proof-item"
             >
-              GitHub ↗
-            </a>
-            <Link href="#ai-assisted" className="text-link">
-              AI 활용 방식 보기 ↓
+              <span className="proof-value">
+                {topAvg.delta?.replace(/\.\d+%$/, "")}
+                <small>%</small>
+              </span>
+              <span className="proof-label">추천 API 평균 응답 시간</span>
+              <span className="proof-note">
+                Glople · {topAvg.before} → {topAvg.after}, 로컬 JMeter 동일 조건{" "}
+                <span aria-hidden="true">↗</span>
+              </span>
+            </Link>
+            <Link href="#projects" className="proof-item">
+              <span className="proof-value">
+                2<small>회</small>
+              </span>
+              <span className="proof-label">SSAFY 프로젝트 우수상</span>
+              <span className="proof-note">
+                공통 프로젝트 PotneR · 특화 프로젝트 새로이
+              </span>
+            </Link>
+            <Link href="/projects/saeroi#contribution" className="proof-item">
+              <span className="proof-value">
+                31<small>개</small>
+              </span>
+              <span className="proof-label">AI 업무 도구 연결</span>
+              <span className="proof-note">
+                새로이 · 쓰기 도구 17개는 승인 카드로만 실행{" "}
+                <span aria-hidden="true">↗</span>
+              </span>
             </Link>
           </div>
-        </div>
-        <div className="hero-bottom">
-          <Link href="/projects/saeroi#contribution" className="hero-proof">
-            <strong>
-              31개<span>업무 도구 연결</span>
-            </strong>
-            <span>새로이 · 승인형 AI 어시스턴트 ↗</span>
-          </Link>
-          <Link href="/projects/potner#problem-solving" className="hero-proof">
-            <strong>
-              중복·지연<span>응답 검증</span>
-            </strong>
-            <span>PotneR · 명령 처리 예외 테스트 ↗</span>
-          </Link>
-          <Link href="/projects/glople#performance" className="hero-proof">
-            <strong>
-              −74.2%<span>평균 응답 시간</span>
-            </strong>
-            <span>Glople · 로컬 JMeter 비교 측정 ↗</span>
-          </Link>
         </div>
       </section>
 
       <section
-        id="about"
-        className="about-section"
-        aria-labelledby="about-title"
+        id="projects"
+        className="section section-soft"
+        aria-labelledby="projects-title"
       >
         <div className="site-container">
-          <div className="section-heading">
-            <div>
-              <p className="section-label">
-                <span>01 / ABOUT ME</span>경험을 이어가는 개발자
-              </p>
-              <h2 id="about-title">
-                동작하는 다음을
-                <br />
-                생각합니다<span className="text-signal">.</span>
-              </h2>
-            </div>
-            <p className="section-intro">
-              기능이 연결되는 순간부터,
-              <br />
-              예상과 다르게 동작하는 순간까지.
-              <br />
-              서비스의 전체 흐름을 이해하려고 합니다.
+          <header className="section-head">
+            <p className="eyebrow">대표 프로젝트</p>
+            <h2 id="projects-title">SSAFY에서 수상한 두 프로젝트</h2>
+            <p className="section-lead">
+              6인 팀에서 제가 직접 맡은 구현과, 어떤 문제를 어떻게 풀었는지에
+              집중해 정리했습니다.
             </p>
-          </div>
-          <div className="about-grid">
-            <div>
-              <p className="about-lead">
-                상태를 추적하고,
-                <br />
-                변경의 근거를 남깁니다.
-              </p>
-              <div className="mt-6 space-y-4">
-                {profile.intro.map((paragraph) => (
-                  <p
-                    key={paragraph}
-                    className="text-base leading-8 text-ink-dim"
+          </header>
+
+          <div className="feature-list">
+            {featuredSlugs.map((slug) => {
+              const project = getProject(slug)!;
+              const editorial = showcase[slug];
+              const href = `/projects/${slug}`;
+              return (
+                <article key={slug} className="feature-card">
+                  <Link
+                    href={href}
+                    className="feature-media"
+                    data-project={slug}
+                    aria-label={`${project.name} 케이스 스터디 보기`}
                   >
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-              <dl className="profile-facts">
+                    <span className="feature-media-label">
+                      <span>{editorial.visualLabel}</span>
+                      <span aria-hidden="true">시연 화면 · 목 데이터</span>
+                    </span>
+                    {slug === "potner" ? (
+                      <span className="phone-pair">
+                        {["potner-home", "potner-environment"].map((id) => {
+                          const demo = clips.potner.find((item) => item.id === id)!;
+                          return (
+                            <span key={id} className="phone">
+                              <LoopVideo
+                                src={demo.src}
+                                poster={demo.poster}
+                                label={`PotneR ${demo.title} 시연`}
+                              />
+                            </span>
+                          );
+                        })}
+                      </span>
+                    ) : (
+                      <span className="feature-window">
+                        <span className="feature-window-bar" aria-hidden="true">
+                          <i />
+                          <i />
+                          <i />
+                          <span>새로이 · 브랜드 AI 어시스턴트</span>
+                        </span>
+                        <LoopVideo
+                          src="/clips/saeroi/saeroi-agent-confirm.mp4"
+                          poster="/clips/saeroi/saeroi-agent-confirm.jpg"
+                          label="새로이 AI 어시스턴트에서 생산 확정 카드를 승인하는 시연"
+                        />
+                      </span>
+                    )}
+                  </Link>
+
+                  <div className="feature-body">
+                    <div className="feature-meta">
+                      {project.award && (
+                        <span className="award-badge">
+                          <AwardIcon />
+                          {project.award}
+                        </span>
+                      )}
+                      <span>
+                        {project.period} · {project.team}
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="feature-title">
+                        <Link href={href}>{project.name}</Link>
+                      </h3>
+                      <p className="feature-tagline">{project.tagline}</p>
+                    </div>
+                    <p className="feature-role">
+                      <b>담당</b>
+                      {project.role}
+                    </p>
+                    <ol className="psr" aria-label="문제, 해결, 결과">
+                      <li>
+                        <span className="psr-label">문제</span>
+                        {editorial.problem}
+                      </li>
+                      <li>
+                        <span className="psr-label">해결</span>
+                        {editorial.solution}
+                      </li>
+                      <li>
+                        <span className="psr-label">결과</span>
+                        {editorial.result}
+                      </li>
+                    </ol>
+                    <ul className="tag-list" aria-label="주요 사용 기술">
+                      {project.stackFlat.slice(0, 5).map((tech) => (
+                        <li key={tech} className="tag">
+                          {tech}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link href={href} className="text-link">
+                      구현과 해결 과정 자세히 보기{" "}
+                      <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          <div className="more-head">
+            <h3>그 밖의 프로젝트</h3>
+            <p>1인 개발부터 성능 개선, 배포 자동화까지</p>
+          </div>
+          <ul className="project-grid">
+            {otherProjects.map((project) => (
+              <li key={project.slug}>
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className="project-card"
+                >
+                  <span className="project-thumb">
+                    <Image
+                      src={project.preview.src}
+                      alt={project.preview.alt}
+                      fill
+                      sizes="(min-width: 1200px) 380px, (min-width: 768px) 45vw, 90vw"
+                      className={
+                        project.preview.kind === "diagram"
+                          ? "object-contain p-4"
+                          : "object-cover object-top"
+                      }
+                    />
+                  </span>
+                  <div className="project-card-body">
+                    <div className="project-card-top">
+                      <span>{project.no}</span>
+                      <span>{project.period}</span>
+                    </div>
+                    <h4>{project.name}</h4>
+                    <p className="project-card-tagline">{project.tagline}</p>
+                    <p className="project-card-focus">{project.focus}</p>
+                    <div className="project-card-foot">
+                      <span>{project.teamShort}</span>
+                      <span aria-hidden="true">자세히 →</span>
+                    </div>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section
+        id="impact"
+        className="section section-dark"
+        aria-labelledby="impact-title"
+      >
+        <div className="site-container impact-grid">
+          <header className="section-head">
+            <p className="eyebrow">측정한 개선 · {impactProject.name}</p>
+            <h2 id="impact-title">
+              전체 정렬을 Top-K로 바꿔
+              <br />
+              응답 시간 <em>{topAvg.delta?.replace(/\.\d+%$/, "%")}</em>
+            </h2>
+            <p className="section-lead">
+              {impactProject.troubleshooting[0]?.problem}{" "}
+              {impactProject.troubleshooting[0]?.solution}
+            </p>
+            <p className="impact-note">{topCase.condition}</p>
+            <div>
+              <Link
+                href="/projects/glople#performance"
+                className="text-link"
+              >
+                측정 조건과 코드 보기 <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </header>
+          <div className="impact-cases">
+            {impactCases.map((item) => {
+              const avg = avgMetric(item.metrics);
+              const p95 = item.metrics.find((m) => m.label === "p95 Latency");
+              if (!avg) return null;
+              const [name, approach] = item.title.split(" — ");
+              const ratio = (numeric(avg.after) / numeric(avg.before)) * 100;
+              return (
+                <article key={item.id} className="impact-case">
+                  <div className="impact-case-head">
+                    <div>
+                      <h3>{name}</h3>
+                      <p>{approach}</p>
+                    </div>
+                    <span className="impact-delta">{avg.delta}</span>
+                  </div>
+                  <div
+                    className="impact-bars"
+                    role="img"
+                    aria-label={`평균 응답 시간 ${avg.before}에서 ${avg.after}로 감소`}
+                  >
+                    <div className="impact-bar">
+                      <span>Before</span>
+                      <span className="impact-bar-track">
+                        <span
+                          className="impact-bar-fill"
+                          style={{ "--w": "100%" } as CSSProperties}
+                        />
+                      </span>
+                      <span className="impact-bar-value">{avg.before}</span>
+                    </div>
+                    <div className="impact-bar is-after">
+                      <span>After</span>
+                      <span className="impact-bar-track">
+                        <span
+                          className="impact-bar-fill"
+                          style={{ "--w": `${ratio}%` } as CSSProperties}
+                        />
+                      </span>
+                      <span className="impact-bar-value">{avg.after}</span>
+                    </div>
+                  </div>
+                  {p95 && (
+                    <p className="impact-p95">
+                      평균 응답 시간 기준 · p95 {p95.before} → {p95.after} (
+                      {p95.delta})
+                    </p>
+                  )}
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section id="about" className="section" aria-labelledby="about-title">
+        <div className="site-container">
+          <header className="section-head">
+            <p className="eyebrow">소개</p>
+            <h2 id="about-title">
+              문제를 재현하고,
+              <br />
+              고친 근거를 남깁니다.
+            </h2>
+          </header>
+          <div className="about-grid">
+            <div className="about-intro">
+              {profile.intro.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+              <dl className="facts">
+                <div>
+                  <dt>학력</dt>
+                  <dd>
+                    {profile.education.school} {profile.education.major}
+                    <span>전공 평점 {profile.education.gpa}</span>
+                  </dd>
+                </div>
+                <div>
+                  <dt>수상</dt>
+                  <dd>
+                    {profile.awards.map((award) => (
+                      <Link
+                        key={award.slug}
+                        href={`/projects/${award.slug}`}
+                        className="block"
+                      >
+                        {award.title} · {award.project}
+                      </Link>
+                    ))}
+                  </dd>
+                </div>
                 {profile.facts.map((fact) => (
                   <div key={fact.label}>
                     <dt>{fact.label}</dt>
@@ -123,239 +436,54 @@ export default function Home() {
                 ))}
               </dl>
             </div>
-            <div id="principles" className="principle-list">
+            <div className="principles">
               {profile.principles.map((principle, index) => (
-                <article key={principle.title}>
-                  <span className="principle-number">0{index + 1}</span>
-                  <div>
-                    <h3>{principle.title}</h3>
-                    <p>{principle.desc}</p>
-                  </div>
+                <article key={principle.title} className="principle">
+                  <h3>
+                    <span className="principle-no">0{index + 1}</span>
+                    {principle.title}
+                  </h3>
+                  <p>{principle.desc}</p>
                 </article>
               ))}
             </div>
           </div>
-          <div id="stack" className="skills-section">
-            <div className="skills-heading">
-              <h3>기술을 쓰는 방식</h3>
-              <p>직접 적용한 작업으로 설명합니다.</p>
-            </div>
-            <div className="skills-grid">
-              {techStack.map((group) => (
-                <article key={group.group}>
-                  <p className="project-category">{group.group}</p>
-                  <h4>{group.items.join(" · ")}</h4>
-                  <p className="skill-description">{group.desc}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-      <section
-        id="ai-assisted"
-        className="ai-section site-container"
-        aria-labelledby="ai-title"
-      >
-        <div className="section-heading">
-          <div>
-            <p className="section-label">
-              <span>02 / AI IN MY WORK</span>AI를 활용하는 개발 과정
-            </p>
-            <h2 id="ai-title">
-              AI와 함께 탐색하고,
-              <br />
-              직접 검증하며 완성합니다<span className="text-signal">.</span>
-            </h2>
-          </div>
-          <p className="section-intro">{aiWorkflow.intro}</p>
-        </div>
-        <ol className="ai-process">
-          {aiWorkflow.steps.map((step, index) => (
-            <li key={step.name}>
-              <div className="ai-step-heading">
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <span>{step.name}</span>
-              </div>
-              <h3>{step.title}</h3>
-              <p>{step.body}</p>
-              <ul className="ai-step-tools" aria-label={`${step.title} 도구`}>
-                {step.tools.map((tool) => (
-                  <li key={tool}>{tool}</li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ol>
-        <div className="ai-working-set">
-          <div>
-            <p className="project-category">WORKING SET</p>
-            <p>
-              목적에 맞는 도구를 선택하고, 최종 판단과 결과는 직접 책임집니다.
-            </p>
-          </div>
-          <ul className="ai-step-tools" aria-label="활용하는 AI 도구">
-            {aiWorkflow.tools.map((tool) => (
-              <li key={tool}>{tool}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
 
-      <section
-        id="projects"
-        className="work-section site-container"
-        aria-labelledby="projects-title"
-      >
-        <div className="section-heading">
-          <div>
-            <p className="section-label">
-              <span>03 / SELECTED WORK</span>구현으로 설명하는 경험
-            </p>
-            <h2 id="projects-title">
-              만든 것보다,
-              <br />
-              해결한 것에 집중합니다<span className="text-signal">.</span>
-            </h2>
+          <div id="stack" className="stack-block">
+            <div className="sub-head">
+              <h3>기술 스택</h3>
+              <p>어디에 어떻게 썼는지 함께 적었습니다.</p>
+            </div>
+            <div className="stack-rows">
+              {techStack.map((group) => (
+                <div key={group.group} className="stack-row">
+                  <p className="stack-group">{group.group}</p>
+                  <p className="stack-items">{group.items.join(" · ")}</p>
+                  <p className="stack-desc">{group.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <p className="section-intro">
-            서비스의 목적부터 직접 내린 판단까지.
-            <br />
-            서로 다른 세 프로젝트에 담긴
-            <br />
-            문제 해결 과정을 소개합니다.
-          </p>
-        </div>
-        <div className="featured-list">
-          {featuredSlugs.map((slug, index) => {
-            const project = getProject(slug)!;
-            const editorial = showcase[slug];
-            return (
-              <article
-                key={slug}
-                data-accent={slug}
-                className={`featured-project featured-${slug}`}
-              >
-                <Link
-                  href={`/projects/${slug}`}
-                  className="project-visual"
-                  aria-label={`${project.name} 프로젝트 상세 보기`}
-                >
-                  <div className="visual-topline">
-                    <span>{editorial.visualLabel}</span>
-                    <span aria-hidden="true">↗</span>
-                  </div>
-                  {slug === "potner" ? (
-                    <div className="phone-pair">
-                      <div className="project-phone">
-                        <Image
-                          src="/projects/potner/overview.png"
-                          alt={project.preview.alt}
-                          fill
-                          sizes="(min-width: 768px) 230px, 40vw"
-                          className="object-cover object-top"
-                        />
-                      </div>
-                      <div className="project-phone phone-secondary">
-                        <Image
-                          src="/projects/potner/environment.png"
-                          alt="PotneR 앱에서 확인하는 실시간 환경 센서 값과 변화 그래프"
-                          fill
-                          sizes="(min-width: 768px) 210px, 36vw"
-                          className="object-cover object-top"
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="project-browser">
-                      <div className="browser-chrome">
-                        <span aria-hidden="true">● ● ●</span>
-                        <span>
-                          {slug === "saeroi"
-                            ? "브랜드의 다음 업무를 연결하는 어시스턴트"
-                            : "영상과 채팅이 함께하는 1:1 수업"}
-                        </span>
-                      </div>
-                      <div className="project-browser-image">
-                        <Image
-                          src={
-                            slug === "saeroi"
-                              ? "/projects/saeroi/assistant-approval.png"
-                              : "/projects/saybridge/webcam.png"
-                          }
-                          alt={
-                            slug === "saeroi"
-                              ? "소재 구매 안내와 지갑 서명 확인 카드가 보이는 새로이 AI 어시스턴트"
-                              : "SayBridge에서 화상 수업과 실시간 채팅을 함께 진행하는 화면"
-                          }
-                          fill
-                          sizes="(min-width: 1280px) 650px, (min-width: 768px) 55vw, 90vw"
-                          className="object-contain"
-                        />
-                      </div>
-                    </div>
-                  )}
-                  <div className="visual-caption">
-                    <span>실제 서비스 화면</span>
-                    <span>{String(index + 1).padStart(2, "0")} / 03</span>
-                  </div>
-                </Link>
-                <div className="project-copy">
-                  <p className="project-category">{editorial.category}</p>
-                  <div className="project-name-line">
-                    <h3>{project.name}</h3>
-                    <span>{project.period}</span>
-                  </div>
-                  <p className="project-statement">{editorial.title}</p>
-                  <p className="project-description">{editorial.description}</p>
-                  <p className="project-evidence">
-                    <span aria-hidden="true">↳</span>
-                    {editorial.evidence}
+
+          <div id="ai-assisted" className="ai-block">
+            <div className="sub-head">
+              <h3>AI는 도구로, 검증은 직접</h3>
+              <p>{aiWorkflow.intro}</p>
+            </div>
+            <ol className="ai-steps">
+              {aiWorkflow.steps.map((step, index) => (
+                <li key={step.name} className="ai-step">
+                  <p className="ai-step-no">
+                    {String(index + 1).padStart(2, "0")} · {step.name}
                   </p>
-                  <dl className="project-role">
-                    <dt>본인 역할</dt>
-                    <dd>{project.role}</dd>
-                  </dl>
-                  <ul className="project-tech" aria-label="주요 사용 기술">
-                    {project.stackFlat.slice(0, 4).map((tech) => (
-                      <li key={tech}>{tech}</li>
-                    ))}
-                  </ul>
-                  <Link
-                    href={`/projects/${slug}`}
-                    className="text-link project-read"
-                  >
-                    구현과 해결 과정 보기 <span aria-hidden="true">↗</span>
-                  </Link>
-                </div>
-              </article>
-            );
-          })}
+                  <h4>{step.title}</h4>
+                  <p>{step.body}</p>
+                  <p className="ai-step-tools">{step.tools.join(" · ")}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
-        <div className="archive-heading">
-          <h3>더 많은 프로젝트</h3>
-          <span className="font-mono">
-            {String(otherProjects.length).padStart(2, "0")} MORE EXPLORATIONS
-          </span>
-        </div>
-        <ul className="project-archive">
-          {otherProjects.map((project) => (
-            <li key={project.slug}>
-              <Link href={`/projects/${project.slug}`} className="archive-row">
-                <span className="archive-number">{project.no}</span>
-                <div className="archive-title">
-                  <h4>{project.name}</h4>
-                  <p>{project.tagline}</p>
-                </div>
-                <p className="archive-focus">{project.focus}</p>
-                <span className="archive-period">{project.period}</span>
-                <span className="archive-arrow" aria-hidden="true">
-                  ↗
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
       </section>
     </>
   );
