@@ -169,11 +169,10 @@ export default function Home() {
       >
         <div className="site-container">
           <header className="section-head">
-            <p className="eyebrow">대표 프로젝트</p>
-            <h2 id="projects-title">SSAFY에서 수상한 두 프로젝트</h2>
+            <h2 id="projects-title">프로젝트</h2>
             <p className="section-lead">
-              6인 팀에서 제가 직접 맡은 구현과, 어떤 문제를 어떻게 풀었는지에
-              집중해 정리했습니다.
+              제가 직접 맡은 구현과, 어떤 문제를 어떻게 풀었는지에 집중해
+              정리했습니다.
             </p>
           </header>
 
