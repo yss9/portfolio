@@ -124,6 +124,12 @@ export const saeroi: Project = {
       band: "external",
     },
   ],
+  architectureImage: {
+    src: "/projects/saeroi/architecture.png",
+    alt: "새로이의 MetaMask 지갑과 사용자, SSAFY EC2 Docker Compose 안의 Jenkins·Nginx·React·Spring Boot·MySQL·MinIO·FastAPI OCR 서버, 외부 Hyperledger Besu·SSAFY GMS·Kakao API를 잇는 시스템 아키텍처",
+    width: 1800,
+    height: 990,
+  },
   architectureIntent:
     "MySQL은 업무 데이터와 현재 상태를 관리하고, Hyperledger Besu는 주문·인계·생산 등의 블록체인 기록을 맡습니다. 블록체인 작업은 사용자 지갑 서명과 온체인 결과 확인을 거쳐 서버 상태에 반영합니다. AI는 기존 업무를 제안하고, 서버는 사용자 권한과 최신 상태를 확인해 실행 흐름을 연결합니다.",
   troubleshooting: [

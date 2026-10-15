@@ -125,6 +125,12 @@ export const neoulteo: Project = {
       band: "external",
     },
   ],
+  architectureImage: {
+    src: "/projects/neoulteo/architecture.png",
+    alt: "너울터의 Vue 프런트엔드와 카카오맵, 도메인 API·Spring AI·Spring Batch로 나뉜 Spring Boot 서버, MySQL과 파일 저장, TMAP·SSAFY GMS·TourAPI 외부 연동, 실험용 FastAPI 서버를 보여 주는 시스템 아키텍처",
+    width: 1800,
+    height: 990,
+  },
   architectureIntent:
     "공공 데이터는 배치로 미리 동기화하고, 애플리케이션이 질문에 필요한 도구와 DB 기반 RAG 문맥을 조합해 AI가 실제 관광지 데이터를 근거로 답하도록 구성했습니다.",
 

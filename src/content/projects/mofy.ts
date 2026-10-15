@@ -116,6 +116,12 @@ export const mofy: Project = {
       band: "external",
     },
   ],
+  architectureImage: {
+    src: "/projects/mofy/architecture.png",
+    alt: "MOFY의 Next.js 프런트엔드와 OpenWeatherMap, accounts·community·메시지·Search·이미지 처리로 나뉜 Django REST 서버, SQLite와 Media Storage를 보여 주는 시스템 아키텍처",
+    width: 1800,
+    height: 990,
+  },
   architectureIntent:
     "Django API가 게시판·메시지·이미지 처리·검색어 계산을 담당하고, React는 API 결과와 날씨 정보를 사용자 화면에 렌더링하도록 구성했습니다.",
 
