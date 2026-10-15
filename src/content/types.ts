@@ -106,6 +106,10 @@ export type Project = {
   team: string;
   /** Confirmed project award; omit when no award is recorded. */
   award?: string;
+  /** Training programme the project was built in, shown on the home card. */
+  program?: string;
+  /** Two or three lines about the service for the home project card. */
+  blurb?: string;
   role: string;
   /** One verified contribution or design decision for the project card. */
   focus: string;

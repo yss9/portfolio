@@ -833,8 +833,20 @@ kbd {
   font-weight: 550;
   color: var(--color-muted);
 }
-.project-card-focus {
-  margin-top: 8px;
+.project-card-program {
+  display: inline-flex;
+  align-self: flex-start;
+  width: fit-content;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: var(--color-signal-soft);
+  padding: 3px 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--color-signal-dim);
+}
+.project-card-summary {
+  margin-top: 10px;
   font-size: 15px;
   line-height: 1.65;
   color: var(--color-ink-dim);

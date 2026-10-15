@@ -306,7 +306,12 @@ export default function Home() {
                     </div>
                     <h4>{project.name}</h4>
                     <p className="project-card-tagline">{project.tagline}</p>
-                    <p className="project-card-focus">{project.focus}</p>
+                    {project.program && (
+                      <p className="project-card-program">{project.program}</p>
+                    )}
+                    <p className="project-card-summary">
+                      {project.blurb ?? project.summary}
+                    </p>
                     <div className="project-card-foot">
                       <span>{project.teamShort}</span>
                       <span aria-hidden="true">자세히 →</span>
