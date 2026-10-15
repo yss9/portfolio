@@ -118,6 +118,50 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="skills" className="section" aria-labelledby="skills-title">
+        <div className="site-container">
+          <header className="section-head">
+            <p className="eyebrow">기술 스택 · AI 활용</p>
+            <h2 id="skills-title">프로젝트에 쓴 기술과 AI 활용 방식</h2>
+          </header>
+
+          <div id="stack" className="stack-block">
+            <div className="sub-head">
+              <h3>기술 스택</h3>
+              <p>어디에 어떻게 썼는지 함께 적었습니다.</p>
+            </div>
+            <div className="stack-rows">
+              {techStack.map((group) => (
+                <div key={group.group} className="stack-row">
+                  <p className="stack-group">{group.group}</p>
+                  <p className="stack-items">{group.items.join(" · ")}</p>
+                  <p className="stack-desc">{group.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div id="ai-assisted" className="ai-block">
+            <div className="sub-head">
+              <h3>AI는 도구로, 검증은 직접</h3>
+              <p>{aiWorkflow.intro}</p>
+            </div>
+            <ol className="ai-steps">
+              {aiWorkflow.steps.map((step, index) => (
+                <li key={step.name} className="ai-step">
+                  <p className="ai-step-no">
+                    {String(index + 1).padStart(2, "0")} · {step.name}
+                  </p>
+                  <h4>{step.title}</h4>
+                  <p>{step.body}</p>
+                  <p className="ai-step-tools">{step.tools.join(" · ")}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
       <section
         id="projects"
         className="section section-soft"
@@ -276,76 +320,6 @@ export default function Home() {
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      <section
-        id="approach"
-        className="section"
-        aria-labelledby="approach-title"
-      >
-        <div className="site-container">
-          <header className="section-head">
-            <p className="eyebrow">일하는 방식</p>
-            <h2 id="approach-title">
-              문제를 재현하고,
-              <br />
-              고친 근거를 남깁니다.
-            </h2>
-          </header>
-          <div className="about-grid">
-            <div className="about-intro">
-              {profile.intro.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </div>
-            <div className="principles">
-              {profile.principles.map((principle, index) => (
-                <article key={principle.title} className="principle">
-                  <h3>
-                    <span className="principle-no">0{index + 1}</span>
-                    {principle.title}
-                  </h3>
-                  <p>{principle.desc}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-
-          <div id="stack" className="stack-block">
-            <div className="sub-head">
-              <h3>기술 스택</h3>
-              <p>어디에 어떻게 썼는지 함께 적었습니다.</p>
-            </div>
-            <div className="stack-rows">
-              {techStack.map((group) => (
-                <div key={group.group} className="stack-row">
-                  <p className="stack-group">{group.group}</p>
-                  <p className="stack-items">{group.items.join(" · ")}</p>
-                  <p className="stack-desc">{group.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div id="ai-assisted" className="ai-block">
-            <div className="sub-head">
-              <h3>AI는 도구로, 검증은 직접</h3>
-              <p>{aiWorkflow.intro}</p>
-            </div>
-            <ol className="ai-steps">
-              {aiWorkflow.steps.map((step, index) => (
-                <li key={step.name} className="ai-step">
-                  <p className="ai-step-no">
-                    {String(index + 1).padStart(2, "0")} · {step.name}
-                  </p>
-                  <h4>{step.title}</h4>
-                  <p>{step.body}</p>
-                  <p className="ai-step-tools">{step.tools.join(" · ")}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
         </div>
       </section>
     </>

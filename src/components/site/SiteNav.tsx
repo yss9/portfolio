@@ -7,8 +7,8 @@ import { profile } from "@/content/profile";
 
 const sections = [
   { href: "/#about", label: "소개" },
+  { href: "/#skills", label: "기술 · AI" },
   { href: "/#projects", label: "프로젝트" },
-  { href: "/#approach", label: "일하는 방식" },
   { href: "/#contact", label: "연락" },
 ];
 
