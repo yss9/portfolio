@@ -243,24 +243,21 @@ export default function Home() {
                       </h3>
                       <p className="feature-tagline">{project.tagline}</p>
                     </div>
-                    <p className="feature-role">
-                      <b>담당</b>
-                      {project.role}
-                    </p>
-                    <ol className="psr" aria-label="문제, 해결, 결과">
-                      <li>
-                        <span className="psr-label">문제</span>
-                        {editorial.problem}
-                      </li>
-                      <li>
-                        <span className="psr-label">해결</span>
-                        {editorial.solution}
-                      </li>
-                      <li>
-                        <span className="psr-label">결과</span>
-                        {editorial.result}
-                      </li>
-                    </ol>
+                    <p className="feature-program">{editorial.program}</p>
+                    <dl className="feature-facts">
+                      <div>
+                        <dt>서비스 배경</dt>
+                        <dd>{editorial.background}</dd>
+                      </div>
+                      <div>
+                        <dt>개요</dt>
+                        <dd>{editorial.overview}</dd>
+                      </div>
+                      <div>
+                        <dt>담당</dt>
+                        <dd>{project.role}</dd>
+                      </div>
+                    </dl>
                     <ul className="tag-list" aria-label="주요 사용 기술">
                       {project.stackFlat.slice(0, 5).map((tech) => (
                         <li key={tech} className="tag">

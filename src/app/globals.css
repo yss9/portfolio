@@ -716,38 +716,37 @@ kbd {
   font-weight: 550;
   color: var(--color-muted);
 }
-.feature-role {
-  font-size: 15px;
-  color: var(--color-ink-dim);
-}
-.feature-role b {
-  margin-right: 8px;
-  font-weight: 700;
+.feature-program {
+  border-left: 3px solid var(--color-signal);
+  padding-left: 14px;
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.6;
   color: var(--color-ink);
 }
 
-/* Problem → solution → result */
-.psr {
+/* Service background, overview, role */
+.feature-facts {
   display: grid;
   border-top: 1px solid var(--color-line);
 }
-.psr li {
+.feature-facts > div {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
+  grid-template-columns: 76px minmax(0, 1fr);
   gap: 12px;
   border-bottom: 1px solid var(--color-line);
   padding: 13px 0;
-  font-size: 15.5px;
-  line-height: 1.65;
-  color: var(--color-ink-dim);
 }
-.psr-label {
+.feature-facts dt {
   font-size: 14px;
   font-weight: 750;
+  line-height: 1.75;
   color: var(--color-ink);
 }
-.psr li:last-child .psr-label {
-  color: var(--color-signal-dim);
+.feature-facts dd {
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--color-ink-dim);
 }
 
 /* ------------------------------------------------------------------ */
