@@ -12,7 +12,7 @@ export const saybridge: Project = {
   period: "2025.01 ~ 2025.05",
   team: "1인 개발",
   role: "프론트엔드 및 백엔드 개발",
-  focus: "WebRTC 연결 순서를 정리하고 과제 조회의 반복 쿼리를 배치 조회로 바꿨습니다.",
+  focus: "WebRTC 연결 순서를 정리했고, 프로젝트 이후 과제 제출 상태를 게시글마다 조회하던 쿼리를 한 번의 조회로 바꿨습니다(사후 개선).",
   teamShort: "1인 개발 · FE/BE",
 
   stack: [
@@ -66,7 +66,7 @@ export const saybridge: Project = {
   features: [
     {
       title: "인증 및 권한 관리",
-      desc: "Spring Security/OAuth2/JWT 기반 소셜 로그인 및 역할별 접근 제어",
+      desc: "Spring Security·OAuth2 소셜 로그인과 JWT 인증",
     },
     {
       title: "WebRTC 화상 연결",
@@ -82,7 +82,7 @@ export const saybridge: Project = {
     },
     {
       title: "파일 시스템 분리",
-      desc: "S3를 활용한 강의 자료/과제 파일 저장 및 과제 제출 상태 조회 구조 개선",
+      desc: "S3를 활용한 강의 자료·과제 파일 저장 (과제 제출 상태 조회는 사후 개선)",
     },
   ],
 
@@ -204,7 +204,7 @@ case 'join':
       id: "courses",
       label: "강의 탐색",
       caption:
-        "언어·레벨·키워드를 조합한 복합 조건 검색. 실제 서비스에서는 QueryDSL로 조건이 있을 때만 where 절에 붙는 동적 쿼리로 처리했습니다.",
+        "언어·레벨 조건을 조합한 강의 검색. QueryDSL로 조건이 있을 때만 where 절에 붙는 동적 쿼리로 처리했습니다.",
     },
     {
       id: "course",
@@ -222,7 +222,7 @@ case 'join':
       id: "mypage",
       label: "마이페이지 · 권한",
       caption:
-        "STUDENT / TEACHER / ADMIN 역할에 따라 접근 가능한 메뉴가 달라집니다. Spring Security의 역할별 접근 제어를 화면으로 옮겼습니다.",
+        "USER(학생) / TEACHER / ADMIN 역할에 따라 화면에 보이는 메뉴가 달라집니다.",
     },
   ],
 };

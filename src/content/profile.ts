@@ -52,7 +52,7 @@ export const profile = {
     {
       label: "Data · Performance",
       title: "데이터 동기화와 성능 개선",
-      desc: "Spring Batch로 공공 관광 데이터를 미리 동기화해 검색과 AI 답변의 근거로 쓰고, 추천 API의 전체 정렬을 Top-K 추출로 바꿔 응답 시간을 줄였습니다.",
+      desc: "Spring Batch로 공공 관광 데이터를 미리 동기화해 검색과 AI 답변의 근거로 쓰고, 프로젝트 이후 Glople 추천 API의 전체 정렬을 Top-K 추출로 바꿔 응답 시간을 줄였습니다(사후 개선).",
       metric: "추천 API 평균 응답 -74% (로컬 JMeter)",
       viz: {
         kind: "compare",
@@ -61,7 +61,7 @@ export const profile = {
         after: 7.21,
         unit: "ms",
         delta: "-74.2%",
-        note: "로컬 JMeter · 같은 데이터와 요청 시나리오",
+        note: "사후 개선 · 로컬 JMeter · 같은 데이터와 요청 시나리오",
       } as NumberViz,
       tags: ["Spring Batch", "MySQL", "JMeter"],
       projects: [

@@ -78,7 +78,7 @@ export const glople: Project = {
     },
     {
       title: "키워드 필터링",
-      desc: "100개 이상의 키워드를 두 개의 63-bit mask로 변환하고 MySQL BIT_COUNT로 공통 키워드가 많은 여행지를 정렬",
+      desc: "고른 키워드와 겹치는 키워드가 많은 여행지부터 추천. 사후 개선에서 94개 키워드를 두 개의 63-bit mask로 바꿔 MySQL BIT_COUNT로 정렬하도록 했습니다.",
     },
     {
       title: "AI 대화형 챗봇",
@@ -91,7 +91,7 @@ export const glople: Project = {
       desc: "WebSocket을 활용하여 사용자 간 매칭 및 채팅 흐름 구현",
     },
     {
-      title: "추천 로직의 조회·정렬 개선",
+      title: "추천 로직의 조회·정렬 개선 (사후 개선)",
       desc: "전체 조회·정렬로 불필요한 연산이 늘어나는 문제를 확인하고, DB 후보 필터링과 PriorityQueue Top-K 방식으로 개선했습니다.",
     },
   ],
@@ -134,7 +134,7 @@ export const glople: Project = {
   troubleshooting: [
     {
       id: "recommend-analysis",
-      title: "추천 로직 병목 분석",
+      title: "추천 로직 병목 분석 (사후 개선)",
       problem:
         "추천 결과는 상위 몇 건만 필요한데 전체 데이터를 읽고 문자열 탐색과 정렬을 반복했습니다.",
       solution:
@@ -164,7 +164,7 @@ export const glople: Project = {
   performance: [
     {
       id: "keyword-bitmask",
-      title: "Keyword 추천 — 문자열 탐색을 비트 연산으로",
+      title: "Keyword 추천 — 문자열 탐색을 비트 연산으로 (사후 개선)",
       summary:
         "전체 여행지를 읽고 문자열을 비교하던 문제를 DB 비트마스크 필터와 BIT_COUNT 점수 계산으로 해결했습니다.",
       before: {
@@ -195,14 +195,14 @@ LIMIT :limit`,
         notes: ["후보군과 점수를 DB에서 계산", "애플리케이션에는 상위 결과만 반환"],
       },
       metrics: [
-        { label: "Avg Response Time", before: "15.7ms", after: "8.92ms", delta: "-43.3%", better: "lower" },
+        { label: "Avg Response Time", before: "15.7ms", after: "8.92ms", delta: "-43.2%", better: "lower" },
         { label: "p95 Latency", before: "20ms", after: "10ms", delta: "-50.0%", better: "lower" },
       ],
-      condition: "로컬 테스트 환경에서 JMeter로 동일 데이터셋과 동일 요청 시나리오의 Before/After 평균 및 p95를 비교했습니다.",
+      condition: "프로젝트 종료 후 사후 개선한 내용입니다. 로컬 테스트 환경에서 JMeter로 동일 데이터셋과 동일 요청 시나리오의 Before/After 평균 및 p95를 비교했습니다.",
     },
     {
       id: "mbti-topk",
-      title: "MBTI 추천 — 전체 정렬을 Top-K 추출로",
+      title: "MBTI 추천 — 전체 정렬을 Top-K 추출로 (사후 개선)",
       summary:
         "상위 12건을 위해 전체 사용자를 정렬하던 문제를 후보군 축소와 PriorityQueue Top-K로 해결했습니다.",
       before: {
@@ -230,7 +230,7 @@ var topScores = new PriorityQueue<Score>(12);
         { label: "Avg Response Time", before: "27.9ms", after: "7.21ms", delta: "-74.2%", better: "lower" },
         { label: "p95 Latency", before: "33ms", after: "9ms", delta: "-72.7%", better: "lower" },
       ],
-      condition: "로컬 테스트 환경에서 JMeter로 동일 데이터셋과 동일 요청 시나리오의 Before/After 평균 및 p95를 비교했습니다.",
+      condition: "프로젝트 종료 후 사후 개선한 내용입니다. 로컬 테스트 환경에서 JMeter로 동일 데이터셋과 동일 요청 시나리오의 Before/After 평균 및 p95를 비교했습니다.",
     },
   ],
 

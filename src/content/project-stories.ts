@@ -159,9 +159,9 @@ export const projectStories: Record<string, ProjectStory> = {
       },
       {
         technology: "QueryDSL · Spring Security",
-        purpose: "복합 조건 검색과 역할별 접근 제어",
+        purpose: "조건부 강의 검색과 JWT 인증",
         reason:
-          "검색 조건이 있을 때만 쿼리에 반영하고 학생·강사·관리자의 기능 접근을 서버에서 구분했습니다.",
+          "언어·레벨 조건이 있을 때만 쿼리에 반영하고, 소셜 로그인 뒤의 요청은 JWT로 인증했습니다.",
       },
     ],
     learning:
@@ -214,13 +214,13 @@ export const projectStories: Record<string, ProjectStory> = {
     ],
     choices: [
       {
-        technology: "MySQL 비트마스크 · BIT_COUNT",
+        technology: "MySQL 비트마스크 · BIT_COUNT (사후 개선)",
         purpose: "키워드 후보 필터와 공통 키워드 점수 계산",
         reason:
           "전체 데이터를 Java에서 문자열로 반복 탐색하는 대신 후보 필터링과 점수 계산을 DB로 옮겼습니다.",
       },
       {
-        technology: "PriorityQueue Top-K",
+        technology: "PriorityQueue Top-K (사후 개선)",
         purpose: "유사 사용자 상위 12건 유지",
         reason:
           "성별·연령으로 후보를 먼저 좁히고 크기 12의 힙을 유지해 전체 결과를 정렬하는 비용을 줄였습니다.",
