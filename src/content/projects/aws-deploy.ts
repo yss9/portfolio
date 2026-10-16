@@ -9,7 +9,7 @@ export const awsDeploy: Project = {
     "AWS Deploy는 로컬에서만 동작하던 Todo 웹 애플리케이션을 AWS에 실제 서비스 형태로 배포한 1인 인프라 실습 프로젝트입니다. React 화면은 S3와 CloudFront로, Node.js/Express API는 Docker 이미지로 만들어 ALB 뒤 EC2에, 데이터는 RDS PostgreSQL에 두고, Route 53과 ACM으로 도메인과 HTTPS를 연결했습니다. 프론트엔드와 백엔드 모두 GitHub Actions로 빌드·배포를 자동화했습니다.",
   blurb:
     "Todo 웹 앱의 화면은 S3·CloudFront, API는 ALB·EC2, 데이터는 RDS로 나눠 AWS에 배포하고 GitHub Actions로 자동화한 인프라 실습입니다.",
-  period: "2025.09",
+  period: "2025.08 ~ 2025.09",
   team: "1인 구축",
   role: "인프라 설계 및 배포 자동화 구축",
   focus: "정적 화면과 API 배포 경로를 분리하고 GitHub Actions로 자동화했습니다.",

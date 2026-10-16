@@ -110,6 +110,8 @@ export type Project = {
   program?: string;
   /** Two or three lines about the service for the home project card. */
   blurb?: string;
+  /** Numeric facts drawn as small charts at the top of 구현 기능. */
+  numbers?: NumberViz[];
   role: string;
   /** One verified contribution or design decision for the project card. */
   focus: string;
@@ -189,3 +191,23 @@ export type DemoClip = {
   caption: string;
   device: "desktop" | "phone";
 };
+
+/** A number shown as a small chart instead of a sentence. */
+export type NumberViz =
+  | {
+      kind: "split";
+      title: string;
+      parts: { label: string; value: number; emphasis?: boolean }[];
+      note?: string;
+    }
+  | {
+      kind: "compare";
+      title: string;
+      before: number;
+      after: number;
+      unit: string;
+      delta: string;
+      note?: string;
+    }
+  | { kind: "checks"; title: string; items: string[]; note?: string }
+  | { kind: "stat"; title: string; value: string; note?: string };

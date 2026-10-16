@@ -24,6 +24,7 @@ import { DetailToc } from "@/components/project/DetailToc";
 import { FlowDiagram } from "@/components/project/FlowDiagram";
 import { AwardIcon, CodeCard } from "@/components/ui/primitives";
 import { MetricPanel } from "@/components/ui/Metrics";
+import { NumberViz } from "@/components/ui/NumberViz";
 
 export function generateStaticParams() {
   return projectSlugs().map((slug) => ({ slug }));
@@ -322,6 +323,13 @@ export default async function ProjectPage({
             {...section("contribution")}
             lead="전체 서비스 안에서 직접 구현하거나 공동으로 맡은 기능입니다."
           >
+            {project.numbers && project.numbers.length > 0 && (
+              <div className="num-grid" aria-label="숫자로 보기">
+                {project.numbers.map((viz) => (
+                  <NumberViz key={viz.title} viz={viz} />
+                ))}
+              </div>
+            )}
             <ul className="contribution-list">
               {contributions.map((feature, index) => (
                 <li key={feature.title} className="contribution">

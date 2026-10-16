@@ -7,6 +7,30 @@ export const saeroi: Project = {
   tagline: "블록체인 기반 업사이클링 플랫폼",
   summary:
     "새로이는 폐소재 공급업체·가공업체·브랜드를 연결해 버려진 소재가 새 제품으로 이어지게 하는 블록체인 기반 업사이클링 플랫폼입니다. 공급업체는 폐소재를 등록해 판매하고, 가공업체는 소재를 가공하며, 브랜드는 소재를 구매해 제품을 생산·판매합니다. 주문·인계·생산 기록은 Hyperledger Besu에 남아 QR 패스포트로 누구나 제품의 소재 이력을 확인할 수 있고, 브랜드 담당자는 AI 여정 어시스턴트와 대화하며 소재 구매부터 판매까지 진행합니다.",
+  numbers: [
+    {
+      kind: "split",
+      title: "AI 여정 어시스턴트의 업무 도구",
+      parts: [
+        { label: "쓰기 · 승인 카드로 실행", value: 17, emphasis: true },
+        { label: "읽기 · 바로 조회", value: 14 },
+      ],
+    },
+    {
+      kind: "split",
+      title: "도구의 출처",
+      parts: [
+        { label: "기존 도메인 기능", value: 29 },
+        { label: "대화 상태 도구", value: 2, emphasis: true },
+      ],
+    },
+    {
+      kind: "stat",
+      title: "확인 카드 유효기간",
+      value: "6시간",
+      note: "지나면 승인해도 실행하지 않습니다. 그사이 재고나 가격이 바뀌었을 수 있기 때문입니다.",
+    },
+  ],
   period: "2026.08 ~ 2026.09",
   team: "6인 팀",
   award: "삼성청년 SW·AI 아카데미 프로젝트 우수상",

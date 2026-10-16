@@ -6,8 +6,11 @@ import { featuredSlugs, showcase } from "@/content/showcase";
 import { AwardIcon } from "@/components/ui/primitives";
 import { LoopVideo } from "@/components/project/LoopVideo";
 import { clips } from "@/content/clips";
+import { NumberViz } from "@/components/ui/NumberViz";
 
 export default function Home() {
+  const [gpa, gpaMax] = profile.education.gpa.split("/").map((part) => Number.parseFloat(part));
+  const gpaPercent = (gpa / gpaMax) * 100;
   const otherProjects = projects.filter(
     (project) => !featuredSlugs.some((slug) => slug === project.slug),
   );
@@ -56,6 +59,9 @@ export default function Home() {
                   <dd>
                     {profile.education.school} {profile.education.major}
                     <span>전공 평점 {profile.education.gpa}</span>
+                    <span className="gpa-bar" aria-hidden="true">
+                      <i style={{ width: `${gpaPercent}%` }} />
+                    </span>
                   </dd>
                 </div>
                 <div>
@@ -94,7 +100,11 @@ export default function Home() {
                   <p className="dev-card-label">{area.label}</p>
                   <h3>{area.title}</h3>
                   <p className="dev-card-desc">{area.desc}</p>
-                  <p className="dev-metric">{area.metric}</p>
+                  {area.viz ? (
+                    <NumberViz viz={area.viz} compact />
+                  ) : (
+                    <p className="dev-metric">{area.metric}</p>
+                  )}
                   <div className="dev-card-foot">
                     <ul className="tag-list" aria-label="주요 기술">
                       {area.tags.map((tag) => (

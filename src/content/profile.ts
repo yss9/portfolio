@@ -1,4 +1,4 @@
-import type { StackGroup } from "./types";
+import type { NumberViz, StackGroup } from "./types";
 
 export const profile = {
   name: "서영석",
@@ -17,6 +17,14 @@ export const profile = {
       title: "승인형 AI 에이전트 서버",
       desc: "LLM이 기존 업무 기능을 도구로 호출하게 연결하고, 결제·생산 확정처럼 상태를 바꾸는 작업은 사람이 확인 카드를 승인한 뒤에만 실행되도록 서버에서 통제했습니다.",
       metric: "업무 도구 31개 · 쓰기 17개는 승인 후 실행",
+      viz: {
+        kind: "split",
+        title: "AI가 호출하는 업무 도구",
+        parts: [
+          { label: "쓰기 · 승인 카드로 실행", value: 17, emphasis: true },
+          { label: "읽기 · 바로 조회", value: 14 },
+        ],
+      } as NumberViz,
       tags: ["Spring Boot", "LLM Tool Use", "React"],
       projects: [{ name: "새로이", slug: "saeroi" }],
     },
@@ -25,6 +33,11 @@ export const profile = {
       title: "IoT 장치 명령과 센서 수집",
       desc: "MQTT로 센서 값을 받고 로봇에 명령을 보냅니다. 명령은 DB 커밋 후에만 발행하고 회신을 requestId·장치·명령 종류로 대조해, 재전송이나 늦은 회신에도 급수가 중복되지 않게 했습니다.",
       metric: "중복·지연·실패 응답 단위 테스트",
+      viz: {
+        kind: "checks",
+        title: "단위 테스트로 확인한 자동 급수 예외 상황",
+        items: ["급수량 미설정", "물 부족", "중복 재전송", "늦은 회신", "장치 불일치", "명령 실패"],
+      } as NumberViz,
       tags: ["Spring Boot", "MQTT", "Flutter"],
       projects: [{ name: "PotneR", slug: "potner" }],
     },
@@ -41,6 +54,15 @@ export const profile = {
       title: "데이터 동기화와 성능 개선",
       desc: "Spring Batch로 공공 관광 데이터를 미리 동기화해 검색과 AI 답변의 근거로 쓰고, 추천 API의 전체 정렬을 Top-K 추출로 바꿔 응답 시간을 줄였습니다.",
       metric: "추천 API 평균 응답 -74% (로컬 JMeter)",
+      viz: {
+        kind: "compare",
+        title: "Glople MBTI 추천 API 평균 응답",
+        before: 27.9,
+        after: 7.21,
+        unit: "ms",
+        delta: "-74.2%",
+        note: "로컬 JMeter · 같은 데이터와 요청 시나리오",
+      } as NumberViz,
       tags: ["Spring Batch", "MySQL", "JMeter"],
       projects: [
         { name: "너울터", slug: "neoulteo" },

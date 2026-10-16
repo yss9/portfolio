@@ -170,7 +170,47 @@ export const bluememories: Project = {
     },
   ],
 
-  performance: [],
+  performance: [
+    {
+      id: "community-dto-projection",
+      title: "커뮤니티 목록 — 일기별 반복 조회를 DTO Projection 한 번으로 (사후 개선)",
+      summary:
+        "공개 일기를 모두 불러온 뒤 일기마다 작성자를 지연 로딩하던 목록을, 작성자 닉네임과 댓글·좋아요 수를 한 쿼리에서 집계하는 DTO Projection과 페이지 단위 조회로 바꿨습니다.",
+      before: {
+        label: "Before: 전체 조회 후 일기마다 작성자 조회",
+        code: {
+          language: "java",
+          code: `List<Diary> diaries = diaryRepository.findByIsPrivate(false);
+for (Diary diary : diaries) {
+    diaryDtos.add(new DiaryDto(diary.getId(), diary.getTitle(),
+            diary.getContent(), diary.getUser().getNickname(),
+            diary.getImageUrl()));
+}`,
+        },
+        notes: ["공개 일기 전체를 한 번에 반환", "일기 수만큼 작성자 조회 쿼리가 추가로 발생"],
+      },
+      after: {
+        label: "After: DTO Projection + 페이지 조회",
+        code: {
+          language: "java",
+          code: `select new com.backend.dto.PublicDiaryListResponse(
+    d.id, d.title, d.sentiment, d.createdAt, u.nickname,
+    count(distinct c.id), count(distinct l.id), d.imageUrl)
+from Diary d
+join d.user u
+left join d.comments c
+left join d.userLikes l
+where d.isPrivate = false
+group by d.id, d.title, d.sentiment, d.createdAt, u.nickname, d.imageUrl`,
+        },
+        notes: ["작성자·댓글 수·좋아요 수를 한 쿼리로 집계", "Pageable로 페이지 단위 조회"],
+      },
+      metrics: [
+        { label: "Avg Response Time", before: "147.85ms", after: "3.63ms", delta: "-97.5%", better: "lower" },
+      ],
+      condition: "프로젝트 종료 후 사후 개선한 내용입니다. 로컬 환경에서 JMeter로 같은 데이터와 요청 시나리오의 평균 응답 시간을 비교했습니다.",
+    },
+  ],
 
   demo: [
     {
