@@ -63,12 +63,12 @@ export const profile = {
     {
       project: "PotneR",
       slug: "potner",
-      title: "삼성청년 SW/AI 공통프로젝트 우수상",
+      title: "삼성청년 SW·AI 아카데미 프로젝트 우수상",
     },
     {
       project: "SAEROI",
       slug: "saeroi",
-      title: "삼성청년 SW/AI 특화프로젝트 우수상",
+      title: "삼성청년 SW·AI 아카데미 프로젝트 우수상",
     },
   ],
 

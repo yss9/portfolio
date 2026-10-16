@@ -9,7 +9,7 @@ export const potner: Project = {
     "PotneR(Pot + Partner)는 식물의 생육 환경을 스스로 살피고 돌보는 이동형 스마트 화분 서비스입니다. 로봇과 스테이션의 센서가 토양 수분·조도·온습도를 수집하고, 수분이 부족하면 로봇이 급수 스테이션으로 이동해 급수·송풍한 뒤 제자리로 돌아옵니다. 사용자는 Flutter 앱에서 식물 상태와 환경 이력을 확인하고, 식물 일기와 성장 타임랩스로 변화를 돌아볼 수 있습니다.",
   period: "2026.07 ~ 2026.08",
   team: "6인 팀",
-  award: "삼성청년 SW/AI 공통프로젝트 우수상",
+  award: "삼성청년 SW·AI 아카데미 프로젝트 우수상",
   role: "Flutter App · Backend · Infra",
   focus: "MQTT 재전송과 늦은 회신에도 급수가 중복되지 않도록, 명령을 DB 커밋 후에만 발행하고 회신을 명령 이력과 대조해 반영했습니다.",
   teamShort: "6인 팀 · App/BE/Infra",
@@ -63,7 +63,7 @@ export const potner: Project = {
     height: 905,
   },
 
-  highlights: ["삼성청년 SW/AI 공통프로젝트 우수상", "App · Backend · Infra 담당", "Jenkins CI/CD · 자동 롤백"],
+  highlights: ["삼성청년 SW·AI 아카데미 프로젝트 우수상", "App · Backend · Infra 담당", "Jenkins CI/CD · 자동 롤백"],
 
   features: [
     {

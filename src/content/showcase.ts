@@ -2,7 +2,7 @@
 export const showcase = {
   saeroi: {
     category: "블록체인 · AI Agent",
-    program: "삼성청년 SW·AI 아카데미(SSAFY) 특화 프로젝트에서 우수상을 받은 프로젝트입니다.",
+    program: "삼성청년 SW·AI 아카데미(SSAFY) 프로젝트에서 우수상을 받은 프로젝트입니다.",
     background:
       "폐의류·원단 같은 폐소재는 공급업체에서 가공업체와 브랜드를 거쳐야 새 제품이 됩니다. 업체마다 거래 기록과 진행 상태가 흩어져 있어, 소재가 어디서 와서 어떻게 가공됐는지 확인하고 다음 할 일을 파악하기 어려웠습니다.",
     overview:
@@ -11,7 +11,7 @@ export const showcase = {
   },
   potner: {
     category: "IoT · 이벤트 기반 시스템",
-    program: "삼성청년 SW·AI 아카데미(SSAFY) 공통 프로젝트에서 우수상을 받은 프로젝트입니다.",
+    program: "삼성청년 SW·AI 아카데미(SSAFY) 프로젝트에서 우수상을 받은 프로젝트입니다.",
     background:
       "식물을 키우다 보면 물 주기·환기·햇빛 관리를 제때 챙기기 어렵습니다. 화분이 스스로 환경을 살펴 필요한 돌봄을 하고, 사용자는 앱에서 식물의 상태와 성장을 확인할 수 있는 서비스를 목표로 했습니다.",
     overview:
