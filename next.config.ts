@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* Vercel에서 Next.js 서버 기능과 이미지 최적화를 기본 방식으로 사용합니다. */
-};
+const nextConfig: NextConfig = process.env.AWS_STATIC_EXPORT === "1"
+  ? {
+      output: "export",
+      trailingSlash: true,
+      images: { unoptimized: true },
+    }
+  : {};
 
 export default nextConfig;

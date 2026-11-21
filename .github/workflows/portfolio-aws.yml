@@ -1,0 +1,117 @@
+name: Portfolio AWS
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      AWS_STATIC_EXPORT: '1'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - name: Check exported pages and media
+        run: |
+          test -s out/index.html
+          grep -Fq 'PotneR' out/projects/potner/index.html
+          test -s out/404.html
+          test -s out/projects/potner/overview.png
+          test -s out/clips/potner/potner-home.mp4
+      - name: Upload site artifact
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || vars.AWS_DEPLOY_ROLE_ARN != '')
+        uses: actions/upload-artifact@v7
+        with:
+          name: portfolio-site
+          path: out/
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || vars.AWS_DEPLOY_ROLE_ARN != '')
+    runs-on: ubuntu-latest
+    concurrency:
+      group: portfolio-aws-production
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      DEPLOY_ROLE_ARN: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      SITE_BUCKET: ${{ vars.AWS_SITE_BUCKET }}
+      DISTRIBUTION_ID: ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+      SITE_URL: ${{ vars.AWS_SITE_URL }}
+      AWS_PAGER: ''
+    steps:
+      - name: Check deployment variables
+        run: |
+          : "${DEPLOY_ROLE_ARN:?Set AWS_DEPLOY_ROLE_ARN}"
+          : "${AWS_REGION:?Set AWS_REGION}"
+          : "${SITE_BUCKET:?Set AWS_SITE_BUCKET}"
+          : "${DISTRIBUTION_ID:?Set AWS_CLOUDFRONT_DISTRIBUTION_ID}"
+          : "${SITE_URL:?Set AWS_SITE_URL}"
+      - name: Check that this is still the latest main commit
+        id: main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha')
+          if [[ "$head" == "$GITHUB_SHA" ]]; then
+            echo 'current=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'Skipped deployment because main has moved to another commit.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/download-artifact@v8
+        if: steps.main.outputs.current == 'true'
+        with:
+          name: portfolio-site
+          path: out/
+      - uses: aws-actions/configure-aws-credentials@v6
+        if: steps.main.outputs.current == 'true'
+        with:
+          role-to-assume: ${{ env.DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Upload site to the dedicated S3 bucket
+        if: steps.main.outputs.current == 'true'
+        run: |
+          aws s3 sync out/_next/static/ "s3://$SITE_BUCKET/_next/static/" \
+            --cache-control 'public,max-age=31536000,immutable' --only-show-errors
+          aws s3 sync out/ "s3://$SITE_BUCKET/" --exclude '_next/static/*' --delete \
+            --cache-control 'public,max-age=0,s-maxage=300,must-revalidate' --only-show-errors
+      - name: Refresh CloudFront cache
+        if: steps.main.outputs.current == 'true'
+        run: |
+          invalidation=$(aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" \
+            --paths '/*' --query 'Invalidation.Id' --output text)
+          aws cloudfront wait invalidation-completed --distribution-id "$DISTRIBUTION_ID" \
+            --id "$invalidation"
+      - name: Smoke test the deployed site
+        if: steps.main.outputs.current == 'true'
+        run: |
+          site="${SITE_URL%/}"
+          curl --fail --silent --show-error --retry 3 "$site/" -o home.html
+          grep -Fq 'PotneR' home.html
+          curl --fail --silent --show-error --retry 3 "$site/projects/potner" -o potner.html
+          grep -Fq 'PotneR' potner.html
+          curl --fail --silent --show-error --head "$site/projects/potner/overview.png"
+          curl --fail --silent --show-error --head "$site/clips/potner/potner-home.mp4"
+          code=$(curl --silent --show-error -o /dev/null -w '%{http_code}' "$site/deployment-smoke-missing-page")
+          test "$code" = 404
+          printf 'Deployed site %s\n' "$site" >> "$GITHUB_STEP_SUMMARY"
