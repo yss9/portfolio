@@ -201,9 +201,21 @@ export default function Home() {
                   >
                     <span className="feature-media-label">
                       <span>{editorial.visualLabel}</span>
-                      <span aria-hidden="true">시연 화면 · 목 데이터</span>
+                      <span aria-hidden="true">
+                        {project.preview.kind === "diagram" ? "가상 데이터 측정" : "시연 화면 · 목 데이터"}
+                      </span>
                     </span>
-                    {slug === "potner" ? (
+                    {project.preview.kind === "diagram" ? (
+                      <span className="feature-window">
+                        <Image
+                          src={project.preview.src}
+                          alt={project.preview.alt}
+                          width={1280}
+                          height={800}
+                          sizes="(min-width: 1024px) 48vw, 90vw"
+                        />
+                      </span>
+                    ) : slug === "potner" ? (
                       <span className="phone-pair">
                         {["potner-home", "potner-environment"].map((id) => {
                           const demo = clips.potner.find((item) => item.id === id)!;

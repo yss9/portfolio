@@ -353,7 +353,11 @@ export default async function ProjectPage({
           {hasProblemSolving && (
             <DetailSection
               {...section("problem-solving")}
-              lead="문제와 해결, 확인한 결과를 적고 실제 코드와 테스트를 근거로 붙였습니다."
+              lead={
+                proof
+                  ? "문제와 해결, 확인한 결과를 적고 실제 코드와 테스트를 근거로 붙였습니다."
+                  : "문제를 재현한 방법부터 원인 분석, 해결 후 확인한 결과까지 정리했습니다."
+              }
             >
               {proof?.flow && (
                 <FlowDiagram
@@ -404,19 +408,21 @@ export default async function ProjectPage({
                       condition={item.condition}
                     />
                   </div>
-                  <div className="perf-code">
-                    {[item.before, item.after].map((side) => (
-                      <div key={side.label} className="min-w-0">
-                        <h4>{side.label}</h4>
-                        <CodeCard {...side.code} />
-                        {side.notes && (
-                          <p className="perf-code-notes">
-                            {side.notes.join(" · ")}
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+                  {item.before && item.after && (
+                    <div className="perf-code">
+                      {[item.before, item.after].map((side) => (
+                        <div key={side.label} className="min-w-0">
+                          <h4>{side.label}</h4>
+                          <CodeCard {...side.code} />
+                          {side.notes && (
+                            <p className="perf-code-notes">
+                              {side.notes.join(" · ")}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </article>
               ))}
             </DetailSection>

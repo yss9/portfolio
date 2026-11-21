@@ -39,12 +39,15 @@ export type PerfCase = {
   id: string;
   title: string;
   summary: string;
-  before: { label: string; code: CodeBlock; notes?: string[] };
-  after: { label: string; code: CodeBlock; notes?: string[] };
   metrics: Metric[];
-  /** measurement setup — JMeter thread counts, data volume */
+  /** Measurement setup, including the tool and data volume. */
   condition?: string;
-};
+} & (
+  | { before: PerfSide; after: PerfSide }
+  | { before?: never; after?: never }
+);
+
+type PerfSide = { label: string; code: CodeBlock; notes?: string[] };
 
 export type ArchLayer = {
   id: string;
@@ -135,7 +138,7 @@ export type Project = {
   designNotes?: Troubleshooting[];
   performance: PerfCase[];
   demo: DemoScreen[];
-  /** Screenshot captured from the project's real frontend source. */
+  /** Screenshot or diagram shown in the project list. */
   preview: { src: string; alt: string; kind?: "screen" | "diagram" };
   /** Real service screens shown on the project detail page. */
   screenshots?: ProjectScreenshot[];

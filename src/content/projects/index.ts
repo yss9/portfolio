@@ -7,8 +7,10 @@ import { mofy } from "./mofy";
 import { potner } from "./potner";
 import { awsDeploy } from "./aws-deploy";
 import { saeroi } from "./saeroi";
+import { cirgent } from "./cirgent";
 
 export const projects: Project[] = [
+  cirgent,
   saeroi,
   potner,
   neoulteo,
