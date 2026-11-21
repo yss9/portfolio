@@ -606,6 +606,10 @@ kbd {
   --panel: #e2eada;
   --panel-ink: #3d5233;
 }
+.feature-media[data-project="cirgent"] {
+  --panel: #223631;
+  --panel-ink: #d5e8df;
+}
 .feature-media-label {
   position: absolute;
   top: 20px;

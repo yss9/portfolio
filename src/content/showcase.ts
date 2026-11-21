@@ -1,5 +1,14 @@
 /** Summaries based on documented project contributions, not team-wide claims. */
 export const showcase = {
+  cirgent: {
+    category: "AI · 프론트엔드 성능",
+    program: "삼성 내부 프로젝트",
+    background:
+      "엔지니어가 부품별 데이터시트에서 규칙을 찾고 회로 설계와 일일이 대조하는 데 시간이 들었습니다.",
+    overview:
+      "AI가 데이터시트에서 검증 규칙을 추출하고, 설계 검증 결과를 회로도와 근거 리포트로 보여주는 웹 도구입니다.",
+    visualLabel: "회로도 렌더링 벤치마크",
+  },
   saeroi: {
     category: "블록체인 · AI Agent",
     program: "삼성청년 SW·AI 아카데미(SSAFY) 프로젝트에서 우수상을 받은 프로젝트입니다.",
@@ -21,7 +30,7 @@ export const showcase = {
 } as const;
 
 export type FeaturedSlug = keyof typeof showcase;
-export const featuredSlugs: FeaturedSlug[] = ["saeroi", "potner"];
+export const featuredSlugs: FeaturedSlug[] = ["cirgent", "saeroi", "potner"];
 
 export function getShowcase(slug: string) {
   return Object.prototype.hasOwnProperty.call(showcase, slug)
