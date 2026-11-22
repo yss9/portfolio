@@ -1,0 +1,79 @@
+/* React Bits flap and three-sheet motion, sized for a desktop shortcut. */
+.rb-folder {
+  display: inline-block;
+  position: relative;
+  width: 48px;
+  height: 34px;
+  flex: none;
+  margin: 8px 0 4px;
+  --folder-back: #363a41;
+  --folder-ease: cubic-bezier(.19,.8,.28,1);
+}
+.folder__back {
+  display: block;
+  position: relative;
+  height: 100%;
+  background: var(--folder-back);
+  border-radius: 0 5px 5px 5px;
+  box-shadow: 0 3px 0 #0d0e10;
+}
+.folder__back::before {
+  content: "";
+  position: absolute;
+  bottom: 98%;
+  left: 0;
+  width: 37%;
+  height: 5px;
+  background: var(--folder-back);
+  border-top: 2px solid var(--folder-color);
+  border-radius: 3px 4px 0 0;
+}
+.folder__paper {
+  position: absolute;
+  bottom: 9%;
+  left: 50%;
+  width: 72%;
+  height: 79%;
+  background: #afbfce;
+  border-radius: 3px;
+  transform: translate(-50%, 8%);
+  transition: transform 180ms var(--folder-ease);
+}
+.folder__paper:nth-child(2) {width: 81%; height: 73%; background: #d8e7f4}
+.folder__paper:nth-child(3) {width: 89%; height: 68%; background: #ecf4ff}
+.folder__front {
+  position: absolute;
+  inset: 2px 0 0;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(#44474d, #26282c);
+  border: 1px solid #656a73;
+  border-bottom-color: #17191c;
+  border-radius: 3px 5px 5px 5px;
+  box-shadow: inset 0 1px 0 #ffffff16, 0 2px 0 #111215;
+  transform-origin: bottom;
+  transition: transform 160ms var(--folder-ease);
+}
+.folder__front.right {border-top: 2px solid var(--folder-color)}
+.rb-folder[data-open=true] .folder__paper:nth-child(1) {transform: translate(-82%, -32%) rotate(-14deg)}
+.rb-folder[data-open=true] .folder__paper:nth-child(2) {transform: translate(-18%, -32%) rotate(14deg)}
+.rb-folder[data-open=true] .folder__paper:nth-child(3) {transform: translate(-50%, -55%)}
+.rb-folder[data-open=true] .folder__front {transform: skew(12deg) scaleY(.61)}
+.rb-folder[data-open=true] .folder__front.right {transform: skew(-12deg) scaleY(.61)}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .desktop[data-reduced=false] .desktop-shortcut:hover .rb-folder[data-open=false] .folder__paper {
+    transform: translate(-50%, -8%);
+  }
+}
+.desktop[data-reduced=true] .rb-folder * {transition: none}
+@media (prefers-reduced-motion: reduce) {
+  .rb-folder * {transition: none}
+}
+.folder__paper::after {
+  content: "";
+  display: block;
+  margin: 4px 5px;
+  height: 4px;
+  width: 45%;
+  border-block: 1px solid #8295a8;
+}

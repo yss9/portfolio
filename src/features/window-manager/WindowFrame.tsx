@@ -29,6 +29,7 @@ type Props = {
   front: boolean;
   order: number;
   mobile: boolean;
+  quiet: boolean;
   activate: () => void;
   open: (a: AppDefinition, el: HTMLElement) => void;
   control: (action: "close" | "minimize" | "maximize") => void;
@@ -40,6 +41,7 @@ export function WindowFrame({
   front,
   order,
   mobile,
+  quiet,
   activate,
   open,
   control,
@@ -105,9 +107,9 @@ export function WindowFrame({
         className={"app-window " + (front ? "front" : "")}
         onPointerDownCapture={activate}
         onFocusCapture={activate}
-        initial={{ opacity: 0 }}
+        initial={quiet ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.16 }}
+        transition={{ duration: quiet ? 0 : 0.16 }}
       >
         <header
           className="window-titlebar"

@@ -32,10 +32,8 @@ const icons = {
 };
 export function AppIcon({
   name,
-  target = false,
 }: {
   name: string;
-  target?: boolean;
 }) {
   const Icon = icons[name as keyof typeof icons] ?? Box;
   const brand = brands[name];
@@ -45,10 +43,7 @@ export function AppIcon({
       className={"app-icon icon-" + name + (brand ? " sys-project-icon" : "")}
     >
       {brand ? (
-        <span
-          className="sys-icon-art"
-          data-desktop-brand={target ? name : undefined}
-        >
+        <span className="sys-icon-art">
           <BrandArt slug={name} />
         </span>
       ) : (

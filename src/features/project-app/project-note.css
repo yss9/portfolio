@@ -30,18 +30,40 @@
 .note-lead .note-share {align-self: start; grid-column: 2; grid-row: 1}
 .note-lead > div:first-child {grid-row: 1 / span 2; min-width: 0}
 
+.notebook [data-slot=tabs] {gap: 0}
 .notebook .project-tabs {
-  padding: 0 clamp(8px, 3cqw, 32px);
-  gap: clamp(0px, 1.2cqw, 14px);
+  display: flex;
+  justify-content: start;
+  gap: 4px;
+  width: 100%;
+  height: auto;
+  padding: 6px clamp(8px, 2.6cqw, 28px);
   border: 0;
+  border-radius: 0;
+  background: #d5e3f2;
   box-shadow: inset 0 -1px var(--rule);
-  background: #f2f7ff;
-  overflow-x: auto;
-  scrollbar-width: thin;
 }
-.notebook .project-tabs button {color: var(--muted-ink); flex: none; white-space: nowrap}
-.notebook .project-tabs [aria-selected=true] {color: #184779; background: #dbe9fa; border-bottom-color: var(--note-accent)}
-.notebook .project-tabs button:hover:not([data-state=active]) {color: var(--ink); background: #d6e6fa}
+.notebook .project-tabs button {
+  flex: none;
+  min-height: 44px;
+  height: auto;
+  padding: 5px 13px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #395169;
+  white-space: nowrap;
+  transition: color 120ms, background-color 120ms;
+}
+.notebook .project-tabs button[aria-selected=true] {
+  background: #2c3138;
+  color: #fff;
+  border-color: #424952 #252a31 #14181e;
+  box-shadow: inset 0 1px 0 #ffffff21, 0 2px 0 #14181e;
+}
+.notebook .project-tabs [aria-selected=true] svg {color: #95ddd4}
+.notebook .project-tabs button:hover:not([data-state=active]) {color: var(--ink); background: #eaf2fb}
+.notebook .project-tabs button:focus-visible {outline: 2px solid #205590; outline-offset: 1px}
 .notebook .tab-body:has(.project-note) {padding: 0}
 .notebook .project-note {
   padding: clamp(18px, 3.7cqw, 44px);
@@ -109,9 +131,10 @@
   .note-meta div {gap: 6px}
   .note-spread {grid-template-columns: 1fr; gap: 16px}
   .note-spread section + section {border-left: 3px solid var(--note-accent); padding-left: 12px}
-  .notebook .project-tabs {flex-wrap: wrap; gap: 0}
-  .notebook .project-tabs button {font-size: .84rem; padding: 0 7px}
-  .notebook .project-tabs svg {display: none}
+  .notebook .project-tabs {display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; padding: 5px 3px}
+  .notebook .project-tabs button {flex-direction: column; gap: 3px; line-height: 1.2; font-size: clamp(.75rem, 3.2cqw, .85rem); padding: 5px 0}
+  .notebook .project-tabs svg {display: block; width: 16px; height: 16px}
+  .notebook .tab-prefix {display: none}
 }
 
 @container (max-width: 360px) {
@@ -119,5 +142,4 @@
   .note-lead :is(h1, h2) {font-size: clamp(2.3rem, 13cqw, 2.9rem)}
   .note-lead .note-meta {grid-column: 1; grid-row: 2; gap: 4px 12px}
   .note-lead .note-share {grid-row: 2; align-self: center}
-  .notebook .project-tabs {display: grid; grid-template-columns: repeat(3, minmax(0, 1fr))}
 }

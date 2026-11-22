@@ -210,28 +210,6 @@
 .desktop-shortcut { --folder-color: var(--sys-mint); }
 .desktop-shortcut:nth-child(3n + 2) { --folder-color: var(--sys-amber); }
 .desktop-shortcut:nth-child(3n) { --folder-color: var(--sys-coral); }
-.desktop-shortcut .app-icon.sys-project-icon {
-  width: 46px;
-  height: 33px;
-  margin-top: 6px;
-  margin-bottom: 4px;
-  overflow: visible;
-  background: var(--folder-color);
-  border: 0;
-  border-radius: 4px;
-  box-shadow: 0 3px 0 #171718, 0 4px 0 var(--folder-color);
-  transition: transform 90ms ease-out, box-shadow 90ms ease-out;
-}
-.desktop-shortcut .sys-project-icon::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: -4px;
-  width: 19px;
-  height: 6px;
-  background: var(--folder-color);
-  border-radius: 3px 4px 0 0;
-}
 .desktop-shortcut .sys-icon-art {
   width: 22px;
   height: 22px;
@@ -269,9 +247,9 @@
   border-color: #ffffff38;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .desktop[data-reduced="false"] .desktop-shortcut:active .app-icon {
+  .desktop[data-reduced="false"] .desktop-shortcut:active .rb-folder {
     transform: translateY(3px) scale(0.94);
-    box-shadow: 0 1px 0 #171718;
+
   }
 }
 .desktop .desktop-shortcut:active { transform: none; }

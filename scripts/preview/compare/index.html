@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SYS Workspace · 화면 비교</title>
+<style>
+* {box-sizing:border-box}
+body {margin:0;background:#141517;color:#eff1f4;font:15px/1.4 system-ui,sans-serif}
+header {display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px 3vw;border-bottom:1px solid #3c4148}
+h1 {margin:0;font-size:19px} nav {display:flex;gap:8px}
+button {color:inherit;background:#282c32;border:1px solid #4b525a;border-radius:6px;padding:8px 14px;min-height:44px;font:inherit;cursor:pointer}
+button:hover {background:#384149} button:focus-visible {outline:2px solid #85cfca}
+main {display:grid;grid-template-columns:minmax(0, 1440fr) minmax(220px, 416fr);gap:18px;padding:20px 3vw;align-items:start;max-width:1900px;margin:auto}
+section {min-width:0} h2 {font-size:15px;margin:0 0 8px} small {color:#aab3bf;font-weight:400}
+.screen {overflow:hidden;border-radius:8px;background:#101113;box-shadow:0 0 0 1px #44494e;max-width:100%}
+iframe {display:block;border:0;transform-origin:top left}
+@media(max-width:750px){main {grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<header><h1>SYS Workspace 화면 비교</h1><nav aria-label="양쪽 화면 이동"><button data-view="desktop">바탕화면 열기</button><button data-view="note">CIRGENT 상세 열기</button></nav></header>
+<main>
+<section><h2>데스크톱 <small>1440 × 900</small></h2><div class="screen"><iframe title="데스크톱 바탕화면" width="1440" height="900" src="http://127.0.0.1:3176/desktop/"></iframe></div></section>
+<section><h2>모바일 <small>390 × 844</small></h2><div class="screen"><iframe title="모바일 바탕화면" width="390" height="844" src="http://127.0.0.1:3176/desktop/"></iframe></div></section>
+</main>
+<script>
+const frames=document.querySelectorAll('iframe');
+for (const frame of frames) {
+  const screen=frame.parentElement;
+  screen.style.maxWidth=frame.width+'px';
+  new ResizeObserver(([entry])=>{
+    const scale=entry.contentRect.width/Number(frame.width);
+    frame.style.transform='scale('+scale+')';
+    screen.style.height=Number(frame.height)*scale+'px';
+  }).observe(screen);
+}
+document.querySelector('nav').addEventListener('click',event=>{
+  const view=event.target.closest('button')?.dataset.view;
+  if (!view) return;
+  for (const frame of frames) frame.src='http://127.0.0.1:3176/desktop/'+(view==='note'?'?app=project%3Acirgent&tab=note':'');
+});
+</script>
+</body>
+</html>

@@ -2,7 +2,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Dialog, Tabs } from "radix-ui";
+import { Dialog } from "radix-ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   BookOpen,
   ChartNoAxesColumn,
@@ -382,24 +383,24 @@ export default function ProjectApp({
           {share}
         </header>
       )}
-      <Tabs.Root
+      <Tabs
         value={tab}
         onValueChange={(v) => onTab(parseTab(v))}
         activationMode="manual"
       >
-        <Tabs.List className="project-tabs" aria-label="프로젝트 상세">
+        <TabsList className="project-tabs" aria-label="프로젝트 상세">
           {tabs.map((id) => {
             const { title, icon: Icon } = tabInfo[id];
             return (
-              <Tabs.Trigger value={id} key={id} data-project-tab={id}>
+              <TabsTrigger value={id} key={id} data-project-tab={id} aria-label={title}>
                 <Icon size={16} aria-hidden="true" />
-                {title}
-              </Tabs.Trigger>
+                <span>{id === "note" ? <><span className="tab-prefix">프로젝트 </span>노트</> : title}</span>
+              </TabsTrigger>
             );
           })}
-        </Tabs.List>
+        </TabsList>
         {tabs.map((id) => (
-          <Tabs.Content
+          <TabsContent
             key={id}
             value={id}
             forceMount
@@ -430,9 +431,9 @@ export default function ProjectApp({
             ) : (
               <Issues project={p} />
             )}
-          </Tabs.Content>
+          </TabsContent>
         ))}
-      </Tabs.Root>
+      </Tabs>
     </div>
   );
 }

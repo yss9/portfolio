@@ -30,6 +30,8 @@ import {
 } from "../window-manager/store";
 import { WindowFrame } from "../window-manager/WindowFrame";
 import { AppIcon, SystemMark, Clock, Brand } from "./Identity";
+import { Folder } from "@/components/ui/folder/Folder";
+import { BrandArt } from "./BrandArt";
 import { ordinaryClick } from "./links";
 import { readSetting, resetEntry, saveSetting } from "./settings";
 
@@ -102,7 +104,7 @@ export default function Desktop() {
   const osReduce = useSyncExternalStore(subscribeToMotionPreference, prefersReducedMotion, () => true),
     quiet = reduced || osReduce;
   const [transition, setTransition] = useState<Transition | null>(null);
-  const pendingFolder = useRef<{ appId: string; origin: DOMRect } | null>(null);
+  const pendingFolder = useRef<{ appId: string; sheet: HTMLElement } | null>(null);
   const searchSelection = useRef<string | null>(null);
   const sequence = useRef(0),
     lastOpener = useRef(new Map<string, HTMLElement>()),
@@ -164,17 +166,32 @@ export default function Desktop() {
       `[data-window="${CSS.escape(pending.appId)}"] .app-window`,
     );
     if (!panel) return;
-    const end = panel.getBoundingClientRect();
-    if (!end.width || !end.height) return;
-    const from = pending.origin;
-    const animation = panel.animate(
-      [
-        { transform: `translate(${from.left - end.left}px, ${from.top - end.top}px) scale(${from.width / end.width}, ${from.height / end.height})`, transformOrigin: "top left" },
-        { transform: "none", transformOrigin: "top left" },
-      ],
-      { delay: 90, duration: 200, easing: "cubic-bezier(.15,.85,.2,1)", fill: "backwards" },
-    );
-    return () => animation.cancel();
+    // Let the flap uncover the sheet before measuring its final position.
+    panel.style.visibility = "hidden";
+    let cancelled = false;
+    let flight: Animation | undefined;
+    const frame = requestAnimationFrame(async () => {
+      await Promise.allSettled(pending.sheet.getAnimations().map((a) => a.finished));
+      if (cancelled) return;
+      const from = pending.sheet.getBoundingClientRect();
+      const end = panel.getBoundingClientRect();
+      panel.style.visibility = "";
+      if (!end.width || !end.height) return;
+      flight = panel.animate(
+        [
+          { transform: `translate(${from.left - end.left}px, ${from.top - end.top}px) scale(${from.width / end.width}, ${from.height / end.height})`, transformOrigin: "top left", opacity: 0.65 },
+          { transform: "none", transformOrigin: "top left", opacity: 1 },
+        ],
+        { duration: 245, easing: "cubic-bezier(.18,.78,.24,1)" },
+      );
+      focusSoon(pending.appId);
+    });
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+      flight?.cancel();
+      panel.style.visibility = "";
+    };
   }, [windows, quiet]);
   function morph(start?: Rect, end?: Rect, duration = 0.29) {
     const id = ++sequence.current;
@@ -198,16 +215,10 @@ export default function Desktop() {
     const prev = useWindows.getState().windows.find((w) => w.id === app.id);
     if (el && !el.closest(".dock")) lastOpener.current.set(app.id, el);
     const opening = !prev || prev.mode === "minimized";
-    const folder = el?.matches(".desktop-shortcut") && el.querySelector<HTMLElement>(".sys-project-icon");
-    if (opening && folder && !quiet) {
-      pendingFolder.current = { appId: app.id, origin: folder.getBoundingClientRect() };
-      folder.animate(
-        [{ transform: "none" }, { transform: "translateY(3px) scale(.94)", boxShadow: "0 1px 0 #171718" }],
-        { duration: 90, easing: "ease-out" },
-      );
-    }
+    const sheet = el?.closest(".desktop-shortcut")?.querySelector<HTMLElement>("[data-window-sheet]");
+    if (opening && sheet && !quiet) pendingFolder.current = { appId: app.id, sheet };
     useWindows.getState().openApp(app.id, currentArea());
-    if (opening && !folder)
+    if (opening && !sheet)
       morph(
         spatial ? iconRect(el) : undefined,
         frameRect(app.id),
@@ -215,7 +226,7 @@ export default function Desktop() {
       );
     syncUrl(!prev);
     setSearch(false);
-    focusSoon(app.id);
+    if (!opening || !sheet || quiet) focusSoon(app.id);
   }
   function control(id: string, action: "close" | "minimize" | "maximize") {
     const s = useWindows.getState(),
@@ -273,7 +284,11 @@ export default function Desktop() {
           }
         }}
       >
-        <AppIcon name={app.icon} target />
+        <Folder open={activeId === app.id}>
+          <span className="sys-icon-art" data-desktop-brand={app.icon}>
+            <BrandArt slug={app.icon} />
+          </span>
+        </Folder>
         <strong>{app.title}</strong>
         {featured && <small>{app.shortRole}</small>}
       </a>
@@ -365,6 +380,7 @@ export default function Desktop() {
               order={i}
               area={area}
               mobile={mobile}
+              quiet={quiet}
               open={open}
               activate={() => {
                 useWindows.getState().activateWindow(w.id);
