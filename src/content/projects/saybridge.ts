@@ -33,9 +33,9 @@ export const saybridge: Project = {
 
   screenshots: [
     {
-      src: "/projects/saybridge/webcam.png",
-      alt: "SayBridge 1대1 화상 수업 화면에서 두 사용자의 웹캠 영상과 실시간 채팅을 함께 확인하는 모습",
-      caption: "1:1 화상 수업 — WebRTC 영상 통화와 실시간 채팅을 한 화면에서 진행",
+      src: "/projects/saybridge/webcam-mock.webp",
+      alt: "SayBridge 1대1 화상 수업에서 두 참가자의 영상 영역을 이니셜 아바타로 재현하고 예시 실시간 채팅을 표시한 화면",
+      caption: "1:1 화상 수업 — 가상 참가자 영상과 실시간 채팅을 재현한 화면",
     },
     {
       src: "/projects/saybridge/courses.png",

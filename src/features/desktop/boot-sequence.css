@@ -1,0 +1,47 @@
+.sys-boot {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  background: #08090a;
+  color: #f7f7f4;
+  isolation: isolate;
+}
+.sys-boot-word {
+  display: block;
+  width: min(76vw, 29rem);
+  max-height: 68dvh;
+  fill: currentColor;
+  overflow: visible;
+}
+.sys-boot-word text {
+  font:
+    540 42px/1 "Pretendard Variable",
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    sans-serif;
+  font-kerning: normal;
+}
+.sys-boot button {
+  position: absolute;
+  right: max(1.5rem, env(safe-area-inset-right));
+  bottom: max(1.1rem, env(safe-area-inset-bottom));
+  display: inline-grid;
+  place-items: center;
+  min-height: 44px;
+  padding: 0 0.75rem;
+  color: #c0c3c4;
+  font-size: 0.87rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.sys-boot button:hover {
+  color: white;
+  background: #1c1e20;
+}
+.sys-boot button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}

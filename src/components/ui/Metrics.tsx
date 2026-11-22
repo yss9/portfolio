@@ -17,7 +17,7 @@ function barWidths(before: string, after: string) {
   if (b === null || a === null || b < 0 || a < 0) return null;
   const max = Math.max(b, a);
   if (max <= 0) return null;
-  const scale = (v: number) => Math.max(1.2, (v / max) * 100);
+  const scale = (v: number) => (v === 0 ? 0 : Math.max(1.2, (v / max) * 100));
   return { before: scale(b), after: scale(a) };
 }
 

@@ -71,10 +71,10 @@ export const saeroi: Project = {
       fit: "contain",
     },
     {
-      src: "/projects/saeroi/assistant-approval.png",
-      alt: "AI 어시스턴트가 소재 구매 대화와 지갑 서명 확인 카드를 함께 보여주는 화면",
+      src: "/projects/saeroi/assistant-approval-mock.webp",
+      alt: "시연용 대화에서 AI 어시스턴트가 데님 재킷 30벌 생산을 확정하기 전 승인 카드를 표시한 화면",
       caption:
-        "AI 어시스턴트 — 구매할 소재를 확인하고 블록체인 작업의 지갑 서명으로 이어지는 시연 영상 캡처",
+        "AI 어시스턴트 — 시연 데이터로 재현한 생산 배치 확정과 승인 카드",
       fit: "contain",
     },
     {

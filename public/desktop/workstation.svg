@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 460" fill="none">
+  <defs>
+    <linearGradient id="top" x2=".6" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#fffdf0"/><stop offset="1" stop-color="#dee1d4"/></linearGradient>
+    <linearGradient id="face" x2=".65" y2="1"><stop stop-color="#fffced"/><stop offset="1" stop-color="#c9cdbf"/></linearGradient>
+    <linearGradient id="side" x2="1" y2="1"><stop stop-color="#aeb4aa"/><stop offset=".6" stop-color="#939e9b"/><stop offset="1" stop-color="#818a91"/></linearGradient>
+    <linearGradient id="glass" x2="1" y2="1"><stop stop-color="#324d71"/><stop offset=".42" stop-color="#1b3651"/><stop offset="1" stop-color="#122840"/></linearGradient>
+    <pattern id="scan" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M0 .5H3" stroke="#bef7ff" stroke-opacity=".09"/></pattern>
+    <filter id="shadow" x="-40%" y="-100%" width="200%" height="310%"><feGaussianBlur stdDeviation="9"/></filter>
+    <g id="key"><rect x="1" y="1" width="11" height="9" rx="1.8" fill="#88928e"/><rect width="11" height="7" rx="1.8" fill="#f1efdb"/><path d="M3 3h3" stroke="#969b92" stroke-width="1.1"/></g>
+    <g id="row"><use href="#key"/><use href="#key" x="14"/><use href="#key" x="28"/><use href="#key" x="42"/><use href="#key" x="56"/><use href="#key" x="70"/><use href="#key" x="84"/><use href="#key" x="98"/><use href="#key" x="112"/><use href="#key" x="126"/></g>
+  </defs>
+  <g stroke-linejoin="round" stroke-linecap="round">
+    <ellipse cx="291" cy="353" rx="146" ry="28" fill="#14286c" opacity=".28" filter="url(#shadow)"/>
+    <path d="M387 264c37 8 29 36 6 38s-16-17 10-11c26 6 53 19 36 36" stroke="#343f61" stroke-width="4"/>
+    <!-- Faces share the same oblique projection as the keys and the display. -->
+    <path d="m159 258 84-34 157 39-82 39z" fill="url(#top)"/>
+    <path d="m159 258 159 43v23l-159-44z" fill="url(#face)"/>
+    <path d="m318 301 82-38v22l-82 39z" fill="url(#side)"/>
+    <path d="m171 275 137 37" stroke="#929b92" stroke-width="1.5"/>
+    <path d="m171 267 17 4.5" stroke="#6b7470" stroke-width="2.5"/>
+    <g transform="matrix(1 .267 0 1 166 112)">
+      <path d="M2 5Q3 0 9 0h142q7 0 7 8v133q0 7-7 7H8q-8 0-8-8z" fill="url(#face)"/>
+      <rect x="8" y="9" width="140" height="103" rx="12" fill="#a4ac9e"/>
+      <rect x="11" y="12" width="135" height="99" rx="10" fill="#7c877f"/>
+      <rect x="14" y="16" width="129" height="93" rx="9" fill="url(#glass)"/>
+      <rect x="14" y="16" width="129" height="93" rx="9" fill="url(#scan)"/>
+      <path d="m28 43 10 8-10 8m17 0h14" stroke="#c3f6ab" stroke-width="4"/>
+      <path d="M25 22h78" stroke="#fff" stroke-opacity=".15" stroke-width="3"/>
+      <rect x="76" y="124" width="61" height="5" rx="1" fill="#5e6867"/>
+      <path d="M106 127h24" stroke="#333d46" stroke-width="2"/>
+      <circle cx="18" cy="126" r="3" fill="#6a875e"/><circle cx="18" cy="125" r="1.6" fill="#bcf78c"/>
+      <rect x="26" y="123" width="15" height="6" rx="1" fill="#bdc2b3"/>
+    </g>
+    <path d="m171 112 71-32q4-2 10 0l146 39-77 34z" fill="url(#top)"/>
+    <path d="m322 153 76-34q4 1 4 7l-4 119q0 6-7 10l-72 35q5-3 5-9V159z" fill="url(#side)"/>
+    <g transform="matrix(.91 -.413 0 1 337 165)" stroke="#697575" stroke-width="2.6">
+      <path d="M0 0h51M0 5h51M0 10h51M0 15h51M0 20h51M0 25h51M0 30h51M0 35h51"/>
+    </g>
+    <path d="m174 113 145 39" stroke="#fffef2" stroke-width="2"/>
+    <path d="M184 289c-14-11-41-8-48-2s3 17 13 19" stroke="#657386" stroke-width="3"/>
+    <g transform="matrix(1 .267 -.91 .413 158 299)">
+      <rect y="7" width="173" height="65" rx="5" fill="#939e95"/>
+      <rect width="173" height="65" rx="5" fill="url(#face)"/>
+      <g transform="translate(7 6)">
+        <use href="#row"/><use href="#row" x="2" y="12"/><use href="#row" x="4" y="24"/>
+        <use href="#key" x="5" y="36"/><use href="#key" x="19" y="36"/>
+        <rect x="34" y="36" width="73" height="8.5" rx="1.8" fill="#a7afa4"/><rect x="34" y="35" width="73" height="7" rx="1.8" fill="#eeeeda"/>
+        <use href="#key" x="111" y="36"/><use href="#key" x="125" y="36"/>
+        <rect x="143" width="14" height="10" rx="2" fill="#d7a251"/><use href="#key" x="144" y="13"/><rect x="143" y="26" width="14" height="18" rx="2" fill="#798eab"/>
+      </g>
+    </g>
+    <path d="M422 325q13-9 22-2l10 7q5 5-1 11l-19 11q-8 4-17-2l-8-6q-5-4 0-10z" fill="#9aa5a0"/>
+    <path d="M422 321q13-9 22-2l10 7q5 5-1 10l-19 11q-8 4-17-2l-8-6q-5-4 0-10z" fill="url(#face)"/>
+    <path d="m429 323 12 8m-18-4 12 8" stroke="#a4afa4" stroke-width="2"/>
+  </g>
+</svg>

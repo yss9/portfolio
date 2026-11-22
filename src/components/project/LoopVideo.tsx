@@ -1,11 +1,7 @@
 "use client";
-
 import { useEffect, useRef } from "react";
 
-/**
- * Short, silent demo loop. Plays only while on screen, and never autoplays
- * when the viewer prefers reduced motion (the poster stays instead).
- */
+/** Record readers play one clip at a time. Leaving the viewport pauses it. */
 export function LoopVideo({
   src,
   poster,
@@ -18,36 +14,36 @@ export function LoopVideo({
   className?: string;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
-
   useEffect(() => {
-    const video = ref.current;
-    if (!video) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !reduce.matches) {
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      },
-      { threshold: 0.35 },
-    );
-    observer.observe(video);
-    return () => observer.disconnect();
+    const el = ref.current!;
+    const pause = () => {
+      if (document.hidden) el.pause();
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) el.pause();
+    });
+    observer.observe(el);
+    document.addEventListener("visibilitychange", pause);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", pause);
+    };
   }, []);
-
   return (
     <video
       ref={ref}
       className={className}
       src={src}
       poster={poster}
-      muted
-      loop
+      controls
       playsInline
-      preload="metadata"
+      preload="none"
       aria-label={label}
+      onPlay={() =>
+        document.querySelectorAll("video").forEach((el) => {
+          if (el !== ref.current) el.pause();
+        })
+      }
     />
   );
 }

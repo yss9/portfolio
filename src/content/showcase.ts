@@ -2,7 +2,7 @@
 export const showcase = {
   cirgent: {
     category: "AI · 프론트엔드 성능",
-    program: "삼성 내부 프로젝트",
+    program: "삼성청년 SW·AI 아카데미 기업연계 프로젝트",
     background:
       "엔지니어가 부품별 데이터시트에서 규칙을 찾고 회로 설계와 일일이 대조하는 데 시간이 들었습니다.",
     overview:

@@ -34,31 +34,31 @@ export const glople: Project = {
   ],
 
   preview: {
-    src: "/projects/glople/main.png",
+    src: "/projects/glople/main-mock.webp",
     alt:
-      "Glople 메인 화면에서 세계 지도를 중심으로 여행지 추천과 예약 메뉴를 탐색하는 모습",
+      "Glople 세계 지도에서 캐나다를 선택해 시연용 여행 후기와 예약 메뉴를 연 화면",
   },
 
   screenshots: [
     {
-      src: "/projects/glople/main.png",
-      alt: "Glople 세계 지도 홈 화면과 여행지 예약·추천·루트 탐색·커뮤니티 메뉴",
-      caption: "지도 홈 — 세계 지도에서 국가를 선택해 여행 정보 탐색을 시작",
+      src: "/projects/glople/main-mock.webp",
+      alt: "Glople 세계 지도에서 캐나다를 선택해 여행 후기 카드와 예약 바로가기를 확인하는 화면",
+      caption: "지도 홈 — 시연용 캐나다 후기와 예약 메뉴",
     },
     {
-      src: "/projects/glople/mbti.png",
-      alt: "Glople MBTI 추천 화면에서 ESTJ 성향과 잘 맞는 시드니, 싱가포르, 워싱턴 여행지를 확인하는 모습",
-      caption: "MBTI 여행지 추천 — 사용자의 성향과 잘 맞는 여행지를 결과 카드로 제공",
+      src: "/projects/glople/mbti-mock.webp",
+      alt: "Glople MBTI 추천에서 시연용 ISTP 계정에 밴프, 뉴질랜드, 스위스 알프스를 추천한 화면",
+      caption: "MBTI 여행지 추천 — 시연용 ISTP 계정의 추천 결과",
     },
     {
-      src: "/projects/glople/keyword-result.png",
-      alt: "Glople 키워드 기반 맞춤 여행지 결과에 타우포 호수, 그레이트 배리어 리프, 본다이 비치가 표시된 화면",
-      caption: "키워드 추천 결과 — 선택한 여행 취향을 기준으로 맞춤 여행지를 제안",
+      src: "/projects/glople/keyword-result-mock.webp",
+      alt: "호수와 자연 등을 고른 뒤 모레인 호수, 레이크 루이스, 샤모니 몽블랑이 나타난 Glople 시연 화면",
+      caption: "키워드 추천 결과 — 시연용 취향 선택에 따른 맞춤 여행지",
     },
     {
-      src: "/projects/glople/cosine-route.png",
-      alt: "Glople 코사인 유사도 기반 여행 루트 화면에서 유사한 사용자가 다녀온 파리 여행 경로를 확인하는 모습",
-      caption: "유사 사용자 여행 루트 — 코사인 유사도로 찾은 사용자의 실제 여행 경로를 추천",
+      src: "/projects/glople/cosine-route-mock.webp",
+      alt: "Glople에서 유사 사용자의 시연용 오사카 여행지와 이동 경로를 확인하는 화면",
+      caption: "유사 사용자 여행 루트 — 시연용 오사카 일정과 지도",
     },
   ],
 

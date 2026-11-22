@@ -10,10 +10,10 @@ import { saeroi } from "./saeroi";
 import { cirgent } from "./cirgent";
 
 export const projects: Project[] = [
-  cirgent,
   saeroi,
   potner,
   neoulteo,
+  cirgent,
   saybridge,
   glople,
   bluememories,

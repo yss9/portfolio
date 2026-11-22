@@ -1,0 +1,123 @@
+.project-app.notebook {
+  --paper: #e6f0ff;
+  --ink: #162a40;
+  --muted-ink: #415b76;
+  --rule: #b5cbe3;
+  --note-accent: #3067aa;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100%;
+}
+.desktop .app-window.front:has(.notebook) .window-titlebar {
+  border-bottom-color: #83acd7;
+}
+.note-mast {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 clamp(12px, 3cqw, 32px);
+  min-height: 44px;
+  color: var(--muted-ink);
+  font-size: .8rem;
+  border-bottom: 1px solid var(--rule);
+}
+.note-mast :is(h1,h2) {font-weight: 700; color: var(--ink)}
+.note-share {display: flex; align-items: center; justify-content: end; gap: 6px; margin-left: auto}
+.note-share button {display: grid; place-items: center; width: 44px; height: 44px; color: var(--muted-ink)}
+.note-share small:empty {display: none}
+.note-share small {overflow-wrap: anywhere}
+.note-lead {position: relative}
+.note-lead .note-share {align-self: start; grid-column: 2; grid-row: 1}
+.note-lead > div:first-child {grid-row: 1 / span 2; min-width: 0}
+
+.notebook .project-tabs {
+  padding: 0 clamp(8px, 3cqw, 32px);
+  gap: clamp(0px, 1.2cqw, 14px);
+  border: 0;
+  box-shadow: inset 0 -1px var(--rule);
+  background: #f2f7ff;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.notebook .project-tabs button {color: var(--muted-ink); flex: none; white-space: nowrap}
+.notebook .project-tabs [aria-selected=true] {color: #184779; background: #dbe9fa; border-bottom-color: var(--note-accent)}
+.notebook .project-tabs button:hover:not([data-state=active]) {color: var(--ink); background: #d6e6fa}
+.notebook .tab-body:has(.project-note) {padding: 0}
+.notebook .project-note {
+  padding: clamp(18px, 3.7cqw, 44px);
+  font-size: 1rem;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.notebook .note-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 20px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: clamp(16px, 2.5cqw, 28px);
+}
+.notebook .note-program {font-size: .8rem; font-weight: 650; color: var(--muted-ink)}
+.note-lead :is(h1,h2) {
+  font: normal clamp(3.3rem, 9cqw, 6rem)/1.1 Georgia, "Times New Roman", serif;
+  color: var(--ink);
+  letter-spacing: -.07em;
+}
+.notebook .note-headline {color: var(--ink); font-size: clamp(1.1rem, 2.4cqw, 1.7rem); font-weight: 700; letter-spacing: -.04em; line-height: 1.35}
+.note-meta {grid-column: 2; display: grid; gap: 5px; margin: 0; font-size: .83rem}
+.note-meta div {display: flex; gap: 12px; justify-content: space-between}
+.note-meta dt {color: var(--muted-ink)}
+.note-meta dd {margin: 0; font-variant-numeric: tabular-nums}
+.note-spread {display: grid; grid-template-columns: 1fr 1.12fr; gap: clamp(20px, 4cqw, 45px); margin: clamp(18px, 2.8cqw, 30px) 0}
+.note-spread section + section {border-left: 1px solid var(--rule); padding-left: clamp(16px, 3cqw, 32px)}
+.notebook .note-spread h3 {color: var(--ink); font-size: 1.15rem; margin: 0 0 6px}
+.notebook .note-spread p {color: #2e445b; font-size: .96rem; line-height: 1.68}
+.notebook .note-role {font-weight: 650; margin-bottom: 6px}
+.note-links {display: flex; flex-wrap: wrap; gap: 4px 16px; margin-bottom: 10px}
+.note-links a {display: inline-flex; align-items: center; gap: 4px; min-height: 44px; color: var(--note-accent); text-decoration: underline; text-underline-offset: 3px}
+.note-spread ul {display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 10px 0 0; padding: 0; list-style: none; color: var(--muted-ink); font: .74rem/1.6 var(--os-mono)}
+.note-evidence {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  border-block: 1px solid var(--rule);
+  background: #f4f8ff;
+}
+.note-evidence button {
+  display: flex;
+  gap: clamp(10px, 1.6cqw, 20px);
+  align-items: center;
+  min-width: 0;
+  padding: 16px;
+  text-align: start;
+  color: var(--ink);
+}
+.note-evidence button + button {border-left: 1px solid var(--rule)}
+.note-evidence button:is(:hover, :focus-visible) {background: #d8e8fc}
+.note-evidence button:focus-visible {outline: 2px solid var(--note-accent); outline-offset: -3px}
+.note-evidence img {width: clamp(64px, 10cqw, 110px); aspect-ratio: 4 / 3; object-fit: cover; border: 1px solid var(--rule); border-radius: 3px}
+.note-evidence svg {flex: none; margin-left: auto; color: var(--note-accent)}
+.evidence-copy {min-width: 0; display: grid; gap: 4px}
+.evidence-copy > span {font-size: .84rem; line-height: 1.45; color: var(--muted-ink)}
+.evidence-copy .note-values {font-size: 1rem; color: var(--ink); font-variant-numeric: tabular-nums}
+.note-values b {color: #205590}
+@container (max-width: 620px) {
+  .note-evidence {grid-template-columns: 1fr}
+  .note-evidence button + button {border-left: 0; border-top: 1px solid var(--rule)}
+  .notebook .note-lead {grid-template-columns: minmax(0, 1fr) auto; gap: 0 6px}
+  .note-lead > div:first-child {grid-row: 1}
+  .note-meta {grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px}
+  .note-meta div {gap: 6px}
+  .note-spread {grid-template-columns: 1fr; gap: 16px}
+  .note-spread section + section {border-left: 3px solid var(--note-accent); padding-left: 12px}
+  .notebook .project-tabs {flex-wrap: wrap; gap: 0}
+  .notebook .project-tabs button {font-size: .84rem; padding: 0 7px}
+  .notebook .project-tabs svg {display: none}
+}
+
+@container (max-width: 360px) {
+  .note-lead > div:first-child {grid-column: 1 / -1}
+  .note-lead :is(h1, h2) {font-size: clamp(2.3rem, 13cqw, 2.9rem)}
+  .note-lead .note-meta {grid-column: 1; grid-row: 2; gap: 4px 12px}
+  .note-lead .note-share {grid-row: 2; align-self: center}
+  .notebook .project-tabs {display: grid; grid-template-columns: repeat(3, minmax(0, 1fr))}
+}

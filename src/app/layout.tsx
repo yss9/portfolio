@@ -1,46 +1,44 @@
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { GuestHandoff } from "@/features/desktop/GuestHandoff";
+import { Preferences } from "@/features/desktop/Preferences";
 import { profile } from "@/content/profile";
-import { SiteNav } from "@/components/site/SiteNav";
-import { SiteFooter } from "@/components/site/SiteFooter";
 import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
-
-const jetBrains = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains",
-  display: "swap",
-});
+import "./desktop.css";
+import "./sys-workspace.css";
 
 export const metadata: Metadata = {
   title: {
-    default: `${profile.name} · Backend Developer Portfolio`,
+    default: `SYS Workspace · ${profile.name}`,
     template: `%s · ${profile.name}`,
   },
   description: profile.headline,
   openGraph: {
-    title: `${profile.name} · Backend Developer Portfolio`,
+    title: `SYS Workspace · ${profile.name}`,
     description: profile.headline,
     type: "website",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fafaf8",
+  themeColor: "#101011",
+  interactiveWidget: "resizes-content",
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ko" className={jetBrains.variable}>
+    <html lang="ko" data-scroll-behavior="smooth">
       <body className="min-h-screen antialiased">
+        <Preferences />
         <a href="#main" className="skip-link">
           본문으로 건너뛰기
         </a>
-        <SiteNav />
-        <main id="main">{children}</main>
-        <SiteFooter />
+        <main id="main">
+          <GuestHandoff>{children}</GuestHandoff>
+        </main>
       </body>
     </html>
   );

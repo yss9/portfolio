@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#f7f5ef"/>
+      <stop offset=".5" stop-color="#e9eeec"/>
+      <stop offset="1" stop-color="#d2dfe4"/>
+    </linearGradient>
+    <radialGradient id="light" cx=".15" cy=".42" r=".84">
+      <stop stop-color="#fffefa" stop-opacity=".72"/>
+      <stop offset="1" stop-color="#fffefa" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shadow">
+      <stop stop-color="#516774" stop-opacity=".29"/>
+      <stop offset=".55" stop-color="#637681" stop-opacity=".13"/>
+      <stop offset="1" stop-color="#657780" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="back" gradientUnits="userSpaceOnUse" x1="790" y1="680" x2="1005" y2="872">
+      <stop stop-color="#eef2f0"/>
+      <stop offset=".21" stop-color="#c8d5d8"/>
+      <stop offset=".55" stop-color="#a0b2bf"/>
+      <stop offset=".84" stop-color="#dbe3e4"/>
+      <stop offset="1" stop-color="#f3f6f1"/>
+    </linearGradient>
+    <linearGradient id="inside" gradientUnits="userSpaceOnUse" x1="572" y1="780" x2="962" y2="715">
+      <stop stop-color="#b6c6cd"/>
+      <stop offset=".24" stop-color="#889dab"/>
+      <stop offset=".53" stop-color="#a6b8c0"/>
+      <stop offset=".77" stop-color="#e3e9e8"/>
+      <stop offset="1" stop-color="#c8d6db"/>
+    </linearGradient>
+    <linearGradient id="face" gradientUnits="userSpaceOnUse" x1="503" y1="737" x2="1203" y2="866">
+      <stop stop-color="#fafaf4"/>
+      <stop offset=".15" stop-color="#f0f3ef"/>
+      <stop offset=".32" stop-color="#c4d0d3"/>
+      <stop offset=".49" stop-color="#b2c1c9"/>
+      <stop offset=".63" stop-color="#dbe2e1"/>
+      <stop offset=".81" stop-color="#f4f5ef"/>
+      <stop offset="1" stop-color="#aebfc9"/>
+    </linearGradient>
+    <linearGradient id="rim" gradientUnits="userSpaceOnUse" x1="500" y1="760" x2="1230" y2="870">
+      <stop stop-color="#fffffa"/>
+      <stop offset=".4" stop-color="#b8c7ce"/>
+      <stop offset=".68" stop-color="#f7f8f3"/>
+      <stop offset="1" stop-color="#f1f4f2"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#paper)" d="M0 0h1600v1000H0z"/>
+  <path fill="url(#light)" d="M0 0h1600v1000H0z"/>
+  <g transform="rotate(-5 810 820)">
+    <ellipse cx="849" cy="906" rx="455" ry="49" fill="url(#shadow)"/>
+    <ellipse cx="891" cy="900" rx="283" ry="16" fill="url(#shadow)"/>
+    <!-- A single ribbon turns back on itself. The lit edge follows the fold. -->
+    <path fill="url(#back)" d="M445 822C516 809 547 763 602 722C659 679 735 651 803 663C878 676 904 729 951 763C1002 801 1088 824 1174 815L1193 833C1108 872 991 876 907 846C842 823 805 767 754 731C711 702 659 704 612 732C557 765 518 816 445 827Z"/>
+    <path fill="url(#inside)" d="M444 825C518 815 556 764 612 732C660 702 710 701 755 730C807 765 847 823 908 845C976 870 1064 869 1131 852C1050 892 962 898 887 869C817 842 759 785 703 762C662 745 623 747 588 762C538 783 500 821 448 830Z"/>
+    <path fill="url(#face)" d="M394 825C476 847 543 812 612 796C694 777 746 799 816 844C874 881 934 903 1012 899C1097 896 1172 862 1230 802C1170 841 1100 851 1024 838C941 824 894 774 829 751C753 724 685 741 619 773C534 814 479 843 394 823Z"/>
+    <path fill="none" stroke="url(#rim)" stroke-width="2" d="M395 823C479 843 534 814 619 773C685 741 753 724 829 751C894 774 941 824 1024 838C1100 851 1170 841 1230 802"/>
+    <path fill="none" stroke="#8296a2" stroke-opacity=".35" d="M395 825C476 847 543 812 612 796C694 777 746 799 816 844C874 881 934 903 1012 899C1097 896 1172 862 1230 802"/>
+  </g>
+</svg>

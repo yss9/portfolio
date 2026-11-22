@@ -54,9 +54,9 @@ export const neoulteo: Project = {
       caption: "지역 지도 홈 — 시도별 핫플레이스 수를 보고 부산 인기 장소를 지도에서 바로 탐색",
     },
     {
-      src: "/projects/neoulteo/hotplaces.png",
+      src: "/projects/neoulteo/hotplaces-mock.webp",
       alt: "Neoulteo 인기 핫플레이스 TOP 5에 해운대, 감천문화마을, 광안리 사진과 등록 수, 사용자 후기가 표시된 화면",
-      caption: "핫플레이스 — 사용자 등록 수 기반 인기 순위와 장소별 후기·저장·공유 기능",
+      caption: "핫플레이스 — 시연용 장소별 인기 순위, 후기와 저장 메뉴",
     },
     {
       src: "/projects/neoulteo/community.png",

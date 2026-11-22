@@ -1,0 +1,348 @@
+:root {
+  --sys-ground: #101011;
+  --sys-mint: #85cfca;
+  --sys-amber: #ebc675;
+  --sys-coral: #f4a490;
+  --sys-wallpaper: url("/desktop/keycap-black.webp");
+  --sys-wall-position: 65% center;
+  --sys-panel: #19191b;
+  --sys-line: #ffffff26;
+  --sys-white: #f6f5ef;
+  --sys-muted: #b5b4af;
+  --sys-face: "Pretendard Variable", Pretendard, Arial, sans-serif;
+  --sys-ui: 0.875rem;
+  --sys-track: -0.035em;
+  --sys-leading: 1.45;
+}
+.sys-entry,
+.desktop,
+.sys-flight {
+  font-family: var(--sys-face);
+  line-height: var(--sys-leading);
+}
+.sys-entry {
+  min-height: 100svh;
+  background: var(--sys-ground);
+}
+.sys-lock {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  min-height: 100svh;
+  min-height: 100dvh;
+  background: linear-gradient(#10101135, #10101160),
+    var(--sys-wallpaper) var(--sys-wall-position) / cover no-repeat, var(--sys-ground);
+  color: var(--sys-white);
+  padding: 0 clamp(18px, 3.4vw, 64px);
+}
+.sys-lockbar,
+.sys-lockfoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sys-lockbar {
+  height: clamp(58px, 9vh, 86px);
+  border-bottom: 1px solid var(--sys-line);
+}
+.sys-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.26em;
+  white-space: nowrap;
+  letter-spacing: -0.053em;
+  font-size: 1.08rem;
+  font-weight: 480;
+}
+.sys-wordmark b {
+  font-weight: 780;
+  letter-spacing: -0.055em;
+}
+.sys-wordmark > svg {
+  align-self: center;
+  width: 1.35em;
+  height: 1.35em;
+  margin-right: 0.24em;
+}
+.sys-lockbar .system-clock {
+  color: var(--sys-white);
+  font: 500 0.82rem var(--os-mono);
+  text-align: right;
+  letter-spacing: 0.02em;
+}
+.sys-showcase {
+  display: grid;
+  align-items: center;
+  margin: 0 calc(-1 * clamp(18px, 3.4vw, 64px));
+  min-width: 0;
+  padding-block: clamp(12px, 2vh, 24px);
+}
+.sys-access {
+  display: grid;
+  justify-content: center;
+  padding: 4px 0 clamp(18px, 5vh, 68px);
+}
+.sys-guest {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  color: #181819;
+  background: var(--sys-amber);
+  font-weight: 670;
+  font-size: 1rem;
+  letter-spacing: var(--sys-track);
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 6px;
+  transition:
+    background 0.14s,
+    transform 0.14s;
+}
+.sys-guest svg {
+  transition: transform 0.15s;
+}
+.sys-guest:hover {
+  background: white;
+}
+.sys-guest:hover svg {
+  transform: translateX(3px);
+}
+.sys-guest:active {
+  transform: scale(0.97);
+}
+.sys-lockfoot {
+  border-top: 1px solid var(--sys-line);
+  min-height: 54px;
+  padding-block: 4px;
+  color: var(--sys-muted);
+  font-size: 0.84rem;
+}
+.sys-lockfoot a,
+.sys-lockfoot span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.sys-lockfoot i {
+  width: 16px;
+  height: 1px;
+  background: #757575;
+}
+.sys-lockfoot a {
+  min-height: 44px;
+}
+.sys-lock :is(a, button):focus-visible {
+  outline: 2px solid #dbefd5;
+  outline-offset: 4px;
+}
+.sys-flight {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: progress;
+}
+.sys-flight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--sys-ground);
+}
+.sys-flight[data-landed="true"]::before {
+  animation: sys-dissolve 0.46s ease-out both;
+}
+@keyframes sys-dissolve {
+  to {
+    opacity: 0;
+  }
+}
+.sys-flight [data-flight-brand] {
+  position: fixed;
+  pointer-events: none;
+}
+.sys-flight [data-flight-brand] > span {
+  position: absolute;
+  inset: 0;
+}
+.sys-flight [data-flight-brand] > span:last-child {
+  opacity: 0;
+}
+.sys-flight button {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 18px;
+  background: white;
+  color: #171717;
+  border-radius: 50px;
+}
+.sys-pages[data-arriving]
+  :is(
+    [data-desktop-brand="saeroi"],
+    [data-desktop-brand="potner"],
+    [data-desktop-brand="neoulteo"],
+    .dock-zone
+  ) {
+  visibility: hidden;
+}
+.desktop.os-shell {
+  position: relative;
+  background: var(--sys-ground) var(--sys-wallpaper) var(--sys-wall-position) / cover no-repeat;
+}
+.desktop .desktop-menubar {
+  position: relative;
+  background: #141415e6;
+  color: var(--sys-white);
+  border-bottom: 1px solid var(--sys-line);
+  min-height: 42px;
+}
+.menu-identity .sys-wordmark {
+  font-size: 0.93rem;
+}
+.desktop .desktop-surface {
+  background: transparent;
+}
+.desktop-shortcut { --folder-color: var(--sys-mint); }
+.desktop-shortcut:nth-child(3n + 2) { --folder-color: var(--sys-amber); }
+.desktop-shortcut:nth-child(3n) { --folder-color: var(--sys-coral); }
+.desktop-shortcut .app-icon.sys-project-icon {
+  width: 46px;
+  height: 33px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+  overflow: visible;
+  background: var(--folder-color);
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 3px 0 #171718, 0 4px 0 var(--folder-color);
+  transition: transform 90ms ease-out, box-shadow 90ms ease-out;
+}
+.desktop-shortcut .sys-project-icon::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -4px;
+  width: 19px;
+  height: 6px;
+  background: var(--folder-color);
+  border-radius: 3px 4px 0 0;
+}
+.desktop-shortcut .sys-icon-art {
+  width: 22px;
+  height: 22px;
+}
+.app-icon.sys-project-icon {
+  color: white;
+  background: linear-gradient(146deg, #343438, #222225 55%, #18181b);
+  border: 1px solid #ffffff2e;
+  box-shadow:
+    inset 0 1px 0 #ffffff14,
+    0 2px 6px #0003;
+  display: inline-grid;
+  place-items: center;
+}
+.sys-icon-art {
+  width: 74%;
+  height: 74%;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+}
+.app-icon.sys-project-icon::after {
+  display: none;
+}
+.desktop-shortcut strong {
+  font-weight: 540;
+}
+.desktop .desktop-shortcut {
+  text-shadow: 0 1px 4px #0009;
+}
+.desktop .desktop-shortcut:hover,
+.desktop .desktop-shortcut[aria-current="true"] {
+  background: #ffffff12;
+  border-color: #ffffff38;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .desktop[data-reduced="false"] .desktop-shortcut:active .app-icon {
+    transform: translateY(3px) scale(0.94);
+    box-shadow: 0 1px 0 #171718;
+  }
+}
+.desktop .desktop-shortcut:active { transform: none; }
+.desktop .dock {
+  border-radius: 8px;
+  background: #252528dd;
+  border-color: #ffffff40;
+  box-shadow:
+    inset 0 1px 0 #ffffff0f,
+    0 4px 20px #0004;
+}
+.desktop #all-apps .system-mark {
+  color: #f6f5ef;
+}
+.desktop .dock .app-icon:not(.sys-project-icon) {
+  background: #454549;
+  color: #f6f5ef;
+}
+.desktop .dock button[aria-current="true"]:after {
+  background: var(--sys-amber);
+}
+.window-titlebar .sys-project-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+}
+.desktop .window-titlebar {
+  background: #242426;
+  color: #efefec;
+  border-bottom: 1px solid #555550;
+}
+.desktop .front .window-titlebar {
+  background: #2f3032;
+  border-bottom-color: var(--sys-amber);
+}
+.desktop .window-titlebar button:hover { background: #464646; }
+.desktop .front .traffic-close::before { background: var(--sys-coral); }
+.desktop .front .traffic-min::before { background: var(--sys-amber); }
+.desktop .front .traffic-max::before { background: var(--sys-mint); }
+.desktop .app-window { border-radius: 7px; }
+.app-window.front {
+  border-color: #595953;
+  box-shadow: 0 16px 50px #0006;
+}
+.project-app .overview-heading .sys-project-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+}
+@media (max-width: 700px) {
+  .sys-lockbar {
+    height: 54px;
+  }
+  .sys-access {
+    padding-bottom: 20px;
+  }
+  .sys-lockfoot {
+    min-height: 48px;
+    font-size: 0.79rem;
+  }
+  .sys-lock, .desktop.os-shell { --sys-wall-position: 76% center; }
+  .desktop .app-window { border-radius: 0; }
+}
+@media (max-height: 530px) and (min-width: 701px) {
+  .sys-lockbar {
+    height: 44px;
+  }
+  .sys-access {
+    padding-bottom: 10px;
+  }
+  .sys-showcase {
+    padding: 0;
+  }
+}

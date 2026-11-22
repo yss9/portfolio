@@ -39,9 +39,10 @@ export const mofy: Project = {
       caption: "서비스 홈 — 스타일 게시물, 프로필, 현재 날씨와 최신 커뮤니티·마켓 글을 한 화면에 구성",
     },
     {
-      src: "/projects/mofy/color-palette.png",
+      src: "/projects/mofy/color-palette-mock.webp",
       alt: "MOFY에서 원본 패션 이미지의 배경을 제거하고 의상에서 추출한 여섯 가지 주요 색상을 팔레트로 보여주는 화면",
-      caption: "컬러 팔레트 — 배경을 제거한 뒤 이미지의 주요 색상을 추출해 팔레트로 제공",
+      caption: "컬러 팔레트 — 시연 사진, 배경 제거 결과와 여섯 가지 의상 색상",
+      fit: "contain",
     },
   ],
 
